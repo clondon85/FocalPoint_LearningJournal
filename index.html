@@ -280,7 +280,18 @@ textarea,.fi,.fse{transition:background-color .25s,border-color .15s,color .25s;
 .bni{display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;padding:8px;border-radius:9px;flex:1;color:#FFFCF6;opacity:.6;transition:opacity .15s;}
 .bni.active{color:var(--teal);opacity:1;}
 .bni svg{width:17px;height:17px;}.bni span{font-size:8.5px;font-weight:500;}
-/* LESSON CHECKLIST */
+/* PACE TIMELINE */
+.pace-tl{display:flex;flex-direction:column;gap:0;}
+.pace-tl-row{display:grid;grid-template-columns:28px 1fr auto;gap:10px;align-items:start;padding:10px 0;border-bottom:1px solid var(--border-c);}
+.pace-tl-row:last-child{border-bottom:none;}
+.pace-tl-dot{width:10px;height:10px;border-radius:50%;margin-top:4px;flex-shrink:0;justify-self:center;}
+.pace-tl-dot.done{background:var(--teal);}.pace-tl-dot.active{background:var(--mag);box-shadow:0 0 0 3px rgba(159,33,126,.2);}.pace-tl-dot.locked{background:var(--border);}
+.pace-tl-unit{font-size:11px;font-weight:600;color:var(--muted);margin-bottom:2px;letter-spacing:.04em;text-transform:uppercase;}
+.pace-tl-title{font-size:13px;font-weight:500;margin-bottom:3px;}
+.pace-tl-dates{font-size:11px;color:var(--muted);line-height:1.5;}
+.pace-tl-days{font-size:11.5px;font-weight:600;color:var(--teal);white-space:nowrap;margin-top:4px;text-align:right;}
+.pace-tl-days.slow{color:var(--muted);}
+.pace-empty{font-size:12.5px;color:var(--muted);text-align:center;padding:24px 0;line-height:1.7;}
 .lesson-check-hd{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;}
 .lesson-check-title{font-size:9.5px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);}
 .lesson-check-pct{font-size:11px;font-weight:600;color:var(--teal);}
@@ -305,7 +316,8 @@ textarea,.fi,.fse{transition:background-color .25s,border-color .15s,color .25s;
 .sug-goal-info{flex:1;}
 .sug-goal-text{font-size:12.5px;font-weight:500;}
 .sug-goal-cat{font-size:10px;color:var(--muted);margin-top:1px;}
-.sug-add-icon{font-size:20px;color:var(--teal);font-weight:300;line-height:1;}
+.sug-goal.selected{background:var(--teal-l);border:1.5px solid var(--teal);}
+.sug-goal.selected .sug-add-icon{color:#fff;background:var(--teal);border-radius:50%;width:22px;height:22px;display:flex;align-items:center;justify-content:center;font-size:14px;}
 /* PDF */
 @media print{
   .sb,.bnav,.topbar-mob,.ph-acts,.save-indicator,.toast,.mo,.pc,.up-acts,.note-del,button,.login-screen{display:none!important;}
@@ -512,6 +524,10 @@ textarea,.fi,.fse{transition:background-color .25s,border-color .15s,color .25s;
     </div>
   </div>
   <div class="card" style="margin-bottom:18px;">
+    <div class="ch"><div><div class="ct">Your pace</div><div class="cs">Based on when you checked lessons complete</div></div></div>
+    <div class="cb" id="pace-timeline"></div>
+  </div>
+  <div class="card" style="margin-bottom:18px;">
     <div class="ch"><div><div class="ct">Note activity</div><div class="cs">90 days</div></div><span class="pill pill-t">90 days</span></div>
     <div class="cb">
       <div class="rhythm" id="rhythm-prog"></div>
@@ -556,9 +572,9 @@ textarea,.fi,.fse{transition:background-color .25s,border-color .15s,color .25s;
 <script>
 // ── DATA ──────────────────────────────────────────────────────────────────────
 var UNITS = [
-  {id:"gs",title:"Getting Started",sub:"Goals, gear, and why you are here",sections:[
-    {title:"Understanding Photography",fields:[
-      {id:"gs_why",label:"Why I am learning photography.",ph:"What brought you here?",rows:3},
+  {id:"gs",title:"Getting Started",sub:"Before we start — goals, gear, and mindset",sections:[
+    {title:"Setting Up",fields:[
+      {id:"gs_why",label:"Why I am learning photography.",ph:"What brought you here? What do you want from this course?",rows:3},
       {id:"gs_know",label:"I already know...",ph:"Skills and instincts you are coming in with.",rows:3},
       {id:"gs_interest",label:"I am interested in...",ph:"What draws you to photography? Genres, subjects, styles?",rows:4}
     ]},
@@ -567,64 +583,92 @@ var UNITS = [
       {id:"gs_lenses",label:"My lenses and accessories.",ph:"What glass are you working with?",rows:3}
     ]},
     {title:"Inspiration and Feedback",fields:[
-      {id:"gs_inspire",label:"Who or what inspires me.",ph:"Photographers, films, places...",rows:3},
-      {id:"gs_feedback",label:"How comfortable am I with feedback?",ph:"Honest self-assessment...",rows:3}
+      {id:"gs_inspire",label:"Who or what inspires me.",ph:"Photographers, films, places, other artists...",rows:3},
+      {id:"gs_feedback",label:"How comfortable am I with feedback?",ph:"Honest self-assessment — giving and receiving.",rows:3},
+      {id:"gs_success",label:"What does success look like for me in this course?",ph:"Be specific. What do you want to be able to do or say by the end?",rows:4}
     ]}
   ]},
-  {id:1,title:"Introduction & The Gear",sub:"Cameras, lenses, and digital workflow",sections:[
+  {id:1,title:"Introduction & The Gear",sub:"Cameras, lenses, focal length, and digital workflow",sections:[
+    {title:"Understanding Photography",fields:[
+      {id:"u1_photo_understand",label:"What photography means to me.",ph:"How do you think about it? What excites you about the medium?",rows:3},
+      {id:"u1_camera_types",label:"Camera types and what suits my shooting.",ph:"What type of camera makes sense for the work you want to do?",rows:3}
+    ]},
     {title:"The Gear",fields:[
-      {id:"u1_camera",label:"My camera and why I chose it.",ph:"What are you shooting with?",rows:3},
-      {id:"u1_lenses",label:"My lenses and accessories.",ph:"What glass are you working with?",rows:3},
-      {id:"u1_ref",label:"Reflections.",ph:"What limitations does your gear have?",rows:3}
+      {id:"u1_camera",label:"My camera and why I chose it.",ph:"What are you shooting with? What drew you to it?",rows:3},
+      {id:"u1_lenses",label:"My lenses — focal lengths and uses.",ph:"What glass are you working with? What focal lengths do you have?",rows:3},
+      {id:"u1_raw_jpeg",label:"Raw vs JPEG — my approach.",ph:"Which are you shooting and why? What are the tradeoffs for your workflow?",rows:3}
     ]},
     {title:"Digital Workflow",fields:[
-      {id:"u1_workflow",label:"My workflow.",ph:"How do you manage files, edit, organise?",rows:3},
-      {id:"u1_workflow_ref",label:"Reflections.",ph:"What could be better?",rows:3}
+      {id:"u1_workflow",label:"My workflow.",ph:"How do you manage files, back up, edit, organise?",rows:3},
+      {id:"u1_workflow_ref",label:"Reflections.",ph:"What could be better? What are you going to change or improve?",rows:3}
     ]}
   ]},
-  {id:2,title:"Photography Basics",sub:"Exposure, the exposure triangle, first intentional images",sections:[
-    {title:"Exposure Settings",fields:[
-      {id:"u2_settings",label:"What I noticed when changing settings.",ph:"How did aperture, shutter, ISO feel different to work with?",rows:4},
-      {id:"u2_ref",label:"Reflections.",ph:"What clicked? What still feels uncertain?",rows:4}
+  {id:2,title:"Photography Basics",sub:"Exposure, the triangle, aperture, shutter, ISO",sections:[
+    {title:"Exposure",fields:[
+      {id:"u2_exposure",label:"How I think about exposure.",ph:"What does a correct exposure mean to you? When would you intentionally over or underexpose?",rows:3},
+      {id:"u2_histogram",label:"Reading the histogram.",ph:"What does the histogram tell you that the screen does not?",rows:3}
+    ]},
+    {title:"The Exposure Triangle",fields:[
+      {id:"u2_aperture",label:"Aperture and depth of field.",ph:"How are you using aperture creatively, not just technically?",rows:3},
+      {id:"u2_shutter",label:"Shutter speed.",ph:"When do you need a fast shutter? When do you want a slow one?",rows:3},
+      {id:"u2_iso",label:"ISO.",ph:"How do you think about noise vs brightness? Where is your comfort zone?",rows:3},
+      {id:"u2_ref",label:"Reflections.",ph:"What clicked this unit? What still feels uncertain?",rows:4}
     ]}
   ]},
-  {id:3,title:"The Art of Photography",sub:"Light, composition, colour theory",sections:[
+  {id:3,title:"The Art of Photography",sub:"Light, composition, and colour theory",sections:[
     {title:"Light",fields:[
-      {id:"u3_light",label:"How best to control light.",ph:"What did you learn about reading and working with light?",rows:3},
-      {id:"u3_light_ref",label:"Reflections.",ph:"",rows:3}
+      {id:"u3_natural",label:"Natural light — what I have learned.",ph:"How does time of day, weather, and direction of light change your images?",rows:3},
+      {id:"u3_artificial",label:"Artificial and creative light.",ph:"How are you thinking about artificial light? What have you tried?",rows:3}
     ]},
     {title:"Composition",fields:[
-      {id:"u3_comp",label:"Which compositional guideline resonated the most.",ph:"Rule of thirds? Leading lines? Something else?",rows:3},
-      {id:"u3_comp_ref",label:"Reflections.",ph:"",rows:3}
+      {id:"u3_comp",label:"Which compositional guidelines resonated the most.",ph:"Rule of thirds? Leading lines? Negative space? Something else entirely?",rows:3},
+      {id:"u3_comp_ref",label:"Reflections.",ph:"How has thinking about composition changed how you look through the viewfinder?",rows:3}
     ]},
     {title:"Colour Theory",fields:[
-      {id:"u3_colour",label:"What are some ways to utilise colour?",ph:"Complementary colours, mood, white balance...",rows:3},
-      {id:"u3_colour_ref",label:"Reflections.",ph:"",rows:3}
+      {id:"u3_colour",label:"How I am using colour intentionally.",ph:"Complementary colours, mood, white balance, colour grading direction...",rows:3},
+      {id:"u3_colour_ref",label:"Reflections.",ph:"What colour relationships keep showing up in your work?",rows:3}
     ]}
   ]},
-  {id:4,title:"Post Processing",sub:"Editing, culling, and developing a style",sections:[
-    {title:"Post Processing",fields:[
-      {id:"u4_challenge",label:"What is challenging about post processing?",ph:"What trips you up in editing?",rows:4},
-      {id:"u4_ref",label:"Reflections.",ph:"What workflow changes have you made?",rows:4}
-    ]}
-  ]},
-  {id:5,title:"The Decision Process",sub:"Intentional shooting, focus, metering, flash",sections:[
-    {title:"Focus and Metering",fields:[
-      {id:"u5_focus",label:"Which focus and metering modes work best for me.",ph:"AF-C, AF-S, back-button? Matrix, spot?",rows:4},
-      {id:"u5_focus_ref",label:"Reflections.",ph:"What surprised you in this unit?",rows:3}
+  {id:4,title:"Post Processing",sub:"Workflow, editing, and developing a consistent style",sections:[
+    {title:"Workflow",fields:[
+      {id:"u4_workflow",label:"My editing workflow.",ph:"What software are you using? What is your process from import to export?",rows:3},
+      {id:"u4_challenge",label:"What is challenging about post processing.",ph:"What trips you up or takes the longest?",rows:3}
     ]},
-    {title:"Flash and Accessories",fields:[
-      {id:"u5_flash",label:"How can I incorporate flash and other accessories?",ph:"What lighting options do you have or want to try?",rows:4},
-      {id:"u5_flash_ref",label:"Reflections.",ph:"What was new here?",rows:3}
+    {title:"Editing by Subject",fields:[
+      {id:"u4_landscape",label:"Objects and landscapes.",ph:"What adjustments make the biggest difference for your landscape or object work?",rows:3},
+      {id:"u4_portrait",label:"Portraits.",ph:"How does portrait editing differ in your workflow? Skin tones, eyes, retouching approach?",rows:3}
+    ]},
+    {title:"Style",fields:[
+      {id:"u4_style",label:"My developing editing style.",ph:"What adjectives describe the look you are working toward? Who influences your edits?",rows:4},
+      {id:"u4_ref",label:"Reflections.",ph:"What changed in how you edit after this unit?",rows:3}
     ]}
   ]},
-  {id:6,title:"Taking your Camera Skills Further",sub:"Advanced technique and creative control",sections:[
-    {title:"Advanced Technique",fields:[
-      {id:"u6_technique",label:"Which advanced techniques resonated with me.",ph:"What new tools are you adding to how you work?",rows:4},
-      {id:"u6_ref",label:"Reflections.",ph:"What shifted in how you approach a shot?",rows:4}
+  {id:5,title:"The Decision Process",sub:"Visual narrative, photo essays, culling, and feedback",sections:[
+    {title:"Visual Storytelling",fields:[
+      {id:"u5_narrative",label:"How I think about visual narrative.",ph:"What makes a sequence of images tell a story rather than just document?",rows:3},
+      {id:"u5_masters",label:"What I took from studying the masters.",ph:"Whose work did you study? What did you notice?",rows:3},
+      {id:"u5_essay",label:"Photo essays — my approach.",ph:"What is the difference between a photo essay and a gallery of images?",rows:3}
+    ]},
+    {title:"Culling and Feedback",fields:[
+      {id:"u5_culling",label:"How I cull my work.",ph:"What criteria do you use? How ruthless are you willing to be?",rows:3},
+      {id:"u5_rules",label:"Breaking the rules — intentionally.",ph:"Which rules have you broken on purpose? What was the result?",rows:3},
+      {id:"u5_feedback_give",label:"Giving feedback.",ph:"What makes feedback useful rather than just kind?",rows:3},
+      {id:"u5_feedback_get",label:"Receiving feedback.",ph:"How do you process criticism of your work? What helps it land?",rows:3},
+      {id:"u5_ref",label:"Reflections.",ph:"What changed in how you make decisions about your images?",rows:4}
     ]}
   ]},
-  {id:7,title:"Personal Projects",sub:"Brainstorming, planning, and beginning",sections:[
+  {id:6,title:"Taking your Camera Skills Further",sub:"Focus systems, autofocus, manual focus, metering, flash",sections:[
+    {title:"Focus",fields:[
+      {id:"u6_af",label:"Autofocus — what works for me.",ph:"AF modes, focus points, eye tracking — what have you settled on for different situations?",rows:3},
+      {id:"u6_mf",label:"Manual focus — when and why.",ph:"When do you reach for manual focus? What subjects demand it?",rows:3}
+    ]},
+    {title:"Metering and Flash",fields:[
+      {id:"u6_metering",label:"Metering modes — my approach.",ph:"Matrix, centre-weighted, spot — which do you use and when?",rows:3},
+      {id:"u6_flash",label:"Flash and accessories.",ph:"What lighting tools do you have or want? How are you using them?",rows:3},
+      {id:"u6_ref",label:"Reflections.",ph:"What intention habit are you building from this unit?",rows:4}
+    ]}
+  ]},
+  {id:7,title:"Personal Projects",sub:"Revisiting goals, brainstorming, and beginning",sections:[
     {title:"Revisiting Goals",fields:[
       {id:"u7_goals_p",label:"What progress have I made on my goals?",ph:"Look back at what you wrote in Getting Started...",rows:3},
       {id:"u7_goals_c",label:"How have my goals changed?",ph:"Same direction, or somewhere new?",rows:3},
@@ -633,93 +677,99 @@ var UNITS = [
     {title:"Brainstorming Your Project",fields:[
       {id:"u7_ideas",label:"Ideas for my personal project.",ph:"Everything on the table — nothing is too vague or too small.",rows:6}
     ]},
-    {title:"Planning",fields:[
-      {id:"u7_schedule",label:"Tentative timeline for my project.",ph:"Milestones, shooting windows, soft deadlines...",rows:4},
-      {id:"u7_resources",label:"Resources and equipment I need.",ph:"Locations to scout, gear to borrow...",rows:3}
+    {title:"Beginning",fields:[
+      {id:"u7_first_image",label:"My first image and what it means.",ph:"Describe the first image you made for this project. What made you choose that as a starting point?",rows:4},
+      {id:"u7_themes",label:"Thematic ideas I am excited about.",ph:"What thread ties the images you are making together?",rows:3},
+      {id:"u7_feedback_needed",label:"What feedback would help me right now.",ph:"Idea development, style, technical approach — what do you most need input on?",rows:3}
     ]}
   ]},
-  {id:8,title:"The Art of Photography, Part 2",sub:"Going deeper with light, composition, and colour",sections:[
-    {title:"Light",fields:[
-      {id:"u8_light",label:"How can I use different qualities of light?",ph:"Hard, soft, specular, diffuse — how are you applying these now?",rows:4},
+  {id:8,title:"The Art of Photography, Part 2",sub:"Revisiting light, composition, and colour at a deeper level",sections:[
+    {title:"Light, Part 2",fields:[
+      {id:"u8_light",label:"How my understanding of light has evolved.",ph:"What do you see now that you did not see in Unit 3?",rows:4},
       {id:"u8_light_ref",label:"Reflections.",ph:"",rows:3}
     ]},
-    {title:"Composition and Colour",fields:[
-      {id:"u8_comp",label:"How can I combine compositional techniques?",ph:"What happens when you layer multiple tools at once?",rows:4},
-      {id:"u8_colour",label:"Colour palettes that resonate with me.",ph:"What colour relationships show up in your work?",rows:3},
+    {title:"Composition and Colour, Part 2",fields:[
+      {id:"u8_comp",label:"Combining compositional techniques.",ph:"What happens when you layer multiple tools at once?",rows:4},
+      {id:"u8_colour",label:"Colour direction in my work.",ph:"What colour palettes or relationships are you consciously building toward?",rows:3},
+      {id:"u8_revisit",label:"The previous image I revisited.",ph:"Which image did you go back to? What did you improve or change?",rows:4},
       {id:"u8_ref",label:"Reflections.",ph:"",rows:3}
     ]}
   ]},
-  {id:9,title:"Exploration",sub:"Inspiration, genres, and expanding your practice",sections:[
-    {title:"Finding Inspiration",fields:[
-      {id:"u9_inspire",label:"How can I find new inspiration?",ph:"What habits, sources, or people reignite your creative energy?",rows:4},
-      {id:"u9_inspire_ref",label:"Reflections.",ph:"",rows:3}
+  {id:9,title:"Exploration",sub:"Inspiring yourself, genre exploration, and trying something new",sections:[
+    {title:"Inspiration",fields:[
+      {id:"u9_inspire",label:"How I inspire myself.",ph:"What habits, sources, or people reignite your creative energy when it stalls?",rows:4},
+      {id:"u9_thread",label:"The thread in my existing work.",ph:"Looking at 5 to 8 images together — what connects them? Subject, tone, light, feeling?",rows:3}
     ]},
-    {title:"Exploring Genres",fields:[
-      {id:"u9_genre",label:"A genre I have not explored that I have interest in.",ph:"What draws you to it? What would it take to try it?",rows:4},
-      {id:"u9_genre_ref",label:"Reflections.",ph:"",rows:3}
+    {title:"Genre Exploration",fields:[
+      {id:"u9_genre",label:"A genre I explored.",ph:"Which genre did you try? What drew you to it?",rows:3},
+      {id:"u9_new",label:"What I tried that was new.",ph:"What did the new genre teach you? What surprised you?",rows:3},
+      {id:"u9_combined",label:"Combining my thread with the new approach.",ph:"How did blending your existing work with the new genre turn out?",rows:4},
+      {id:"u9_ref",label:"Reflections.",ph:"",rows:3}
     ]}
   ]},
-  {id:10,title:"Conclusion",sub:"Looking back and looking forward",sections:[
-    {title:"Final Reflections",fields:[
-      {id:"u10_learned",label:"The most important thing I learned this year.",ph:"Not just technically — what shifted in how you see or work?",rows:4},
+  {id:10,title:"Wrapping Up and Next Steps",sub:"Confidence, reflection, and going further",sections:[
+    {title:"Looking Back",fields:[
+      {id:"u10_progress",label:"How I have progressed.",ph:"Compare where you started to where you are. What changed?",rows:4},
       {id:"u10_proud",label:"The work I am most proud of.",ph:"What would you show someone to represent your year?",rows:3}
     ]},
     {title:"Going Further",fields:[
-      {id:"u10_next",label:"Next steps for my personal project.",ph:"The course ends but the practice does not. Where do you go from here?",rows:5}
+      {id:"u10_challenge",label:"My personal challenge going forward.",ph:"What is the one thing you want to keep working on after this course?",rows:3},
+      {id:"u10_share",label:"Confidence in sharing my work.",ph:"How has your relationship with sharing changed? Where do you want to show your work?",rows:3},
+      {id:"u10_next",label:"What I will do next.",ph:"Concrete next steps — projects, communities, courses, goals.",rows:4}
     ]}
   ]},
-  {id:"fp",title:"Final Project",sub:"Your long-term personal project",sections:[
-    {title:"Project Description",fields:[
-      {id:"fp_desc",label:"What is my project about?",ph:"The subject, the intent, the thread that ties it together.",rows:5},
-      {id:"fp_question",label:"The question my project asks.",ph:"What is the one idea your project is exploring?",rows:3}
+  {id:"fp",title:"Final Project",sub:"Your long-term personal project and ongoing practice",sections:[
+    {title:"The Project",fields:[
+      {id:"fp_desc",label:"What my project is about.",ph:"The subject, the intent, the thread that ties it together.",rows:5},
+      {id:"fp_question",label:"The question my project asks.",ph:"What is the one idea or tension your project is exploring?",rows:3}
     ]},
     {title:"Process",fields:[
       {id:"fp_process",label:"How the project evolved.",ph:"What changed from your initial idea? What surprised you?",rows:4},
       {id:"fp_challenges",label:"Challenges and how I worked through them.",ph:"What was hard? What did you do when you got stuck?",rows:4}
     ]},
-    {title:"Reflection",fields:[
+    {title:"Reflection and Ongoing Practice",fields:[
       {id:"fp_reflection",label:"What I would do differently.",ph:"With what you know now...",rows:4},
-      {id:"fp_next",label:"Where this project goes from here.",ph:"Is it done? Does it continue?",rows:4}
+      {id:"fp_ongoing",label:"How I will keep practising.",ph:"What habits, communities, or projects will keep you shooting?",rows:4}
     ]}
   ]}
 ];
 
 var GALLERY = [
-  {id:"gs",title:"Getting Started",prompt:"A photo you are proud of — taken before the course began."},
-  {id:1,title:"Introduction & The Gear",prompt:"A photo that demonstrates your current kit and how you work."},
-  {id:2,title:"Photography Basics",prompt:"A photo showing deliberate control of the exposure triangle."},
-  {id:3,title:"The Art of Photography",prompt:"A photo that uses composition and light intentionally."},
-  {id:4,title:"Post Processing",prompt:"A photo where post processing was part of the creative process."},
-  {id:5,title:"The Decision Process",prompt:"Use focus mode deliberately. Include an intention statement and reflection."},
-  {id:6,title:"Camera Skills Further",prompt:"A photo demonstrating an advanced technique from this unit."},
-  {id:7,title:"Personal Projects",prompt:"One image made with your long-term project in mind."},
-  {id:8,title:"Art of Photography 2",prompt:"A photo consciously applying advanced light and composition."},
-  {id:9,title:"Exploration",prompt:"A photo in a genre you have not tried before."},
-  {id:10,title:"Conclusion",prompt:"A photo that best represents who you are as a photographer right now."},
+  {id:"gs",title:"Getting Started",prompt:"Share a photo you are proud of — taken before the course began."},
+  {id:1,title:"Introduction & The Gear",prompt:"Create a short photo story (3 to 5 images). Take note of how camera choice or focal length shapes the final image."},
+  {id:2,title:"Photography Basics",prompt:"Photograph scenes using manual or semi-manual mode. Observe how aperture and shutter speed affect depth of field, motion, and exposure."},
+  {id:3,title:"The Art of Photography",prompt:"Two photos — one in harsh light, one in flat diffused light — each with an intentional compositional guideline and colour scheme applied."},
+  {id:4,title:"Post Processing",prompt:"Two images, fully processed. Post both with before and after versions."},
+  {id:5,title:"The Decision Process",prompt:"A photo essay documenting a single day — culled to no more than 10 images including one establishing shot, one context shot, one environmental shot, and one hero image."},
+  {id:6,title:"Camera Skills Further",prompt:"One image made with clear intention before picking up the camera. What did you decide you wanted, and did you find it?"},
+  {id:7,title:"Personal Projects",prompt:"One image connected to your developing long-term project. Include a reflection on your planning stage, thematic ideas, and what feedback you need."},
+  {id:8,title:"Art of Photography 2",prompt:"Revisit a previous image, identify a key takeaway or improvement area, then create a new image that builds on that learning."},
+  {id:9,title:"Exploration",prompt:"Select 5 to 8 connected past images, experiment with a new genre, then create a final image that combines your existing thread with the new approach."},
+  {id:10,title:"Wrapping Up",prompt:"Reflect on your progress, define a personal challenge, and create one image aligned with that challenge."},
   {id:"fp",title:"Final Project",prompt:"Your final project image — the one that best represents the whole body of work."}
 ];
 
 // Per-unit rotating prompts — all plain strings, no HTML tags
 var UNIT_PROMPTS = {
   "gs": [
-    "Looking back at why you started — has that reason shifted? What would you tell yourself now?",
-    "What does being a photographer mean to you at this point?",
-    "What is the one thing you are most hoping to get out of this course?"
+    "What brought you here? What would it mean to you to come out the other side as a photographer?",
+    "What does success look like for you in this course — not in general terms, but specifically?",
+    "What is one habit you want to build during this course?"
   ],
   "1": [
     "What limitation in your current gear has taught you something unexpected?",
     "If you could only keep one lens for a month, which would it be and why?",
-    "How has your relationship with your camera changed since you started shooting?"
+    "How does focal length change the story your image tells? Think of a specific example."
   ],
   "2": [
     "Think of a recent shot where the exposure triangle worked against you. What would you change?",
     "Aperture, shutter, ISO — which one do you find yourself reaching for first, and why?",
-    "Describe a moment where you were forced to shoot in difficult exposure conditions. What did you learn?"
+    "What does the histogram tell you that your eye does not?"
   ],
   "3": [
     "What quality of light do you find yourself chasing most? What draws you to it?",
-    "Which compositional rule do you find hardest to break intentionally?",
-    "Pick a photo you love. What would it look like with completely different light?"
+    "Which compositional rule do you find hardest to break intentionally — and why?",
+    "Pick a photo you love from another photographer. What would it look like with completely different light?"
   ],
   "4": [
     "Is your editing moving you toward your vision, or are you still discovering what that vision is?",
@@ -727,38 +777,37 @@ var UNIT_PROMPTS = {
     "If you had to describe your editing style in three words, what would they be?"
   ],
   "5": [
-    "Which focus or metering decision this month made the biggest difference to an image?",
-    "Describe a shot where the camera's automatic choices let you down. What would you do differently?",
-    "Do you consider flash a tool you use, or one you avoid? Why?"
+    "What makes a sequence of images tell a story rather than just document a moment?",
+    "How do you decide which image is the hero — the one that carries the whole essay?",
+    "What is the hardest part of culling your own work ruthlessly?"
   ],
   "6": [
-    "What is one technical thing you can now do that you could not at the start of the course?",
-    "Which advanced technique felt most natural to you, and which still feels foreign?",
-    "Has learning more technique changed what you notice when you look at other photographers' work?"
+    "Which focus or metering decision this unit made the biggest difference to an image?",
+    "What intention did you set before your last shoot — and did you find what you were looking for?",
+    "Do you consider flash a tool you use, or one you avoid? Why?"
   ],
   "7": [
     "Your personal project is beginning to take shape. What is the one question you want it to answer?",
     "If you had to describe your project to a stranger in one sentence, what would you say?",
-    "What is the biggest risk you are taking with this project? Why does it feel worth it?",
     "What subject or theme keeps showing up in your photography even when you are not thinking about it?"
   ],
   "8": [
+    "How has your understanding of light changed since Unit 3? What do you see now that you did not see then?",
     "What colour palette keeps showing up in your work? Is it intentional?",
-    "How has your understanding of light changed since Unit 3?",
-    "Pick a photo you made recently. What would change if you replaced the key light entirely?"
+    "What did revisiting a previous image teach you that making a new one would not have?"
   ],
   "9": [
     "What genre have you avoided? What would it take to try it once?",
-    "What photographer outside of photography has had the most influence on how you see?",
+    "What thread connects the images you keep returning to in your own archive?",
     "When did you last feel genuinely surprised by a photo you made?"
   ],
   "10": [
-    "What is the most important thing photography has taught you this year — not technically, but about how you see?",
-    "Which unit changed your practice the most, and why?",
-    "What is one habit you have built this year that you want to carry forward?"
+    "What is the most important thing this course has taught you — not technically, but about how you see?",
+    "What habit do you want to carry forward after this course ends?",
+    "How has your confidence in sharing your work changed?"
   ],
   "fp": [
-    "What is one photo from your project that you are proud of, and why?",
+    "What is one image from your project that you are proud of, and why?",
     "How does your final project compare to the idea you started with?",
     "What would you do differently if you were starting this project over today?"
   ]
@@ -777,7 +826,7 @@ var SCHEDULE = (function() {
     {key:"7",label:"Unit 7: Personal Projects"},
     {key:"8",label:"Unit 8: Art of Photography 2"},
     {key:"9",label:"Unit 9: Exploration"},
-    {key:"10",label:"Unit 10: Conclusion"},
+    {key:"10",label:"Unit 10: Wrapping Up and Next Steps"},
     {key:"fp",label:"Final Project"}
   ];
   var start = new Date(2025,11,31);
@@ -792,18 +841,18 @@ var COMPLETION = {"gs":0,"1":0,"2":0,"3":0,"4":0,"5":0,"6":0,"7":0,"8":0,"9":0,"
 
 // Lessons per unit — used for the checklist in the accordion
 var UNIT_LESSONS = {
-  "gs": ["Set your goals","Fill in your gear list","Write your first reflection"],
-  "1":  ["Lesson 1: Camera basics","Lesson 2: Lenses","Lesson 3: Digital workflow","Assignment"],
-  "2":  ["Lesson 1: Aperture","Lesson 2: Shutter speed","Lesson 3: ISO","Lesson 4: Putting it together","Assignment"],
-  "3":  ["Lesson 1: Light","Lesson 2: Composition","Lesson 3: Colour theory","Lesson 4: Bringing it together","Assignment"],
-  "4":  ["Lesson 1: Introduction to editing","Lesson 2: Culling","Lesson 3: Developing a style","Assignment"],
-  "5":  ["Lesson 1: Autofocus","Lesson 2: Manual focus","Lesson 3: Metering modes","Lesson 4: Flash & accessories","Assignment"],
-  "6":  ["Lesson 1: Advanced focus","Lesson 2: Advanced metering","Lesson 3: Advanced flash","Assignment"],
-  "7":  ["Lesson 1: Revisiting goals","Lesson 2: Brainstorming","Lesson 3: Beginning a project","Assignment"],
-  "8":  ["Lesson 1: Light — advanced","Lesson 2: Composition — advanced","Lesson 3: Colour — advanced","Assignment"],
-  "9":  ["Lesson 1: Finding inspiration","Lesson 2: Exploring genres","Assignment"],
-  "10": ["Lesson 1: Looking back","Lesson 2: Going further","Final reflection","Assignment"],
-  "fp": ["Submit final project","Write project statement","Share with community"]
+  "gs": ["Before We Start","Six Months of Photography","FAQ","Meet your Teachers","Setting Yourself up for Success","Assignment: Share a photo you are proud of"],
+  "1":  ["Understanding Photography","Inspiration & Feedback","What is a Camera?","Types of Cameras","Lenses","Focal Length","Raw vs JPEG","Digital Workflow","Knowledge Check","Assignment"],
+  "2":  ["Exposure","Histogram","Exposure Triangle","Aperture","Depth of Field","Shutter Speed","ISO","Knowledge Check","Assignment"],
+  "3":  ["Natural Light","Artificial Light","Creative Light","Compositional Guidelines","Color Theory","Knowledge Check","Assignment"],
+  "4":  ["Workflow","Objects & Landscapes","Portraits","Real Time Processing","Knowledge Check","Assignment"],
+  "5":  ["Visual Narrative","Study the Masters","Photo Essays","Culling","Break the Rules","Inspiration","Receiving Feedback","Giving Feedback","Knowledge Check","Assignment"],
+  "6":  ["Focus Systems","Autofocus","Manual Focus","Metering Modes","Flash and Flash Accessories","Knowledge Check","Assignment"],
+  "7":  ["Revisiting Goals","Brainstorming","Beginning a Project","Assignment"],
+  "8":  ["Lighting, Part 2","Composition, Part 2","Color, Part 2","Knowledge Check","Assignment"],
+  "9":  ["Inspire Yourself","Genre Exploration","Try Something New","Assignment"],
+  "10": ["Confidence in Sharing","Putting it all Together","How to Go Further","Assignment"],
+  "fp": ["Final Project","Ongoing Practice"]
 };
 
 // Suggested goals shown on first open
@@ -938,20 +987,44 @@ function saveUnitProgress(uid) {
 
 function toggleLesson(uid, idx) {
   var key = "lesson_" + uid + "_" + idx;
-  D[key] = !D[key];
+  var tsKey = "lesson_ts_" + uid + "_" + idx;
+  var wasChecked = !!D[key];
+
+  if (wasChecked) {
+    // Unchecking — clear check and timestamp
+    D[key] = false;
+    delete D[tsKey];
+    // If no lessons remain checked in this unit, clear unit start time
+    var lessons = UNIT_LESSONS[uid] || [];
+    var anyDone = lessons.some(function(l, i) { return D["lesson_" + uid + "_" + i]; });
+    if (!anyDone) delete D["unit_start_" + uid];
+    // Clear unit complete time
+    delete D["unit_done_" + uid];
+  } else {
+    // Checking — record timestamp
+    var now = Date.now();
+    D[key] = true;
+    D[tsKey] = now;
+    // Record unit start time if this is the first lesson checked in this unit
+    if (!D["unit_start_" + uid]) D["unit_start_" + uid] = now;
+    // Record unit complete time if all lessons now done
+    var lessons = UNIT_LESSONS[uid] || [];
+    var allDone = lessons.every(function(l, i) { return D["lesson_" + uid + "_" + i]; });
+    if (allDone) D["unit_done_" + uid] = now;
+  }
+
   saveUnitProgress(uid);
-  // Re-render just the checklist for this unit without collapsing it
+
+  // Update checklist UI in place
   var lessons = UNIT_LESSONS[uid] || [];
   var doneLessons = lessons.filter(function(l,i){ return D["lesson_"+uid+"_"+i]; }).length;
   var pct = Math.round((doneLessons/lessons.length)*100);
-  // Update progress bar
   var body = document.getElementById("ubody-" + uid);
   if (!body) return;
   var fill = body.querySelector(".lesson-prog-fill");
   var pctEl = body.querySelector(".lesson-check-pct");
   if (fill) fill.style.width = pct + "%";
   if (pctEl) pctEl.textContent = pct + "% complete";
-  // Toggle the clicked item
   var items = body.querySelectorAll(".lesson-check-item");
   var item = items[idx];
   if (!item) return;
@@ -959,7 +1032,7 @@ function toggleLesson(uid, idx) {
   var lbl = item.querySelector(".lci-label");
   if (box) box.classList.toggle("done", !!D[key]);
   if (lbl) lbl.classList.toggle("done", !!D[key]);
-  // Update dash progress pill if visible
+  // Refresh dash pill and course pace
   var pill = document.getElementById("dash-pct-pill");
   if (pill) {
     var vals = Object.values(COMPLETION);
@@ -967,6 +1040,33 @@ function toggleLesson(uid, idx) {
     pill.textContent = total + "% complete";
   }
   renderCoursePace();
+  syncCourseCompletionGoals();
+}
+
+// Recalculate overall course pct and update any "Course completion" goal cards + Supabase
+function syncCourseCompletionGoals() {
+  var vals = Object.values(COMPLETION);
+  var overallPct = Math.round(vals.reduce(function(a,b){return a+b;},0) / vals.length);
+  var changed = false;
+  goals.forEach(function(g, i) {
+    if (g.cat === "Course completion" && !g.done) {
+      g.pct = overallPct;
+      changed = true;
+      // Update bar in DOM if goal card is visible
+      var cards = document.querySelectorAll(".gc");
+      if (cards[i]) {
+        var fill = cards[i].querySelector(".gc-fill");
+        var pctEl = cards[i].querySelector(".gc-pct");
+        if (fill) fill.style.width = overallPct + "%";
+        if (pctEl) pctEl.textContent = overallPct + "%";
+      }
+      // Persist to Supabase if we have a real id
+      if (!LOCAL_MODE && currentUser && g.id && typeof g.id === "string" && g.id.length > 10) {
+        sb.from("goals").update({pct: overallPct, updated_at: new Date().toISOString()}).eq("id", g.id);
+      }
+    }
+  });
+  if (changed) persist();
 }
 
 // ── PERSIST ───────────────────────────────────────────────────────────────────
@@ -1111,13 +1211,74 @@ function renderCoursePace() {
     + '</div>';
 }
 
-// ── DASHBOARD PROMPT ──────────────────────────────────────────────────────────
+// Returns the unit the user is actually in based on their checked lessons
+// Falls back to schedule-based if no activity recorded
 function currentUnitKey() {
-  var now = new Date(), cur = "gs";
-  SCHEDULE.forEach(function(s) { if (s.open <= now) cur = s.key; });
-  return cur;
+  // Find the furthest unit with any lesson checked
+  var unitOrder = ["gs","1","2","3","4","5","6","7","8","9","10","fp"];
+  var activeKey = null;
+  for (var i = 0; i < unitOrder.length; i++) {
+    var uid = unitOrder[i];
+    var lessons = UNIT_LESSONS[uid] || [];
+    var anyDone = lessons.some(function(l, j) { return D["lesson_" + uid + "_" + j]; });
+    var allDone = lessons.length > 0 && lessons.every(function(l, j) { return D["lesson_" + uid + "_" + j]; });
+    if (anyDone && !allDone) { activeKey = uid; break; } // In progress
+    if (anyDone && allDone) activeKey = uid; // Completed — keep looking forward
+  }
+  // If no activity at all, fall back to schedule
+  if (!activeKey) {
+    var now = new Date(); var cur = "gs";
+    SCHEDULE.forEach(function(s) { if (s.open <= now) cur = s.key; });
+    return cur;
+  }
+  // If active key is a completed unit, return the next one
+  var idx = unitOrder.indexOf(activeKey);
+  var lessons = UNIT_LESSONS[activeKey] || [];
+  var allDone = lessons.length > 0 && lessons.every(function(l, j) { return D["lesson_" + activeKey + "_" + j]; });
+  if (allDone && idx < unitOrder.length - 1) return unitOrder[idx + 1];
+  return activeKey;
 }
 
+function renderCoursePace() {
+  var el = document.getElementById("course-pace-card"); if (!el) return;
+  var curKey = currentUnitKey();
+  var curUnit = null;
+  UNITS.forEach(function(u) { if (String(u.id) === String(curKey)) curUnit = u; });
+  if (!curUnit) return;
+  var uid = String(curKey);
+  var lessons = UNIT_LESSONS[uid] || [];
+  var doneLessons = lessons.filter(function(l,i){ return D["lesson_"+uid+"_"+i]; }).length;
+  var pct = lessons.length ? Math.round((doneLessons/lessons.length)*100) : 0;
+  var unitLabel = typeof curUnit.id === "number" ? "Unit " + curUnit.id : curUnit.id === "gs" ? "Getting Started" : "Final Project";
+
+  // Find overall stats
+  var unitOrder = ["gs","1","2","3","4","5","6","7","8","9","10","fp"];
+  var totalUnits = unitOrder.length;
+  var doneUnits = unitOrder.filter(function(k) {
+    var ls = UNIT_LESSONS[k] || [];
+    return ls.length > 0 && ls.every(function(l,j){ return D["lesson_"+k+"_"+j]; });
+  }).length;
+
+  // Days in current unit
+  var startTs = D["unit_start_" + uid];
+  var daysInUnit = startTs ? Math.max(1, Math.round((Date.now() - startTs) / 86400000)) : null;
+  var daysStr = daysInUnit ? (daysInUnit === 1 ? "1 day in" : daysInUnit + " days in") : "";
+
+  el.innerHTML = '<div class="pace-unit">' + unitLabel + ' \u00b7 ' + doneUnits + ' of ' + totalUnits + ' units done</div>'
+    + '<div class="pace-title">' + curUnit.title + '</div>'
+    + '<div class="pace-desc">' + curUnit.sub + '</div>'
+    + '<div class="lesson-prog-bar"><div class="lesson-prog-fill" style="width:' + pct + '%"></div></div>'
+    + '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;">'
+    + '<span style="font-size:11px;color:var(--muted);">' + doneLessons + ' of ' + lessons.length + ' lessons complete</span>'
+    + (daysStr ? '<span style="font-size:11px;font-weight:600;color:var(--teal);">' + daysStr + '</span>' : '')
+    + '</div>'
+    + '<div class="pace-nav">'
+    + '<button class="btn btn-p btn-sm" onclick="nav(\'journal\')">Continue \u2192</button>'
+    + '<button class="btn btn-g btn-sm" onclick="nav(\'progress\')">See full pace</button>'
+    + '</div>';
+}
+
+// ── DASHBOARD PROMPT ──────────────────────────────────────────────────────────
 function getDashPrompt() {
   var uid = currentUnitKey();
   var prompts = UNIT_PROMPTS[uid] || UNIT_PROMPTS["gs"];
@@ -1450,19 +1611,7 @@ function renderGoals() {
   ids.forEach(function(id) { var el=document.getElementById(id); if(el&&D[id]) el.value=D[id]; });
   var grid = document.getElementById("goal-grid"); grid.innerHTML = "";
   if (!goals.length) {
-    // Show suggested goals
-    var sugHd = document.createElement("div");
-    sugHd.style.cssText = "grid-column:1/-1;margin-bottom:6px;";
-    sugHd.innerHTML = '<div style="font-size:13px;font-weight:600;margin-bottom:4px;">Suggested goals</div>'
-      + '<div style="font-size:12px;color:var(--muted);margin-bottom:14px;">Tap any to add it to your goals, or <span style="color:var(--teal);cursor:pointer;" onclick="openModal(\'modal-goal\')">write your own \u2192</span></div>';
-    grid.appendChild(sugHd);
-    SUGGESTED_GOALS.forEach(function(sg, i) {
-      var div = document.createElement("div"); div.className = "sug-goal";
-      div.innerHTML = '<div class="sug-goal-info"><div class="sug-goal-text">' + sg.title + '</div><div class="sug-goal-cat">' + sg.cat + '</div></div>'
-        + '<div class="sug-add-icon">+</div>';
-      div.onclick = function() { addSuggestedGoal(i); };
-      grid.appendChild(div);
-    });
+    renderSuggestedGoals(grid);
     return;
   }
   goals.forEach(function(g, i) {
@@ -1481,15 +1630,97 @@ function renderGoals() {
   setTimeout(function(){ grid.querySelectorAll(".gc-fill").forEach(function(f){f.style.width=f.dataset.w+"%";}); }, 100);
 }
 
-function addSuggestedGoal(i) {
-  var sg = SUGGESTED_GOALS[i];
-  if (!currentUser) return;
-  sb.from("goals").insert({user_id:currentUser.id, title:sg.title, cat:sg.cat, why:sg.why, pct:0, done:false})
-    .select().single()
-    .then(function(res) {
-      if (res.data) goals.unshift(res.data);
-      renderGoals(); renderDash(); toast("Goal added \u2713");
+// Tracks which suggested goals are selected (indices)
+var _sugSelected = [];
+
+function renderSuggestedGoals(grid) {
+  _sugSelected = [];
+  var wrap = document.createElement("div");
+  wrap.style.cssText = "grid-column:1/-1;";
+  wrap.innerHTML = '<div style="font-size:13px;font-weight:600;margin-bottom:4px;">Choose up to 3 goals to start with</div>'
+    + '<div style="font-size:12px;color:var(--muted);margin-bottom:16px;">Select any that resonate, then save — or <span style="color:var(--teal);cursor:pointer;" onclick="openModal(\'modal-goal\')">write your own \u2192</span></div>';
+  grid.appendChild(wrap);
+
+  SUGGESTED_GOALS.forEach(function(sg, i) {
+    var div = document.createElement("div");
+    div.className = "sug-goal";
+    div.id = "sug-" + i;
+    div.innerHTML = '<div class="sug-goal-info"><div class="sug-goal-text">' + sg.title + '</div><div class="sug-goal-cat">' + sg.cat + '</div></div>'
+      + '<div class="sug-add-icon" id="sug-icon-' + i + '">+</div>';
+    div.onclick = function() { toggleSuggestedGoal(i); };
+    grid.appendChild(div);
+  });
+
+  // Save bar — hidden until at least one is selected
+  var bar = document.createElement("div");
+  bar.id = "sug-save-bar";
+  bar.style.cssText = "grid-column:1/-1;display:none;align-items:center;justify-content:space-between;padding:14px 18px;background:var(--teal-l);border:1.5px solid var(--teal);border-radius:12px;margin-top:6px;";
+  bar.innerHTML = '<span style="font-size:12.5px;font-weight:500;" id="sug-save-label">0 of 3 selected</span>'
+    + '<div style="display:flex;gap:8px;">'
+    + '<button class="btn btn-g btn-sm" onclick="clearSuggestedGoals()">Clear</button>'
+    + '<button class="btn btn-p btn-sm" onclick="saveSuggestedGoals()">Add selected goals \u2192</button>'
+    + '</div>';
+  grid.appendChild(bar);
+}
+
+function toggleSuggestedGoal(i) {
+  var idx = _sugSelected.indexOf(i);
+  if (idx > -1) {
+    // Deselect
+    _sugSelected.splice(idx, 1);
+    var div = document.getElementById("sug-" + i);
+    var icon = document.getElementById("sug-icon-" + i);
+    if (div) div.classList.remove("selected");
+    if (icon) icon.textContent = "+";
+  } else {
+    if (_sugSelected.length >= 3) {
+      toast("Maximum 3 goals — deselect one first.");
+      return;
+    }
+    _sugSelected.push(i);
+    var div = document.getElementById("sug-" + i);
+    var icon = document.getElementById("sug-icon-" + i);
+    if (div) div.classList.add("selected");
+    if (icon) icon.textContent = "\u2713";
+  }
+  // Update save bar
+  var bar = document.getElementById("sug-save-bar");
+  var label = document.getElementById("sug-save-label");
+  if (bar) bar.style.display = _sugSelected.length > 0 ? "flex" : "none";
+  if (label) label.textContent = _sugSelected.length + " of 3 selected";
+}
+
+function clearSuggestedGoals() {
+  _sugSelected.slice().forEach(function(i) { toggleSuggestedGoal(i); });
+}
+
+function saveSuggestedGoals() {
+  if (!_sugSelected.length) return;
+  var toAdd = _sugSelected.map(function(i) { return SUGGESTED_GOALS[i]; });
+  if (LOCAL_MODE) {
+    toAdd.forEach(function(sg) {
+      goals.unshift({id:Date.now() + Math.random(), title:sg.title, cat:sg.cat, why:sg.why, pct:0, done:false});
     });
+    persist(); renderGoals(); renderDash();
+    toast(toAdd.length + " goal" + (toAdd.length > 1 ? "s" : "") + " added \u2713");
+    return;
+  }
+  if (!currentUser) return;
+  var rows = toAdd.map(function(sg) {
+    return {user_id:currentUser.id, title:sg.title, cat:sg.cat, why:sg.why, pct:0, done:false};
+  });
+  sb.from("goals").insert(rows).select()
+    .then(function(res) {
+      if (res.data) res.data.forEach(function(g) { goals.unshift(g); });
+      renderGoals(); renderDash();
+      toast(toAdd.length + " goal" + (toAdd.length > 1 ? "s" : "") + " added \u2713");
+    });
+}
+
+function addSuggestedGoal(i) {
+  // Legacy single-add — kept for safety, routes through new flow
+  _sugSelected = [i];
+  saveSuggestedGoals();
 }
 function doneGoal(i) {
   var g = goals[i]; g.done = true; g.pct = 100;
@@ -1549,8 +1780,66 @@ function renderGallery() {
 }
 
 // ── PROGRESS ──────────────────────────────────────────────────────────────────
+function renderPaceTimeline() {
+  var el = document.getElementById("pace-timeline"); if (!el) return;
+  var unitOrder = ["gs","1","2","3","4","5","6","7","8","9","10","fp"];
+  var hasAnyActivity = unitOrder.some(function(uid) {
+    return D["unit_start_" + uid];
+  });
+  if (!hasAnyActivity) {
+    el.innerHTML = '<div class="pace-empty">No pace data yet.<br>Check lessons complete in your journal and your timeline will appear here.</div>';
+    return;
+  }
+  var html = '<div class="pace-tl">';
+  unitOrder.forEach(function(uid, idx) {
+    var unit = null;
+    UNITS.forEach(function(u) { if (String(u.id) === uid) unit = u; });
+    if (!unit) return;
+    var lessons = UNIT_LESSONS[uid] || [];
+    var doneLessons = lessons.filter(function(l,i){ return D["lesson_"+uid+"_"+i]; }).length;
+    var allDone = lessons.length > 0 && doneLessons === lessons.length;
+    var startTs = D["unit_start_" + uid];
+    var doneTs  = D["unit_done_"  + uid];
+    var hasActivity = !!startTs;
+    // State: done | active | locked
+    var state = allDone ? "done" : (hasActivity ? "active" : "locked");
+    var unitLabel = typeof unit.id === "number" ? "Unit " + unit.id : uid === "gs" ? "Getting Started" : "Final Project";
+    // Format dates
+    var fmt = function(ts) {
+      return new Date(ts).toLocaleDateString("en-GB", {day:"numeric", month:"short", year:"numeric"});
+    };
+    var datesStr = "";
+    var daysStr = "";
+    if (startTs && doneTs) {
+      var days = Math.max(1, Math.round((doneTs - startTs) / 86400000));
+      datesStr = fmt(startTs) + " \u2013 " + fmt(doneTs);
+      daysStr = days === 1 ? "1 day" : days + " days";
+    } else if (startTs) {
+      var daysIn = Math.max(1, Math.round((Date.now() - startTs) / 86400000));
+      datesStr = "Started " + fmt(startTs);
+      daysStr = daysIn + " day" + (daysIn === 1 ? "" : "s") + " so far";
+    } else {
+      datesStr = "\u2014";
+    }
+    html += '<div class="pace-tl-row">'
+      + '<div class="pace-tl-dot ' + state + '"></div>'
+      + '<div>'
+      + '<div class="pace-tl-unit">' + unitLabel + '</div>'
+      + '<div class="pace-tl-title">' + unit.title + '</div>'
+      + '<div class="pace-tl-dates">' + datesStr
+      + (hasActivity && !allDone ? ' \u00b7 <span style="color:var(--mag);">' + doneLessons + '/' + lessons.length + ' lessons</span>' : '')
+      + '</div>'
+      + '</div>'
+      + '<div class="pace-tl-days' + (!hasActivity ? ' slow' : '') + '">' + (hasActivity ? daysStr : '') + '</div>'
+      + '</div>';
+  });
+  html += '</div>';
+  el.innerHTML = html;
+}
+
 function renderProgress() {
   buildRhythm("rhythm-prog");
+  renderPaceTimeline();
   var pb = document.getElementById("prog-bars"); pb.innerHTML = "";
   UNITS.forEach(function(u) {
     var pct   = COMPLETION[String(u.id)] || 0;
@@ -1604,7 +1893,83 @@ function downloadPDF() {
 // ── INIT ──────────────────────────────────────────────────────────────────────
 restoreTheme();
 
-// Listen for auth state changes (handles magic link redirect automatically)
+// ── LOCAL TEST MODE ──
+// Automatically active when opened as a local file (file://)
+// Bypasses Supabase auth entirely — data saves to localStorage only
+var LOCAL_MODE = window.location.protocol === "file:";
+if (LOCAL_MODE) {
+  // Shim persist/savePhoto to use localStorage
+  persist = function() {
+    try { localStorage.setItem("pc26_d", JSON.stringify(D)); } catch(e) {}
+    try { localStorage.setItem("pc26_g", JSON.stringify(goals)); } catch(e) {}
+    try { localStorage.setItem("pc26_notes", JSON.stringify(notes)); } catch(e) {}
+    showSaveIndicator();
+  };
+  savePhoto = function(slot, dataUrl) { D[slot] = dataUrl; persist(); };
+  // Shim Supabase note/goal writes to be no-ops (data lives in D/goals/notes via persist)
+  addNote = function() {
+    var text = document.getElementById("note-text").value.trim();
+    if (!text) { toast("Write something first."); return; }
+    var uid = document.getElementById("note-unit").value;
+    var tag = document.getElementById("note-tag").value;
+    var unitLabel = "General";
+    UNITS.forEach(function(u) { if (String(u.id) === uid) unitLabel = u.title; });
+    notes.unshift({id:Date.now(), ts:Date.now(), text:text, uid:uid, unitLabel:unitLabel, tag:tag});
+    persist();
+    document.getElementById("note-text").value = "";
+    renderNotes(); buildRhythm("rhythm-dash"); buildRhythm("rhythm-prog");
+    var nc = document.getElementById("dash-nc"); if (nc) nc.textContent = notes.length;
+    toast("Note saved \u2713");
+  };
+  deleteNote = function(id) {
+    notes = notes.filter(function(n){return n.id !== id;});
+    persist(); renderNotes(); buildRhythm("rhythm-dash"); buildRhythm("rhythm-prog");
+  };
+  addGoal = function() {
+    var t = document.getElementById("g-title").value.trim();
+    if (!t) { toast("Give your goal a title."); return; }
+    goals.unshift({id:Date.now(), title:t, cat:document.getElementById("g-cat").value, why:document.getElementById("g-why").value||"My goal", pct:0, done:false});
+    persist(); closeModal("modal-goal"); renderGoals(); renderDash(); toast("Goal added \u2713");
+    document.getElementById("g-title").value = ""; document.getElementById("g-why").value = "";
+  };
+  addSuggestedGoal = function(i) {
+    var sg = SUGGESTED_GOALS[i];
+    goals.unshift({id:Date.now(), title:sg.title, cat:sg.cat, why:sg.why, pct:0, done:false});
+    persist(); renderGoals(); renderDash(); toast("Goal added \u2713");
+  };
+  doneGoal = function(i) {
+    goals[i].done = true; goals[i].pct = 100;
+    persist(); renderGoals(); renderDash(); toast("Goal complete \uD83C\uDF89");
+  };
+  // Load from localStorage
+  try { D = JSON.parse(localStorage.getItem("pc26_d") || "{}"); } catch(e) { D = {}; }
+  try { goals = JSON.parse(localStorage.getItem("pc26_g") || "null") || []; } catch(e) { goals = []; }
+  try { notes = JSON.parse(localStorage.getItem("pc26_notes") || "[]"); } catch(e) { notes = []; }
+  // Restore completion from D
+  Object.keys(COMPLETION).forEach(function(k) {
+    if (D["unit_pct_" + k] !== undefined) COMPLETION[k] = D["unit_pct_" + k];
+  });
+  // Mock user
+  currentUser = {id:"local-test", email:"test@local.dev", user_metadata:{name:"Test User"}};
+  // Show dev banner
+  var banner = document.createElement("div");
+  banner.style.cssText = "position:fixed;top:0;left:0;right:0;height:28px;background:#EACC28;color:#1a1018;font-family:monospace;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center;gap:16px;z-index:9999;letter-spacing:.04em;";
+  banner.innerHTML = "⚠ LOCAL TEST MODE — auth bypassed, data saves to browser only &nbsp;<button onclick=\"this.parentNode.remove()\" style=\"background:rgba(0,0,0,.15);border:none;cursor:pointer;font-family:monospace;font-size:11px;padding:2px 8px;border-radius:3px;\">dismiss</button>";
+  document.body.prepend(banner);
+  // Offset main content for banner
+  document.querySelector(".main").style.paddingTop = "64px";
+  document.querySelector(".sb").style.paddingTop = "52px";
+  // Hide login, show journal
+  document.getElementById("login-screen").classList.add("hidden");
+  // Set display name
+  var nameEl = document.getElementById("dash-name");
+  if (nameEl) nameEl.textContent = D["display_name"] || "you";
+  // Update sidebar
+  var emailEl = document.getElementById("sb-email"); if (emailEl) emailEl.textContent = "local test mode";
+  var avEl = document.getElementById("sb-av"); if (avEl) avEl.textContent = "T";
+  renderDash();
+} else {
+  // Production: use Supabase auth
 sb.auth.onAuthStateChange(function(event, session) {
   if (session && session.user) {
     currentUser = session.user;
@@ -1636,6 +2001,7 @@ sb.auth.getSession().then(function(res) {
     document.getElementById("login-screen").classList.remove("hidden");
   }
 });
+} // end else (production mode)
 </script>
 </body>
 </html>
