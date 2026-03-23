@@ -1546,9 +1546,39 @@ function renderJournal() {
       });
     });
   });
-  // Auto-open current unit (5)
-  var hd = document.getElementById("uhd-5");
-  if (hd) { toggleUnit("5"); setTimeout(function(){hd.scrollIntoView({behavior:"smooth",block:"start"});},80); }
+  // Auto-open: find the most recently touched unit, fall back to Getting Started
+  var lastUid = null;
+  var lastTs = 0;
+  // Check lesson timestamps
+  UNITS.forEach(function(u) {
+    var uid = String(u.id);
+    var lessons = UNIT_LESSONS[uid] || [];
+    lessons.forEach(function(l, i) {
+      var ts = D["lesson_ts_" + uid + "_" + i];
+      if (ts && ts > lastTs) { lastTs = ts; lastUid = uid; }
+    });
+    // Also check reflection field activity via unit start time
+    var unitStart = D["unit_start_" + uid];
+    if (unitStart && unitStart > lastTs) { lastTs = unitStart; lastUid = uid; }
+  });
+  // Check reflection fields for any saved text
+  if (!lastUid) {
+    UNITS.forEach(function(u) {
+      var uid = String(u.id);
+      u.sections.forEach(function(s) {
+        s.fields.forEach(function(f) {
+          if (D[f.id] && !lastUid) lastUid = uid;
+        });
+      });
+    });
+  }
+  // Default to Getting Started on first ever open
+  var openUid = lastUid || "gs";
+  var hd = document.getElementById("uhd-" + openUid);
+  if (hd) {
+    toggleUnit(openUid);
+    setTimeout(function(){ hd.scrollIntoView({behavior:"smooth", block:"start"}); }, 80);
+  }
 }
 
 function mkF(f) {
