@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>Focal Point Photoclass — Learning Journal</title>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
 :root{
   --mag:#9F217E;--teal:#5BAAB5;--yellow:#EACC28;
@@ -231,7 +232,36 @@ textarea,.fi,.fse{transition:background-color .25s,border-color .15s,color .25s;
 .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(16px);background:var(--sb);color:#FFFCF6;padding:10px 18px;border-radius:10px;font-size:12.5px;font-weight:500;display:flex;align-items:center;gap:8px;opacity:0;pointer-events:none;transition:all .28s;z-index:800;white-space:nowrap;}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
 .toast-dot{width:7px;height:7px;border-radius:50%;background:var(--teal);flex-shrink:0;}
-/* RESPONSIVE */
+/* ── LOGIN SCREEN ── */
+#login-screen{position:fixed;inset:0;background:var(--sb);z-index:9999;display:flex;align-items:center;justify-content:center;}
+#login-screen.hidden{display:none;}
+.login-box{background:#251b24;border:1px solid rgba(91,170,181,.2);border-radius:20px;padding:40px;width:400px;max-width:92vw;}
+.login-logo{font-size:14px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;background:linear-gradient(90deg,var(--teal),var(--mag));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:6px;}
+.login-sub{font-size:11px;color:rgba(255,252,246,.45);letter-spacing:.08em;text-transform:uppercase;margin-bottom:32px;}
+.login-h{font-size:22px;font-weight:300;color:#FFFCF6;line-height:1.3;margin-bottom:6px;}
+.login-h b{font-weight:700;}
+.login-p{font-size:13px;color:rgba(255,252,246,.5);margin-bottom:28px;line-height:1.6;}
+.login-label{font-size:10px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,252,246,.5);margin-bottom:6px;display:block;}
+.login-input{width:100%;background:rgba(255,252,246,.06);border:1.5px solid rgba(255,252,246,.15);border-radius:10px;padding:12px 15px;font-family:'Poppins',sans-serif;font-size:14px;color:#FFFCF6;outline:none;margin-bottom:12px;transition:border-color .15s;}
+.login-input:focus{border-color:var(--teal);}
+.login-input::placeholder{color:rgba(255,252,246,.25);}
+.login-btn{width:100%;background:var(--teal);color:#fff;border:none;border-radius:10px;padding:13px;font-family:'Poppins',sans-serif;font-size:14px;font-weight:600;cursor:pointer;transition:background .15s;margin-bottom:8px;}
+.login-btn:hover{background:#4a96a1;}
+.login-btn:disabled{opacity:.5;cursor:not-allowed;}
+.login-msg{font-size:12.5px;color:var(--teal);text-align:center;min-height:20px;margin-top:4px;}
+.login-err{color:var(--mag);}
+.login-divider{display:flex;align-items:center;gap:12px;margin:16px 0;}
+.login-divider span{font-size:11px;color:rgba(255,252,246,.3);}
+.login-divider::before,.login-divider::after{content:'';flex:1;height:1px;background:rgba(255,252,246,.1);}
+.login-mode-toggle{font-size:12.5px;color:rgba(255,252,246,.45);text-align:center;cursor:pointer;}
+.login-mode-toggle b{color:var(--teal);cursor:pointer;}
+/* User bar in sidebar */
+.sb-user-email{font-size:10px;color:#FFFCF6;opacity:.55;margin-top:1px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:140px;}
+.sb-signout{font-size:10px;color:rgba(255,252,246,.4);cursor:pointer;background:none;border:none;font-family:'Poppins',sans-serif;padding:0;margin-top:4px;display:block;}
+.sb-signout:hover{color:var(--mag);}
+/* Saving indicator */
+.save-indicator{position:fixed;top:14px;right:18px;font-size:11px;font-weight:500;color:var(--teal);opacity:0;transition:opacity .3s;z-index:500;background:var(--card);border:1px solid var(--border-c);padding:5px 11px;border-radius:20px;}
+.save-indicator.show{opacity:1;}
 @media(max-width:900px){
   .sb{transform:translateX(-100%);}.sb.open{transform:translateX(0);}
   .main{margin-left:0;padding:72px 18px 90px;}
@@ -250,9 +280,70 @@ textarea,.fi,.fse{transition:background-color .25s,border-color .15s,color .25s;
 .bni{display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;padding:8px;border-radius:9px;flex:1;color:#FFFCF6;opacity:.6;transition:opacity .15s;}
 .bni.active{color:var(--teal);opacity:1;}
 .bni svg{width:17px;height:17px;}.bni span{font-size:8.5px;font-weight:500;}
+/* LESSON CHECKLIST */
+.lesson-check-hd{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;}
+.lesson-check-title{font-size:9.5px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);}
+.lesson-check-pct{font-size:11px;font-weight:600;color:var(--teal);}
+.lesson-prog-bar{height:4px;background:rgba(91,170,181,.12);border-radius:99px;overflow:hidden;margin-bottom:12px;}
+.lesson-prog-fill{height:100%;background:linear-gradient(90deg,var(--teal),var(--mag));border-radius:99px;transition:width .4s ease;}
+.lesson-check-list{margin-bottom:14px;}
+.lesson-check-item{display:flex;align-items:center;gap:10px;padding:7px 0;border-bottom:1px solid var(--border-c);cursor:pointer;}
+.lesson-check-item:last-child{border-bottom:none;}
+.lci-box{width:18px;height:18px;border-radius:4px;border:2px solid var(--border);background:var(--input);flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:all .15s;}
+.lci-box.done{background:var(--teal);border-color:var(--teal);}
+.lci-box.done::after{content:'\2713';font-size:11px;color:#fff;font-weight:700;}
+.lci-label{font-size:13px;flex:1;}
+.lci-label.done{text-decoration:line-through;color:var(--muted);}
+/* COURSE PACE */
+.pace-unit{font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--teal);margin-bottom:4px;}
+.pace-title{font-size:17px;font-weight:600;margin-bottom:6px;line-height:1.3;}
+.pace-desc{font-size:12px;color:var(--muted);line-height:1.55;margin-bottom:14px;}
+.pace-nav{display:flex;gap:8px;flex-wrap:wrap;}
+/* SUGGESTED GOALS */
+.sug-goal{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:9px;background:var(--input);margin-bottom:7px;cursor:pointer;transition:background .15s;}
+.sug-goal:hover{background:var(--teal-l);}
+.sug-goal-info{flex:1;}
+.sug-goal-text{font-size:12.5px;font-weight:500;}
+.sug-goal-cat{font-size:10px;color:var(--muted);margin-top:1px;}
+.sug-add-icon{font-size:20px;color:var(--teal);font-weight:300;line-height:1;}
+/* PDF */
+@media print{
+  .sb,.bnav,.topbar-mob,.ph-acts,.save-indicator,.toast,.mo,.pc,.up-acts,.note-del,button,.login-screen{display:none!important;}
+  .main{margin-left:0!important;padding:20px!important;}
+  .view{display:block!important;animation:none!important;}
+  .unit-body{display:block!important;}
+  body{background:#fff!important;color:#000!important;}
+  .card,.unit-block,.start-card,.note-card,.gc{box-shadow:none!important;border:1px solid #ddd!important;background:#fff!important;}
+  .rf-area,.fi{background:#f5f5f5!important;border:1px solid #ccc!important;color:#000!important;}
+  textarea{min-height:auto!important;resize:none!important;}
+  @page{margin:15mm;}
+}
 </style>
 </head>
 <body>
+<!-- LOGIN SCREEN -->
+<div id="login-screen">
+  <div class="login-box">
+    <div class="login-logo">Focal Point Photoclass</div>
+    <div class="login-sub">Learning Journal</div>
+    <div class="login-h">Welcome back.<br><b>Sign in to your journal.</b></div>
+    <div class="login-p" id="login-desc">Enter your email and we will send you a magic link — no password needed.</div>
+    <label class="login-label" for="login-email">Email address</label>
+    <input class="login-input" type="email" id="login-email" placeholder="you@example.com" onkeydown="if(event.key==='Enter')submitLogin()">
+    <div id="login-password-wrap" style="display:none;">
+      <label class="login-label" for="login-password">Password</label>
+      <input class="login-input" type="password" id="login-password" placeholder="Your password" onkeydown="if(event.key==='Enter')submitLogin()">
+    </div>
+    <button class="login-btn" id="login-btn" onclick="submitLogin()">Send magic link</button>
+    <div class="login-msg" id="login-msg"></div>
+    <div class="login-divider"><span>or</span></div>
+    <div class="login-mode-toggle" id="login-mode-toggle" onclick="toggleLoginMode()">Prefer a password? <b>Sign in with password</b></div>
+  </div>
+</div>
+
+<!-- SAVE INDICATOR -->
+<div class="save-indicator" id="save-indicator">Saved ✓</div>
+
 <div class="sb-overlay" id="sbOverlay" onclick="closeSb()"></div>
 <div class="tooltip" id="tip"></div>
 <div class="topbar-mob">
@@ -275,7 +366,14 @@ textarea,.fi,.fse{transition:background-color .25s,border-color .15s,color .25s;
       <div style="display:flex;align-items:center;gap:7px;"><span id="dmIcon" style="font-size:13px;">☀️</span><span class="dm-lbl" id="dmLbl">Light mode</span></div>
       <label class="dm-sw"><input type="checkbox" id="dmCheck" onchange="setDark(this.checked)"><div class="dm-track"></div><div class="dm-thumb"></div></label>
     </div>
-    <div class="sb-profile"><div class="sb-av">ME</div><div><div class="sb-name">Your Journal</div><div class="sb-role">Focal Point Photoclass</div></div></div>
+    <div class="sb-profile">
+      <div class="sb-av" id="sb-av">ME</div>
+      <div>
+        <div class="sb-name">Your Journal</div>
+        <div class="sb-user-email" id="sb-email">—</div>
+        <button class="sb-signout" onclick="signOut()">Sign out</button>
+      </div>
+    </div>
   </div>
 </nav>
 <nav class="bnav">
@@ -289,8 +387,12 @@ textarea,.fi,.fse{transition:background-color .25s,border-color .15s,color .25s;
 <!-- DASHBOARD -->
 <div class="view active" id="view-dashboard">
   <div class="ph">
-    <div><div class="ph-ey">Photoclass 2026</div><div class="ph-ti">Good to see you.<br><b>Where are you with your photography?</b></div></div>
-    <div class="ph-acts"><button class="btn btn-g" onclick="nav('notes')">+ Quick note</button><button class="btn btn-p" onclick="openModal('modal-prompt')">Today's prompt</button></div>
+    <div><div class="ph-ey">Focal Point Photoclass</div><div class="ph-ti">Good to see you, <b id="dash-name">there</b>.<br>Where are you with your photography?</div></div>
+    <div class="ph-acts">
+      <button class="btn btn-g" onclick="nav('notes')">+ Quick note</button>
+      <button class="btn btn-g" onclick="downloadPDF()">↓ Download PDF</button>
+      <button class="btn btn-p" onclick="openModal('modal-prompt')">Today's prompt</button>
+    </div>
   </div>
   <div class="stats">
     <div class="sc" onclick="nav('journal')"><div class="sl">Sections complete</div><div class="sv" id="dash-sc">0 <em>/ 12</em></div><div class="sd up" id="dash-sd">Keep going</div></div>
@@ -315,8 +417,8 @@ textarea,.fi,.fse{transition:background-color .25s,border-color .15s,color .25s;
       <div class="cb" id="dash-prog"></div>
     </div>
     <div class="card">
-      <div class="ch"><div><div class="ct">Coming up</div></div></div>
-      <div class="cb"><div class="cl" id="coming-up-list"></div></div>
+      <div class="ch"><div><div class="ct">Where you are</div><div class="cs">Current unit · course pace</div></div></div>
+      <div class="cb" id="course-pace-card"></div>
     </div>
   </div>
   <div class="g2">
@@ -360,7 +462,7 @@ textarea,.fi,.fse{transition:background-color .25s,border-color .15s,color .25s;
 <!-- GOALS -->
 <div class="view" id="view-goals">
   <div class="ph">
-    <div><div class="ph-ey">Photoclass 2026</div><div class="ph-ti">Your <b>goals.</b></div></div>
+    <div><div class="ph-ey">Focal Point Photoclass</div><div class="ph-ti">Your <b>goals.</b></div></div>
     <div class="ph-acts"><button class="btn btn-p" onclick="openModal('modal-goal')">+ Add goal</button></div>
   </div>
   <div class="start-card">
@@ -390,7 +492,7 @@ textarea,.fi,.fse{transition:background-color .25s,border-color .15s,color .25s;
 </div>
 <!-- PROGRESS -->
 <div class="view" id="view-progress">
-  <div class="ph"><div><div class="ph-ey">Photoclass 2026</div><div class="ph-ti">Your <b>progress.</b></div></div></div>
+  <div class="ph"><div><div class="ph-ey">Focal Point Photoclass</div><div class="ph-ti">Your <b>progress.</b></div></div></div>
   <div class="g2">
     <div class="card">
       <div class="ch"><div><div class="ct">Section completion</div><div class="cs">Getting Started · Units 1–10 · Final Project</div></div></div>
@@ -686,16 +788,104 @@ var SCHEDULE = (function() {
   });
 })();
 
-var COMPLETION = {"gs":100,"1":100,"2":100,"3":100,"4":100,"5":60,"6":0,"7":0,"8":0,"9":0,"10":0,"fp":0};
+var COMPLETION = {"gs":0,"1":0,"2":0,"3":0,"4":0,"5":0,"6":0,"7":0,"8":0,"9":0,"10":0,"fp":0};
+
+// Lessons per unit — used for the checklist in the accordion
+var UNIT_LESSONS = {
+  "gs": ["Set your goals","Fill in your gear list","Write your first reflection"],
+  "1":  ["Lesson 1: Camera basics","Lesson 2: Lenses","Lesson 3: Digital workflow","Assignment"],
+  "2":  ["Lesson 1: Aperture","Lesson 2: Shutter speed","Lesson 3: ISO","Lesson 4: Putting it together","Assignment"],
+  "3":  ["Lesson 1: Light","Lesson 2: Composition","Lesson 3: Colour theory","Lesson 4: Bringing it together","Assignment"],
+  "4":  ["Lesson 1: Introduction to editing","Lesson 2: Culling","Lesson 3: Developing a style","Assignment"],
+  "5":  ["Lesson 1: Autofocus","Lesson 2: Manual focus","Lesson 3: Metering modes","Lesson 4: Flash & accessories","Assignment"],
+  "6":  ["Lesson 1: Advanced focus","Lesson 2: Advanced metering","Lesson 3: Advanced flash","Assignment"],
+  "7":  ["Lesson 1: Revisiting goals","Lesson 2: Brainstorming","Lesson 3: Beginning a project","Assignment"],
+  "8":  ["Lesson 1: Light — advanced","Lesson 2: Composition — advanced","Lesson 3: Colour — advanced","Assignment"],
+  "9":  ["Lesson 1: Finding inspiration","Lesson 2: Exploring genres","Assignment"],
+  "10": ["Lesson 1: Looking back","Lesson 2: Going further","Final reflection","Assignment"],
+  "fp": ["Submit final project","Write project statement","Share with community"]
+};
+
+// Suggested goals shown on first open
+var SUGGESTED_GOALS = [
+  {title:"Complete all lessons and assignments", cat:"Course completion", why:"Following through on commitments builds creative discipline."},
+  {title:"Shoot in a genre I have never tried before", cat:"Creative development", why:"Stepping outside comfort zones always teaches something."},
+  {title:"Participate in at least 3 community feedback sessions", cat:"Community", why:"Giving and receiving feedback accelerates learning faster than anything."},
+  {title:"Build a personal project from start to finish", cat:"Personal project", why:"A finished body of work is the most meaningful outcome of the course."},
+  {title:"Master manual exposure by mid-course", cat:"Technical skill", why:"Understanding every setting gives creative control over every shot."},
+  {title:"Shoot one photo every day for a month", cat:"Creative development", why:"Consistency over perfection — daily practice compounds fast."},
+  {title:"Submit every assignment on time", cat:"Course completion", why:"Deadlines create momentum and push past perfectionism."}
+];
+
+// ── SUPABASE ──────────────────────────────────────────────────────────────────
+var SUPABASE_URL = "https://gqteaokqruftfrfbsbmk.supabase.co";
+var SUPABASE_KEY = "sb_publishable_8_r6EYO6H3hF5kca2Dugvg_fsu44pHq";
+var sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+var currentUser = null;
+
+// ── LOGIN ─────────────────────────────────────────────────────────────────────
+var loginMode = "magic";
+
+function toggleLoginMode() {
+  loginMode = loginMode === "magic" ? "password" : "magic";
+  var wrap   = document.getElementById("login-password-wrap");
+  var btn    = document.getElementById("login-btn");
+  var desc   = document.getElementById("login-desc");
+  var toggle = document.getElementById("login-mode-toggle");
+  if (loginMode === "password") {
+    wrap.style.display = "block";
+    btn.textContent    = "Sign in";
+    desc.textContent   = "Enter your email and password to sign in.";
+    toggle.innerHTML   = 'Prefer a magic link? <b>Send magic link instead</b>';
+  } else {
+    wrap.style.display = "none";
+    btn.textContent    = "Send magic link";
+    desc.textContent   = "Enter your email and we will send you a magic link — no password needed.";
+    toggle.innerHTML   = 'Prefer a password? <b>Sign in with password</b>';
+  }
+  document.getElementById("login-msg").textContent = "";
+}
+
+function submitLogin() {
+  var email = document.getElementById("login-email").value.trim();
+  if (!email) { showLoginMsg("Please enter your email address.", true); return; }
+  var btn = document.getElementById("login-btn");
+  btn.disabled = true;
+  if (loginMode === "magic") {
+    sb.auth.signInWithOtp({email: email, options: {emailRedirectTo: window.location.href}})
+      .then(function(res) {
+        btn.disabled = false;
+        if (res.error) { showLoginMsg(res.error.message, true); return; }
+        showLoginMsg("Magic link sent! Check your email and click the link to sign in.", false);
+      });
+  } else {
+    var password = document.getElementById("login-password").value;
+    sb.auth.signInWithPassword({email: email, password: password})
+      .then(function(res) {
+        btn.disabled = false;
+        if (res.error) { showLoginMsg(res.error.message, true); }
+      });
+  }
+}
+
+function showLoginMsg(msg, isError) {
+  var el = document.getElementById("login-msg");
+  el.textContent = msg;
+  el.className = "login-msg" + (isError ? " login-err" : "");
+}
+
+function signOut() {
+  sb.auth.signOut().then(function() {
+    currentUser = null; D = {}; goals = []; notes = [];
+    document.getElementById("login-screen").classList.remove("hidden");
+    document.getElementById("login-msg").textContent = "";
+    document.getElementById("login-email").value = "";
+  });
+}
 
 // ── STATE ─────────────────────────────────────────────────────────────────────
 var D = {}, goals = [], notes = [];
 
-function load() {
-  try { D = JSON.parse(localStorage.getItem("pc26_d") || "{}"); } catch(e) { D = {}; }
-  try { goals = JSON.parse(localStorage.getItem("pc26_g")) || defaultGoals(); } catch(e) { goals = defaultGoals(); }
-  try { notes = JSON.parse(localStorage.getItem("pc26_notes") || "[]"); } catch(e) { notes = []; }
-}
 function defaultGoals() {
   return [
     {title:"Complete all units",cat:"Personal project",why:"I want to follow through on something for the full year.",pct:40,done:false},
@@ -703,12 +893,114 @@ function defaultGoals() {
     {title:"Submit every assignment",cat:"Community",why:"Accountability to the community keeps me motivated.",pct:100,done:true}
   ];
 }
+
+function loadUserData(callback) {
+  var uid = currentUser.id;
+  var pending = 3;
+  function done() { pending--; if (pending === 0 && callback) callback(); }
+  // Journal fields (includes lesson progress stored as D keys)
+  sb.from("journal_data").select("data").eq("user_id", uid).maybeSingle()
+    .then(function(res) {
+      if (res.data && res.data.data) {
+        D = res.data.data;
+        // Restore completion from saved D
+        Object.keys(COMPLETION).forEach(function(k) {
+          if (D["unit_pct_" + k] !== undefined) COMPLETION[k] = D["unit_pct_" + k];
+        });
+      }
+      done();
+    });
+  // Goals
+  sb.from("goals").select("*").eq("user_id", uid).order("created_at", {ascending:false})
+    .then(function(res) { goals = (res.data && res.data.length) ? res.data : []; done(); });
+  // Notes
+  sb.from("notes").select("*").eq("user_id", uid).order("created_at", {ascending:false})
+    .then(function(res) {
+      notes = res.data ? res.data.map(function(n) {
+        return {id:n.id, ts:new Date(n.created_at).getTime(), text:n.text, uid:n.uid, unitLabel:n.unit_label, tag:n.tag};
+      }) : [];
+      done();
+    });
+  // Photos (separate table, merge into D)
+  sb.from("photos").select("slot,data").eq("user_id", uid)
+    .then(function(res) { if (res.data) res.data.forEach(function(p){ D[p.slot]=p.data; }); });
+}
+
+function saveUnitProgress(uid) {
+  var lessons = UNIT_LESSONS[uid] || [];
+  if (!lessons.length) return;
+  var done = lessons.filter(function(l, i) { return D["lesson_" + uid + "_" + i]; }).length;
+  var pct = Math.round((done / lessons.length) * 100);
+  COMPLETION[uid] = pct;
+  D["unit_pct_" + uid] = pct;
+  persist();
+}
+
+function toggleLesson(uid, idx) {
+  var key = "lesson_" + uid + "_" + idx;
+  D[key] = !D[key];
+  saveUnitProgress(uid);
+  // Re-render just the checklist for this unit without collapsing it
+  var lessons = UNIT_LESSONS[uid] || [];
+  var doneLessons = lessons.filter(function(l,i){ return D["lesson_"+uid+"_"+i]; }).length;
+  var pct = Math.round((doneLessons/lessons.length)*100);
+  // Update progress bar
+  var body = document.getElementById("ubody-" + uid);
+  if (!body) return;
+  var fill = body.querySelector(".lesson-prog-fill");
+  var pctEl = body.querySelector(".lesson-check-pct");
+  if (fill) fill.style.width = pct + "%";
+  if (pctEl) pctEl.textContent = pct + "% complete";
+  // Toggle the clicked item
+  var items = body.querySelectorAll(".lesson-check-item");
+  var item = items[idx];
+  if (!item) return;
+  var box = item.querySelector(".lci-box");
+  var lbl = item.querySelector(".lci-label");
+  if (box) box.classList.toggle("done", !!D[key]);
+  if (lbl) lbl.classList.toggle("done", !!D[key]);
+  // Update dash progress pill if visible
+  var pill = document.getElementById("dash-pct-pill");
+  if (pill) {
+    var vals = Object.values(COMPLETION);
+    var total = Math.round(vals.reduce(function(a,b){return a+b;},0)/vals.length);
+    pill.textContent = total + "% complete";
+  }
+  renderCoursePace();
+}
+
+// ── PERSIST ───────────────────────────────────────────────────────────────────
+var _saveTimer = null;
 function persist() {
-  try { localStorage.setItem("pc26_d", JSON.stringify(D)); } catch(e) {}
-  try { localStorage.setItem("pc26_g", JSON.stringify(goals)); } catch(e) {}
-  try { localStorage.setItem("pc26_notes", JSON.stringify(notes)); } catch(e) {}
+  if (!currentUser) return;
+  clearTimeout(_saveTimer);
+  _saveTimer = setTimeout(persistNow, 1000);
+}
+function persistNow() {
+  if (!currentUser) return;
+  var uid = currentUser.id;
+  var journalOnly = {};
+  Object.keys(D).forEach(function(k) {
+    if (k.indexOf("photo-") !== 0 && k !== "proud-photo") journalOnly[k] = D[k];
+  });
+  sb.from("journal_data").upsert({user_id:uid, data:journalOnly, updated_at:new Date().toISOString()}, {onConflict:"user_id"});
+  showSaveIndicator();
+}
+function showSaveIndicator() {
+  var el = document.getElementById("save-indicator");
+  if (!el) return;
+  el.classList.add("show");
+  clearTimeout(el._t);
+  el._t = setTimeout(function(){ el.classList.remove("show"); }, 2000);
 }
 function autoSave(k, v) { D[k] = v; persist(); }
+
+function savePhoto(slot, dataUrl) {
+  if (!currentUser) return;
+  D[slot] = dataUrl;
+  sb.from("photos").upsert({user_id:currentUser.id, slot:slot, data:dataUrl, updated_at:new Date().toISOString()}, {onConflict:"user_id,slot"})
+    .then(function(){ showSaveIndicator(); });
+}
 
 // ── NAV ───────────────────────────────────────────────────────────────────────
 function nav(id) {
@@ -798,29 +1090,25 @@ function buildRhythm(cid) {
 }
 
 // ── COMING UP ─────────────────────────────────────────────────────────────────
-function renderComingUp() {
-  var el = document.getElementById("coming-up-list"); if (!el) return;
-  var now = new Date();
-  var evs = [];
-  SCHEDULE.forEach(function(s) {
-    if (s.open > now) evs.push({date:s.open, label:s.label + " opens", type:"unit"});
-    if (s.due  > now) evs.push({date:s.due,  label:s.label + " assignment due", type:"due"});
-  });
-  evs.sort(function(a,b) { return a.date - b.date; });
-  var next = evs.slice(0,4);
-  var html = "";
-  next.forEach(function(e) {
-    var mo  = e.date.toLocaleDateString("en-GB",{month:"short"});
-    var day = e.date.getDate();
-    var pillClass = e.type === "due" ? "pill-m" : "pill-y";
-    var pillLabel = e.type === "due" ? "Due" : "Unit";
-    html += '<div class="ci">'
-      + '<div class="cd"><div class="cday">' + day + '</div><div class="cmon">' + mo + '</div></div>'
-      + '<div class="ci-info"><div class="ci-title">' + e.label + '</div></div>'
-      + '<span class="pill ' + pillClass + '">' + pillLabel + '</span>'
-      + '</div>';
-  });
-  el.innerHTML = html;
+function renderCoursePace() {
+  var el = document.getElementById("course-pace-card"); if (!el) return;
+  var curKey = currentUnitKey();
+  var curUnit = null;
+  UNITS.forEach(function(u) { if (String(u.id) === String(curKey)) curUnit = u; });
+  if (!curUnit) return;
+  var uid = String(curKey);
+  var lessons = UNIT_LESSONS[uid] || [];
+  var doneLessons = lessons.filter(function(l,i){ return D["lesson_"+uid+"_"+i]; }).length;
+  var pct = lessons.length ? Math.round((doneLessons/lessons.length)*100) : 0;
+  var unitLabel = typeof curUnit.id === "number" ? "Unit " + curUnit.id : curUnit.id === "gs" ? "Getting Started" : "Final Project";
+  el.innerHTML = '<div class="pace-unit">' + unitLabel + '</div>'
+    + '<div class="pace-title">' + curUnit.title + '</div>'
+    + '<div class="pace-desc">' + curUnit.sub + '</div>'
+    + '<div class="lesson-prog-bar"><div class="lesson-prog-fill" style="width:' + pct + '%"></div></div>'
+    + '<div style="font-size:11px;color:var(--muted);margin-bottom:14px;">' + doneLessons + ' of ' + lessons.length + ' lessons complete</div>'
+    + '<div class="pace-nav">'
+    + '<button class="btn btn-p btn-sm" onclick="nav(\'journal\')">Open journal \u2192</button>'
+    + '</div>';
 }
 
 // ── DASHBOARD PROMPT ──────────────────────────────────────────────────────────
@@ -885,8 +1173,14 @@ function saveModalPrompt() {
 // ── DASHBOARD ─────────────────────────────────────────────────────────────────
 function renderDash() {
   buildRhythm("rhythm-dash");
-  renderComingUp();
+  renderCoursePace();
   renderDashPrompt();
+  // Display name from stored profile or email prefix
+  var nameEl = document.getElementById("dash-name");
+  if (nameEl && currentUser) {
+    var displayName = D["display_name"] || currentUser.email.split("@")[0];
+    nameEl.textContent = displayName;
+  }
   var assignDone = GALLERY.filter(function(g) { return D["photo-" + g.id]; }).length;
   var active = goals.filter(function(g) { return !g.done; }).length;
   var done   = goals.filter(function(g) { return  g.done; }).length;
@@ -953,19 +1247,27 @@ function addNote() {
   var tag = document.getElementById("note-tag").value;
   var unitLabel = "General";
   UNITS.forEach(function(u) { if (String(u.id) === uid) unitLabel = u.title; });
-  notes.unshift({id:Date.now(), ts:Date.now(), text:text, uid:uid, unitLabel:unitLabel, tag:tag});
-  persist();
-  document.getElementById("note-text").value = "";
-  renderNotes();
-  buildRhythm("rhythm-dash");
-  buildRhythm("rhythm-prog");
-  var nc = document.getElementById("dash-nc"); if (nc) nc.textContent = notes.length;
+  if (!currentUser) return;
+  sb.from("notes").insert({user_id:currentUser.id, text:text, uid:uid, unit_label:unitLabel, tag:tag})
+    .select().single()
+    .then(function(res) {
+      if (res.data) {
+        notes.unshift({id:res.data.id, ts:new Date(res.data.created_at).getTime(), text:text, uid:uid, unitLabel:unitLabel, tag:tag});
+      }
+      document.getElementById("note-text").value = "";
+      renderNotes();
+      buildRhythm("rhythm-dash");
+      buildRhythm("rhythm-prog");
+      var nc = document.getElementById("dash-nc"); if (nc) nc.textContent = notes.length;
+      showSaveIndicator();
+    });
   toast("Note saved \u2713");
 }
 
 function deleteNote(id) {
+  if (currentUser) sb.from("notes").delete().eq("id", id);
   notes = notes.filter(function(n){return n.id !== id;});
-  persist(); renderNotes();
+  renderNotes();
   buildRhythm("rhythm-dash"); buildRhythm("rhythm-prog");
 }
 
@@ -1002,7 +1304,24 @@ function renderJournal() {
     var badgeLabel = u.id === "gs" ? "GS" : u.id === "fp" ? "FP" : "U" + u.id;
     var headLabel  = u.id === "gs" ? "Getting Started: " + u.title : u.id === "fp" ? "Final Project: " + u.title : "Unit " + u.id + ": " + u.title;
     var sectHTML = "";
-    // Per-unit rotating prompt
+    // ── Lesson checklist ──
+    var lessons = UNIT_LESSONS[uid] || [];
+    if (lessons.length) {
+      var doneLessons = lessons.filter(function(l,i){ return D["lesson_"+uid+"_"+i]; }).length;
+      var pct = Math.round((doneLessons/lessons.length)*100);
+      var checkHTML = '<div class="lesson-check-hd"><span class="lesson-check-title">Lessons</span><span class="lesson-check-pct">' + pct + '% complete</span></div>'
+        + '<div class="lesson-prog-bar"><div class="lesson-prog-fill" style="width:' + pct + '%"></div></div>'
+        + '<div class="lesson-check-list">';
+      lessons.forEach(function(l, i) {
+        var isDone = !!D["lesson_"+uid+"_"+i];
+        checkHTML += '<div class="lesson-check-item" onclick="toggleLesson(\'' + uid + '\',' + i + ')">'
+          + '<div class="lci-box' + (isDone?' done':'') + '"></div>'
+          + '<span class="lci-label' + (isDone?' done':'') + '">' + l + '</span>'
+          + '</div>';
+      });
+      checkHTML += '</div>';
+      sectHTML += '<div class="unit-section">' + checkHTML + '</div>';
+    }
     var prompts = UNIT_PROMPTS[uid] || [];
     if (prompts.length) {
       var pidx = (parseInt(D["uprompt_idx_" + uid]) || 0) % prompts.length;
@@ -1114,7 +1433,7 @@ function handleAPhoto(e, uid) {
   var f = e.target.files[0]; if (!f) return;
   var r = new FileReader();
   r.onload = function(ev) {
-    D["photo-" + uid] = ev.target.result; persist();
+    savePhoto("photo-" + uid, ev.target.result);
     var slot = document.getElementById("aslot-" + uid);
     slot.classList.add("filled");
     slot.innerHTML = '<img src="' + ev.target.result + '" style="width:100%;height:90px;object-fit:cover;border-radius:7px;">'
@@ -1131,7 +1450,19 @@ function renderGoals() {
   ids.forEach(function(id) { var el=document.getElementById(id); if(el&&D[id]) el.value=D[id]; });
   var grid = document.getElementById("goal-grid"); grid.innerHTML = "";
   if (!goals.length) {
-    grid.innerHTML = '<div style="grid-column:1/-1;font-size:13px;color:var(--muted);padding:16px 0;">No goals yet. <span style="color:var(--teal);cursor:pointer;" onclick="openModal(\'modal-goal\')">Add one \u2192</span></div>';
+    // Show suggested goals
+    var sugHd = document.createElement("div");
+    sugHd.style.cssText = "grid-column:1/-1;margin-bottom:6px;";
+    sugHd.innerHTML = '<div style="font-size:13px;font-weight:600;margin-bottom:4px;">Suggested goals</div>'
+      + '<div style="font-size:12px;color:var(--muted);margin-bottom:14px;">Tap any to add it to your goals, or <span style="color:var(--teal);cursor:pointer;" onclick="openModal(\'modal-goal\')">write your own \u2192</span></div>';
+    grid.appendChild(sugHd);
+    SUGGESTED_GOALS.forEach(function(sg, i) {
+      var div = document.createElement("div"); div.className = "sug-goal";
+      div.innerHTML = '<div class="sug-goal-info"><div class="sug-goal-text">' + sg.title + '</div><div class="sug-goal-cat">' + sg.cat + '</div></div>'
+        + '<div class="sug-add-icon">+</div>';
+      div.onclick = function() { addSuggestedGoal(i); };
+      grid.appendChild(div);
+    });
     return;
   }
   goals.forEach(function(g, i) {
@@ -1149,12 +1480,37 @@ function renderGoals() {
   });
   setTimeout(function(){ grid.querySelectorAll(".gc-fill").forEach(function(f){f.style.width=f.dataset.w+"%";}); }, 100);
 }
-function doneGoal(i) { goals[i].done=true; goals[i].pct=100; persist(); renderGoals(); renderDash(); toast("Goal complete 🎉"); }
+
+function addSuggestedGoal(i) {
+  var sg = SUGGESTED_GOALS[i];
+  if (!currentUser) return;
+  sb.from("goals").insert({user_id:currentUser.id, title:sg.title, cat:sg.cat, why:sg.why, pct:0, done:false})
+    .select().single()
+    .then(function(res) {
+      if (res.data) goals.unshift(res.data);
+      renderGoals(); renderDash(); toast("Goal added \u2713");
+    });
+}
+function doneGoal(i) {
+  var g = goals[i]; g.done = true; g.pct = 100;
+  if (currentUser && g.id) {
+    sb.from("goals").update({done:true, pct:100, updated_at:new Date().toISOString()}).eq("id", g.id);
+  }
+  renderGoals(); renderDash(); toast("Goal complete \uD83C\uDF89");
+}
 function addGoal() {
   var t = document.getElementById("g-title").value.trim();
   if (!t) { toast("Give your goal a title."); return; }
-  goals.unshift({title:t, cat:document.getElementById("g-cat").value, why:document.getElementById("g-why").value||"My goal", pct:0, done:false});
-  persist(); closeModal("modal-goal"); renderGoals(); renderDash(); toast("Goal added \u2713");
+  var cat = document.getElementById("g-cat").value;
+  var why = document.getElementById("g-why").value || "My goal";
+  if (!currentUser) return;
+  sb.from("goals").insert({user_id:currentUser.id, title:t, cat:cat, why:why, pct:0, done:false})
+    .select().single()
+    .then(function(res) {
+      if (res.data) goals.unshift(res.data);
+      renderGoals(); renderDash();
+    });
+  closeModal("modal-goal"); toast("Goal added \u2713");
   document.getElementById("g-title").value = "";
   document.getElementById("g-why").value   = "";
 }
@@ -1218,7 +1574,7 @@ function handleProudPhoto(e) {
   var f = e.target.files[0]; if (!f) return;
   var r = new FileReader();
   r.onload = function(ev) {
-    D["proud-photo"] = ev.target.result; persist();
+    savePhoto("proud-photo", ev.target.result);
     var slot = document.getElementById("proud-slot"); slot.classList.add("filled");
     slot.innerHTML = '<img src="' + ev.target.result + '" style="width:100%;height:90px;object-fit:cover;border-radius:7px;">'
       + '<span class="assign-lbl">Photo added</span>'
@@ -1228,10 +1584,58 @@ function handleProudPhoto(e) {
   r.readAsDataURL(f);
 }
 
+// ── PDF DOWNLOAD ──────────────────────────────────────────────────────────────
+function downloadPDF() {
+  // Open all unit bodies before printing so content is visible
+  UNITS.forEach(function(u) {
+    var body = document.getElementById("ubody-" + String(u.id));
+    var hd   = document.getElementById("uhd-"   + String(u.id));
+    if (body && !body.classList.contains("open")) {
+      body.classList.add("open");
+      if (hd) hd.classList.add("open");
+    }
+  });
+  // Small delay to allow render, then print
+  setTimeout(function() {
+    window.print();
+  }, 300);
+}
+
 // ── INIT ──────────────────────────────────────────────────────────────────────
-load();
 restoreTheme();
-renderDash();
+
+// Listen for auth state changes (handles magic link redirect automatically)
+sb.auth.onAuthStateChange(function(event, session) {
+  if (session && session.user) {
+    currentUser = session.user;
+    // Sidebar email and avatar
+    var emailEl = document.getElementById("sb-email");
+    if (emailEl) emailEl.textContent = session.user.email;
+    var avEl = document.getElementById("sb-av");
+    if (avEl) avEl.textContent = session.user.email.charAt(0).toUpperCase();
+    // Hide login, load data, then render
+    document.getElementById("login-screen").classList.add("hidden");
+    loadUserData(function() {
+      // Set display name from stored value or email prefix
+      var nameEl = document.getElementById("dash-name");
+      if (nameEl) {
+        var displayName = D["display_name"] || session.user.user_metadata.name || session.user.email.split("@")[0];
+        nameEl.textContent = displayName;
+      }
+      renderDash();
+    });
+  } else {
+    currentUser = null;
+    document.getElementById("login-screen").classList.remove("hidden");
+  }
+});
+
+// Check for existing session on load
+sb.auth.getSession().then(function(res) {
+  if (!res.data.session) {
+    document.getElementById("login-screen").classList.remove("hidden");
+  }
+});
 </script>
 </body>
 </html>
