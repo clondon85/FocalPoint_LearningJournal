@@ -1039,6 +1039,7 @@ var sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY, {
   auth: {
     persistSession: true,
     detectSessionInUrl: true,
+    flowType: "implicit",
     storageKey: "pc26_auth",
     storage: window.localStorage
   }
