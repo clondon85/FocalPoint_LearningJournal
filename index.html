@@ -10,7 +10,7 @@
 /* ── TOKENS ─────────────────────────────────────────────────────────────────── */
 :root{
   --mag:#9F217E; --teal:#5BAAB5; --yellow:#EACC28;
-  --grad:linear-gradient(155deg,#5BAAB5 0%,#7c3a82 50%,#9F217E 100%);
+  --grad:linear-gradient(155deg,#3a7a85 0%,#7c3a82 50%,#9F217E 100%);
   --sbw:260px;
   /* card surfaces */
   --card:rgba(255,255,255,.93);
@@ -18,10 +18,10 @@
   --input-border:rgba(159,33,126,.2);
   /* text on white cards */
   --on-card:#1a1018;
-  --on-card-muted:rgba(26,16,24,.48);
+  --on-card-muted:rgba(26,16,24,.62);
   /* text floating on gradient */
   --on-grad:#FFFCF6;
-  --on-grad-muted:rgba(255,252,246,.6);
+  --on-grad-muted:rgba(255,252,246,.75);
   /* borders on gradient bg */
   --border-grad:rgba(255,255,255,.3);
 }
@@ -31,9 +31,9 @@
   --input:#2a0f26;
   --input-border:rgba(255,255,255,.15);
   --on-card:#f0eaf0;
-  --on-card-muted:rgba(240,234,240,.45);
+  --on-card-muted:rgba(240,234,240,.52);
   --on-grad:#f0eaf0;
-  --on-grad-muted:rgba(240,234,240,.5);
+  --on-grad-muted:rgba(240,234,240,.55);
   --border-grad:rgba(255,255,255,.15);
 }
 
@@ -63,8 +63,8 @@ body{
 .sb-mark{font-size:15px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:#FFFCF6;}
 .sb-mark span{color:var(--yellow);}
 .sb-sub{font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,252,246,.5);margin-top:2px;}
-.sb-sec{font-size:9px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:rgba(255,252,246,.4);padding:0 24px;margin-bottom:4px;}
-.ni{display:flex;align-items:center;gap:10px;padding:9px 24px;color:rgba(255,252,246,.72);font-size:13px;cursor:pointer;border-left:3px solid transparent;user-select:none;transition:background .15s,color .15s,border-color .15s;}
+.sb-sec{font-size:9px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:rgba(255,252,246,.78);padding:0 24px;margin-bottom:4px;}
+.ni{display:flex;align-items:center;gap:10px;padding:9px 24px;color:rgba(255,252,246,.78);font-size:13px;cursor:pointer;border-left:3px solid transparent;user-select:none;transition:background .15s,color .15s,border-color .15s;}
 .ni:hover{color:#FFFCF6;background:rgba(255,255,255,.08);}
 .ni.active{color:#FFFCF6;border-left-color:var(--yellow);background:rgba(255,255,255,.1);font-weight:700;}
 .ni svg{width:14px;height:14px;flex-shrink:0;}
@@ -120,8 +120,8 @@ body{
 .sc::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--mag),var(--teal));}
 .sl{font-size:9.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--mag);margin-bottom:8px;}
 .sv{font-size:26px;font-weight:700;letter-spacing:-.03em;line-height:1;margin-bottom:4px;color:var(--on-card);}
-.sv em{font-size:13px;font-weight:600;color:var(--teal);font-style:normal;}
-.sd{font-size:11px;color:var(--on-card-muted);}.sd.up{color:var(--teal);}
+.sv em{font-size:13px;font-weight:600;color:#1f6b76;font-style:normal;}
+.sd{font-size:11px;color:var(--on-card-muted);}.sd.up{color:#1f6b76;}
 
 /* ── GRIDS ───────────────────────────────────────────────────────────────────── */
 .g2{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-bottom:18px;}
@@ -134,21 +134,21 @@ body{
 .ct{font-size:13.5px;font-weight:700;color:var(--on-card);}.cs{font-size:11px;color:var(--on-card-muted);margin-top:2px;}
 .cb{padding:0 22px 22px;flex:1;display:flex;flex-direction:column;}
 .pill{font-size:10px;font-weight:700;padding:3px 10px;border-radius:99px;letter-spacing:.05em;text-transform:uppercase;white-space:nowrap;}
-.pill-t{background:rgba(91,170,181,.15);color:var(--teal);}.pill-m{background:rgba(159,33,126,.12);color:var(--mag);}.pill-y{background:rgba(234,204,40,.2);color:#7a6200;}
+.pill-t{background:rgba(91,170,181,.15);color:#1f6b76;}.pill-m{background:rgba(159,33,126,.12);color:var(--mag);}.pill-y{background:rgba(234,204,40,.2);color:#7a6200;}
 
 /* ── PROMPT CARD (dashboard) ─────────────────────────────────────────────────── */
-.pc{background:rgba(255,255,255,.13);border:1.5px solid rgba(255,255,255,.28);border-radius:16px;padding:24px;position:relative;overflow:hidden;margin-bottom:18px;box-shadow:0 4px 24px rgba(0,0,0,.12);}
+.pc{background:var(--card);border:1px solid rgba(255,255,255,.4);border-radius:16px;padding:24px;position:relative;overflow:hidden;margin-bottom:18px;box-shadow:0 4px 24px rgba(0,0,0,.12);color:var(--on-card);}
 .pc::before{content:'';position:absolute;top:-60px;right:-60px;width:200px;height:200px;border-radius:50%;background:radial-gradient(circle,rgba(91,170,181,.3) 0%,transparent 70%);pointer-events:none;}
 .pc::after{content:'';position:absolute;bottom:-40px;left:-20px;width:160px;height:160px;border-radius:50%;background:radial-gradient(circle,rgba(234,204,40,.15) 0%,transparent 70%);pointer-events:none;}
-.pc-ey{font-size:9.5px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--yellow);margin-bottom:8px;}
-.pc-q{font-size:15px;font-weight:400;color:#FFFCF6;line-height:1.65;margin-bottom:16px;}
-.pc-q b{font-weight:700;}.pc-q i{color:rgba(255,252,246,.55);}
-.pc-inp{width:100%;background:rgba(255,255,255,.12);border:1.5px solid rgba(255,255,255,.22);border-radius:10px;padding:10px 13px;font-family:'Poppins',sans-serif;font-size:13px;color:#FFFCF6;resize:none;outline:none;min-height:66px;}
-.pc-inp::placeholder{color:rgba(255,252,246,.35);}.pc-inp:focus{border-color:var(--yellow);}
+.pc-ey{font-size:9.5px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--mag);margin-bottom:8px;}
+.pc-q{font-size:15px;font-weight:400;color:var(--on-card);line-height:1.65;margin-bottom:16px;}
+.pc-q b{font-weight:700;}.pc-q i{color:var(--on-card-muted);}
+.pc-inp{width:100%;background:var(--input);border:1.5px solid var(--input-border);border-radius:10px;padding:10px 13px;font-family:'Poppins',sans-serif;font-size:13px;color:var(--on-card);resize:none;outline:none;min-height:66px;}
+.pc-inp::placeholder{color:var(--on-card-muted);}.pc-inp:focus{border-color:var(--mag);}
 .pc-acts{display:flex;justify-content:flex-end;gap:8px;margin-top:10px;}
 .pc-save{background:var(--yellow);color:#1a1018;font-size:11px;padding:7px 18px;border-radius:99px;border:none;font-family:'Poppins',sans-serif;font-weight:700;letter-spacing:.07em;text-transform:uppercase;cursor:pointer;}.pc-save:hover{filter:brightness(1.08);}
-.pc-skip{background:transparent;color:rgba(255,252,246,.45);font-size:11px;padding:7px 14px;border-radius:99px;border:1.5px solid rgba(255,255,255,.2);font-family:'Poppins',sans-serif;cursor:pointer;font-weight:600;letter-spacing:.05em;text-transform:uppercase;}.pc-skip:hover{color:#FFFCF6;border-color:rgba(255,255,255,.5);}
-.pc-done{display:none;align-items:center;gap:8px;color:var(--yellow);font-size:13px;font-weight:600;margin-top:10px;}
+.pc-skip{background:transparent;color:var(--on-card-muted);font-size:11px;padding:7px 14px;border-radius:99px;border:1.5px solid var(--input-border);font-family:'Poppins',sans-serif;cursor:pointer;font-weight:600;letter-spacing:.05em;text-transform:uppercase;}.pc-skip:hover{color:var(--on-card);border-color:var(--mag);}
+.pc-done{display:none;align-items:center;gap:8px;color:#1f6b76;font-size:13px;font-weight:600;margin-top:10px;}
 
 /* ── COMING UP ───────────────────────────────────────────────────────────────── */
 .cl{display:flex;flex-direction:column;}
@@ -175,12 +175,39 @@ body{
 .prog-track{height:7px;background:rgba(159,33,126,.15);border-radius:99px;overflow:hidden;}
 .prog-fill{height:100%;background:linear-gradient(90deg,var(--mag),var(--teal));border-radius:99px;width:0%;transition:width .9s cubic-bezier(.4,0,.2,1);}
 
+
+/* ── UNIT CARDS (new compact design) ────────────────────────────────────────── */
+.unit-card{background:var(--card);border-radius:14px;border:1px solid rgba(255,255,255,.42);margin-bottom:10px;overflow:hidden;box-shadow:0 4px 18px rgba(0,0,0,.12);color:var(--on-card);}
+.unit-card-hd{display:flex;align-items:center;gap:12px;padding:14px 18px;cursor:pointer;user-select:none;transition:background .15s;}
+.unit-card-hd:hover{background:rgba(159,33,126,.03);}
+.unit-card-badge{width:34px;height:34px;border-radius:99px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0;}
+.unit-card-info{flex:1;min-width:0;}
+.unit-card-title{font-size:13px;font-weight:700;color:var(--on-card);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.unit-card-sub{font-size:11px;color:var(--on-card-muted);margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.unit-card-meta{display:flex;align-items:center;gap:8px;flex-shrink:0;}
+.unit-card-pct{font-size:11px;font-weight:700;color:var(--mag);}
+.unit-card-chev{color:var(--on-card-muted);font-size:13px;transition:transform .25s;flex-shrink:0;}
+.unit-card-hd.open .unit-card-chev{transform:rotate(180deg);}
+.unit-card-body{display:none;padding:0 18px 18px;}
+.unit-card-body.open{display:block;}
+/* compact progress bar inside header */
+.unit-card-bar{height:3px;background:rgba(159,33,126,.12);border-radius:99px;overflow:hidden;margin:0 18px 0;}
+.unit-card-bar-fill{height:100%;background:linear-gradient(90deg,var(--mag),var(--teal));border-radius:99px;transition:width .4s ease;}
+/* lesson chips */
+.lesson-chips{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:16px;padding-top:14px;}
+.lchip{display:inline-flex;align-items:center;gap:5px;padding:4px 10px;border-radius:99px;font-size:11px;font-weight:600;cursor:pointer;border:1.5px solid rgba(159,33,126,.2);background:rgba(159,33,126,.05);color:var(--on-card-muted);transition:all .15s;user-select:none;}
+.lchip:hover{border-color:var(--mag);color:var(--on-card);}
+.lchip.done{background:var(--mag);border-color:var(--mag);color:#fff;}
+.lchip-check{width:10px;height:10px;flex-shrink:0;}
+/* reflection section inside card */
+.unit-reflect-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:4px;}
+@media(max-width:700px){.unit-reflect-grid{grid-template-columns:1fr;}}
 /* ── UNIT ACCORDION ──────────────────────────────────────────────────────────── */
 .unit-block{background:var(--card);border-radius:14px;border:1px solid rgba(255,255,255,.42);margin-bottom:10px;overflow:hidden;box-shadow:0 4px 18px rgba(0,0,0,.12);color:var(--on-card);}
 .unit-block:hover{box-shadow:0 6px 24px rgba(0,0,0,.18);}
 .unit-hd{display:flex;align-items:center;gap:13px;padding:16px 20px;cursor:pointer;user-select:none;}
 .unit-badge{width:36px;height:36px;border-radius:99px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0;}
-.u-t{background:rgba(91,170,181,.15);color:var(--teal);border:1.5px solid rgba(91,170,181,.3);}
+.u-t{background:rgba(91,170,181,.15);color:#1f6b76;border:1.5px solid rgba(91,170,181,.3);}
 .u-m{background:rgba(159,33,126,.12);color:var(--mag);border:1.5px solid rgba(159,33,126,.22);}
 .unit-hd-info{flex:1;}
 .unit-hd-title{font-size:13.5px;font-weight:700;margin-bottom:2px;color:var(--on-card);}
@@ -201,7 +228,7 @@ body{
 /* ── UNIT PROMPT ─────────────────────────────────────────────────────────────── */
 .unit-prompt{background:rgba(255,255,255,.13);border:1.5px solid rgba(255,255,255,.22);border-radius:12px;padding:16px 18px;margin-bottom:16px;position:relative;overflow:hidden;}
 .unit-prompt::before{content:'';position:absolute;top:-30px;right:-30px;width:120px;height:120px;border-radius:50%;background:radial-gradient(circle,rgba(91,170,181,.22) 0%,transparent 70%);pointer-events:none;}
-.up-ey{font-size:9px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--yellow);margin-bottom:6px;}
+.up-ey{font-size:9px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--mag);margin-bottom:6px;}
 .up-q{font-size:13px;font-weight:400;color:#FFFCF6;line-height:1.6;margin-bottom:10px;}
 .up-inp{width:100%;background:rgba(255,255,255,.1);border:1.5px solid rgba(255,255,255,.18);border-radius:8px;padding:9px 12px;font-family:'Poppins',sans-serif;font-size:12.5px;color:#FFFCF6;resize:none;outline:none;min-height:60px;}
 .up-inp::placeholder{color:rgba(255,252,246,.3);}.up-inp:focus{border-color:var(--yellow);}
@@ -217,9 +244,16 @@ body{
 .assign-slot img{width:100%;border-radius:7px;object-fit:cover;max-height:90px;}
 .assign-lbl{font-size:10.5px;color:var(--on-card-muted);font-weight:500;}.assign-slot.filled .assign-lbl{color:var(--mag);font-weight:700;}
 
+/* ── START CARD (used in goals + progress sections) ─────────────────────────── */
+.start-card{background:var(--card);border-radius:16px;border:1px solid rgba(255,255,255,.42);padding:22px;margin-bottom:18px;box-shadow:0 4px 18px rgba(0,0,0,.12);color:var(--on-card);}
+.start-card h3{font-size:14px;font-weight:700;color:var(--on-card);margin-bottom:4px;}
+.start-card p{font-size:12.5px;color:var(--on-card-muted);margin-bottom:16px;line-height:1.5;}
 /* ── GOALS ───────────────────────────────────────────────────────────────────── */
+.goals-section{background:var(--card);border-radius:16px;border:1px solid rgba(255,255,255,.42);padding:20px 22px;margin-bottom:18px;box-shadow:0 4px 18px rgba(0,0,0,.12);color:var(--on-card);}
+.goals-section-title{font-size:13px;font-weight:700;color:var(--mag);margin-bottom:3px;}
+.goals-section-sub{font-size:12px;color:var(--on-card-muted);margin-bottom:14px;}
 .goal-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:18px;}
-.gc{background:var(--card);border-radius:14px;border:1px solid rgba(255,255,255,.42);padding:18px 20px;box-shadow:0 4px 18px rgba(0,0,0,.12);color:var(--on-card);}
+.gc{background:var(--card);border-radius:14px;border:1px solid rgba(255,255,255,.42);padding:18px 20px;box-shadow:0 4px 18px rgba(0,0,0,.12);color:var(--on-card);backdrop-filter:none;}
 .gc:hover{box-shadow:0 6px 24px rgba(0,0,0,.18);}
 .gc.done .gc-title{text-decoration:line-through;opacity:.45;}
 .gc-cat{font-size:9.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;margin-bottom:8px;color:var(--on-card-muted);}
@@ -238,7 +272,7 @@ body{
 .note-date{font-size:10px;color:var(--on-card-muted);font-family:monospace;}
 .note-unit-lbl{font-size:10px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--mag);}
 .ntag{font-size:10px;font-weight:700;padding:2px 9px;border-radius:99px;letter-spacing:.04em;text-transform:uppercase;}
-.ntag-observation{background:rgba(91,170,181,.12);color:var(--teal);}
+.ntag-observation{background:rgba(91,170,181,.12);color:#1f6b76;}
 .ntag-question{background:rgba(234,204,40,.18);color:#7a6400;}
 .ntag-idea{background:rgba(124,58,237,.1);color:#7c3aed;}
 .ntag-win{background:rgba(5,150,105,.1);color:#059669;}
@@ -265,7 +299,7 @@ body{
 .login-screen.hidden{display:none;}
 .login-box{background:#fff;border-radius:20px;padding:36px 32px;width:360px;max-width:90vw;box-shadow:0 20px 60px rgba(0,0,0,.3);color:#1a1018;}
 .login-logo{font-size:18px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;color:#1a1018;margin-bottom:4px;}
-.login-logo span{color:var(--teal);}
+.login-logo span{color:#1f6b76;}
 .login-sub{font-size:12px;color:rgba(26,16,24,.5);margin-bottom:24px;font-weight:500;}
 .login-label{font-size:11.5px;font-weight:700;color:#1a1018;margin-bottom:5px;display:block;letter-spacing:.04em;text-transform:uppercase;}
 .login-input{width:100%;background:#f5f0f7;border:1.5px solid rgba(159,33,126,.18);border-radius:10px;padding:12px 15px;font-family:'Poppins',sans-serif;font-size:14px;color:#1a1018;outline:none;margin-bottom:12px;transition:border-color .15s;}
@@ -274,7 +308,7 @@ body{
 .login-btn{width:100%;background:var(--mag);color:#fff;border:none;border-radius:99px;padding:13px;font-family:'Poppins',sans-serif;font-size:13px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;transition:all .15s;margin-bottom:8px;}
 .login-btn:hover{filter:brightness(1.1);transform:translateY(-1px);}
 .login-btn:disabled{opacity:.5;cursor:not-allowed;}
-.login-msg{font-size:12.5px;color:var(--teal);text-align:center;min-height:20px;margin-top:4px;font-weight:500;}
+.login-msg{font-size:12.5px;color:#1f6b76;text-align:center;min-height:20px;margin-top:4px;font-weight:500;}
 .login-err{color:var(--mag);}
 .login-divider{display:flex;align-items:center;gap:12px;margin:16px 0;}
 .login-divider span{font-size:11px;color:rgba(26,16,24,.3);}
@@ -304,7 +338,7 @@ body{
 .pace-tl-unit{font-size:11px;font-weight:700;color:var(--mag);margin-bottom:2px;letter-spacing:.06em;text-transform:uppercase;}
 .pace-tl-title{font-size:13px;font-weight:600;margin-bottom:3px;color:var(--on-card);}
 .pace-tl-dates{font-size:11px;color:var(--on-card-muted);line-height:1.5;}
-.pace-tl-days{font-size:11.5px;font-weight:700;color:var(--teal);white-space:nowrap;margin-top:4px;text-align:right;}
+.pace-tl-days{font-size:11.5px;font-weight:700;color:#1f6b76;white-space:nowrap;margin-top:4px;text-align:right;}
 .pace-tl-days.slow{color:var(--on-card-muted);}
 .pace-empty{font-size:12.5px;color:var(--on-grad-muted);text-align:center;padding:24px 0;line-height:1.7;}
 
@@ -405,6 +439,36 @@ body{
 
 
 
+
+/* ── UNIT NAV BAR ────────────────────────────────────────────────────────────── */
+.unit-nav{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:20px;}
+.unb{background:rgba(255,255,255,.18);border:1.5px solid rgba(255,255,255,.25);border-radius:99px;padding:5px 13px;font-family:'Poppins',sans-serif;font-size:11px;font-weight:700;color:#FFFCF6;cursor:pointer;transition:all .15s;white-space:nowrap;letter-spacing:.03em;}
+.unb:hover{background:rgba(255,255,255,.3);border-color:rgba(255,255,255,.5);}
+.unb.active{background:var(--yellow);border-color:var(--yellow);color:#1a1018;}
+
+/* Dark mode: mag is too dark for text on dark cards, use lighter variant */
+
+/* Dark mode: restore teal for elements where we darkened it for light mode */
+[data-theme="dark"] .pill-t,
+[data-theme="dark"] .pc-done,
+[data-theme="dark"] .u-t,
+[data-theme="dark"] .ntag-observation,
+[data-theme="dark"] .login-logo span,
+[data-theme="dark"] .login-msg { color:var(--teal); }
+[data-theme="dark"] .us-hd,
+[data-theme="dark"] .gc-pct,
+[data-theme="dark"] .gal-unit,
+[data-theme="dark"] .pace-unit,
+[data-theme="dark"] .sl,
+[data-theme="dark"] .note-unit-lbl,
+[data-theme="dark"] .lesson-check-pct,
+[data-theme="dark"] .prog-val,
+[data-theme="dark"] .pace-tl-unit,
+[data-theme="dark"] .pace-tl-days,
+[data-theme="dark"] .sd.up,
+[data-theme="dark"] .sv em {color:#c94ba8;}
+[data-theme="dark"] .up-ey,
+[data-theme="dark"] .pc-ey {color:#c94ba8;}
 /* ── TUTORIAL ────────────────────────────────────────────────────────────────── */
 .tut-overlay{position:fixed;inset:0;z-index:1200;pointer-events:none;}
 .tut-backdrop{position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:1200;transition:opacity .3s;}
@@ -455,7 +519,7 @@ body{
   <button class="mob-btn" onclick="toggleSb()"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M3 5h14M3 10h14M3 15h14" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg></button>
 </div>
 <nav class="sb" id="sidebar">
-  <div class="sb-logo"><a href="https://www.thefocalpointhub.com" target="_blank" style="text-decoration:none;display:block;"><div class="sb-mark"><span>Focal Point</span> Photoclass</div><div class="sb-sub">Learning Journal ↗</div></a></div>
+  <div class="sb-logo"><a href="https://www.thefocalpointhub.com" target="_blank" style="text-decoration:none;display:block;"><img src="data:image/png;base64,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" alt="Focal Point" style="width:auto;max-width:150px;height:auto;display:block;margin-bottom:6px;"></a><div class="sb-sub">Photoclass 2026 · Learning Journal</div></div>
   <div class="sb-sec">My Journal</div>
   <div class="ni active" data-v="dashboard" onclick="nav('dashboard')"><svg viewBox="0 0 16 16" fill="none"><rect x="1" y="1" width="6" height="6" rx="1.5" fill="currentColor"/><rect x="9" y="1" width="6" height="6" rx="1.5" fill="currentColor" opacity=".5"/><rect x="1" y="9" width="6" height="6" rx="1.5" fill="currentColor" opacity=".5"/><rect x="9" y="9" width="6" height="6" rx="1.5" fill="currentColor" opacity=".5"/></svg>Dashboard</div>
   <div class="ni" data-v="journal" onclick="nav('journal')"><svg viewBox="0 0 16 16" fill="none"><path d="M3 4h10M3 7.5h10M3 11h6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>Unit Reflections</div>
@@ -464,10 +528,9 @@ body{
   <div class="ni" data-v="notes" onclick="nav('notes')"><svg viewBox="0 0 16 16" fill="none"><path d="M3 2h7l3 3v9H3V2z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/><path d="M10 2v3h3" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/><path d="M5 7h6M5 9.5h4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>Quick Notes</div>
   <div class="sb-sep"></div>
   <div class="sb-sec">Progress</div>
-  <div class="ni" data-v="progress" onclick="nav('progress')"><svg viewBox="0 0 16 16" fill="none"><path d="M2 12L5.5 7.5l3 3L11 6l3 4.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>My Progress</div>
   <div class="sb-btm">
     <div class="dm-row">
-      <div style="display:flex;align-items:center;gap:7px;"><span id="dmIcon" style="font-size:13px;">☀️</span><span class="dm-lbl" id="dmLbl">Light mode</span></div>
+      <div style="display:flex;align-items:center;gap:7px;"><span id="dmIcon" style="display:flex;align-items:center;width:15px;height:15px;color:rgba(255,252,246,.8);"><svg id="dmSvg" viewBox="0 0 16 16" fill="none" width="15" height="15"><circle cx="8" cy="8" r="3" stroke="currentColor" stroke-width="1.5"/><path d="M8 1v1.5M8 13.5V15M1 8h1.5M13.5 8H15M3.05 3.05l1.06 1.06M11.89 11.89l1.06 1.06M3.05 12.95l1.06-1.06M11.89 4.11l1.06-1.06" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg></span><span class="dm-lbl" id="dmLbl">Light mode</span></div>
       <label class="dm-sw"><input type="checkbox" id="dmCheck" onchange="setDark(this.checked)"><div class="dm-track"></div><div class="dm-thumb"></div></label>
     </div>
     <div class="sb-profile">
@@ -486,7 +549,6 @@ body{
   <div class="bni" data-v="notes" onclick="nav('notes')"><svg viewBox="0 0 16 16" fill="none"><path d="M3 2h7l3 3v9H3V2z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/><path d="M5 7h6M5 9.5h4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg><span>Notes</span></div>
   <div class="bni" data-v="journal" onclick="nav('journal')"><svg viewBox="0 0 16 16" fill="none"><path d="M3 4h10M3 7.5h10M3 11h6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg><span>Reflect</span></div>
   <div class="bni" data-v="goals" onclick="nav('goals')"><svg viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6" stroke="currentColor" stroke-width="1.5"/><circle cx="8" cy="8" r="2.5" fill="currentColor"/></svg><span>Goals</span></div>
-  <div class="bni" data-v="progress" onclick="nav('progress')"><svg viewBox="0 0 16 16" fill="none"><path d="M2 12L5.5 7.5l3 3L11 6l3 4.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Progress</span></div>
 </nav>
 <main class="main">
 <!-- DASHBOARD -->
@@ -538,6 +600,7 @@ body{
   <div class="ph">
     <div><div class="ph-ey">Capture as you go</div><div class="ph-ti">Quick <b>notes.</b></div></div>
     <div class="ph-acts">
+      <button class="btn btn-p btn-sm" onclick="openQuickNote()">+ Add note</button>
       <select class="fse" id="notes-filter-unit" style="font-size:12px;padding:7px 28px 7px 11px;border-radius:99px;background:#fff;color:#1a1018;border:1.5px solid rgba(159,33,126,.2);" onchange="renderNotes()">
         <option value="all">All units</option>
       </select>
@@ -560,6 +623,7 @@ body{
 <!-- JOURNAL -->
 <div class="view" id="view-journal">
   <div class="ph"><div><div class="ph-ey">Private — only you can see this</div><div class="ph-ti">Unit <b>reflections.</b></div></div></div>
+  <div class="unit-nav" id="unit-nav"></div>
   <div id="unit-accordion"></div>
 </div>
 <!-- GOALS -->
@@ -576,60 +640,14 @@ body{
       <div class="field-block"><label class="f-label">I am confident in my ability to...</label><textarea class="rf-area" id="g-confident" placeholder="What do you already know?" rows="4" oninput="autoSave('g-confident',this.value)"></textarea></div>
     </div>
   </div>
-  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;"><div style="font-size:13px;font-weight:600;">My goals</div></div>
+  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;"><div style="font-size:13px;font-weight:700;color:#FFFCF6;letter-spacing:.02em;">My goals</div></div>
   <div class="goal-grid" id="goal-grid"></div>
-  <div class="start-card">
-    <h3>Mid-course: revisiting goals</h3>
-    <p>From Unit 7 — now that you are halfway, how has your thinking shifted?</p>
-    <div class="g3" style="margin-bottom:0">
-      <div class="field-block"><label class="f-label">Progress so far...</label><textarea class="rf-area" id="g-progress" placeholder="What have you moved on? What stalled?" rows="4" oninput="autoSave('g-progress',this.value)"></textarea></div>
-      <div class="field-block"><label class="f-label">How my goals have changed...</label><textarea class="rf-area" id="g-changed" placeholder="Same direction, or somewhere new?" rows="4" oninput="autoSave('g-changed',this.value)"></textarea></div>
-      <div class="field-block"><label class="f-label">What I want to focus on next...</label><textarea class="rf-area" id="g-next" placeholder="The second half of the course..." rows="4" oninput="autoSave('g-next',this.value)"></textarea></div>
-    </div>
-  </div>
+
 </div>
 <!-- GALLERY -->
 <div class="view" id="view-gallery">
   <div class="ph"><div><div class="ph-ey">One per section · click to open reflections</div><div class="ph-ti">Assignment <b>gallery.</b></div></div></div>
   <div class="gal-grid" id="gal-grid"></div>
-</div>
-<!-- PROGRESS -->
-<div class="view" id="view-progress">
-  <div class="ph"><div><div class="ph-ey">Focal Point Photoclass</div><div class="ph-ti">Your <b>progress.</b></div></div></div>
-  <div class="g2">
-    <div class="card">
-      <div class="ch"><div><div class="ct">Section completion</div><div class="cs">Getting Started · Units 1–10 · Final Project</div></div></div>
-      <div class="cb" id="prog-bars"></div>
-    </div>
-    <div class="card">
-      <div class="ch"><div><div class="ct">A photo I am proud of</div><div class="cs">From the start of the course</div></div></div>
-      <div class="cb">
-        <div class="assign-slot" id="proud-slot" onclick="document.getElementById('proud-upload').click()" style="margin-bottom:12px;">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><rect x="2" y="4" width="20" height="16" rx="2.5" stroke="currentColor" stroke-width="1.4"/><circle cx="8.5" cy="10" r="2" stroke="currentColor" stroke-width="1.2"/><path d="M2 17l5-4 3.5 3.5 4-5L22 17" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          <span class="assign-lbl">Tap to add photo</span>
-          <input type="file" id="proud-upload" accept="image/*" style="display:none" onchange="handleProudPhoto(event)">
-        </div>
-        <div class="field-block"><label class="f-label">Why I chose this photo.</label><textarea class="rf-area" id="proud-why" placeholder="What made you choose this one?" rows="3" oninput="autoSave('proud-why',this.value)"></textarea></div>
-        <div class="field-block"><label class="f-label">What I would do differently.</label><textarea class="rf-area" id="proud-diff" placeholder="With what you know now..." rows="3" oninput="autoSave('proud-diff',this.value)"></textarea></div>
-      </div>
-    </div>
-  </div>
-  <div class="card" style="margin-bottom:18px;">
-    <div class="ch"><div><div class="ct">Your pace</div><div class="cs">Based on when you checked lessons complete</div></div></div>
-    <div class="cb" id="pace-timeline"></div>
-  </div>
-  <div class="card" style="margin-bottom:18px;">
-    <div class="ch"><div><div class="ct">Note activity</div><div class="cs">90 days</div></div><span class="pill pill-t">90 days</span></div>
-    <div class="cb">
-      <div class="rhythm" id="rhythm-prog"></div>
-      <div class="rh-leg"><span>Less</span><div class="rh-dots"><div class="rh-dot" style="background:rgba(91,170,181,.07)"></div><div class="rh-dot" style="background:rgba(91,170,181,.2)"></div><div class="rh-dot" style="background:rgba(91,170,181,.48)"></div><div class="rh-dot" style="background:var(--teal)"></div></div><span>More</span></div>
-    </div>
-  </div>
-  <div class="start-card">
-    <h3>Who or what inspires me</h3>
-    <p>Photographers, films, painters, places — anything that pulls at you creatively.</p>
-    <textarea class="rf-area" id="prog-inspire" placeholder="What shapes your eye? What do you keep coming back to?" rows="4" oninput="autoSave('prog-inspire',this.value)"></textarea>
-  </div>
 </div>
 </main>
 
@@ -663,6 +681,28 @@ body{
     </div>
   </div>
 </div>
+<!-- MODAL: Quick Note -->
+<div class="mo" id="modal-note">
+  <div class="md">
+    <button class="md-close" onclick="closeModal('modal-note')" aria-label="Close">×</button>
+    <h2>Quick note</h2>
+    <div style="font-size:11px;font-weight:600;color:var(--mag);letter-spacing:.06em;text-transform:uppercase;margin-bottom:14px;" id="modal-note-datetime"></div>
+    <div class="fg"><label class="fl">Note</label><textarea class="fta" id="modal-note-text" placeholder="What's on your mind?" rows="4"></textarea></div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+      <div class="fg" style="margin-bottom:0;"><label class="fl">Unit</label><select class="fi fse" id="modal-note-unit"></select></div>
+      <div class="fg" style="margin-bottom:0;"><label class="fl">Tag</label>
+        <select class="fi fse" id="modal-note-tag">
+          <option value="observation">Observation</option>
+          <option value="question">Question</option>
+          <option value="idea">Idea</option>
+          <option value="win">Win</option>
+          <option value="challenge">Challenge</option>
+        </select>
+      </div>
+    </div>
+    <div class="md-acts"><button class="btn btn-g" onclick="closeModal('modal-note')">Cancel</button><button class="btn btn-p" onclick="saveModalNote()">Save note</button></div>
+  </div>
+</div>
 <!-- MODAL: Goal -->
 <div class="mo" id="modal-goal">
   <div class="md">
@@ -683,7 +723,7 @@ body{
     <h2>Reflection prompt</h2><div class="msub">A focused question to sit with.</div>
     <div style="background:rgba(255,255,255,.13);border:1.5px solid rgba(255,255,255,.25);border-radius:12px;padding:16px 18px;margin-bottom:18px;overflow:hidden;position:relative;">
       <div style="position:absolute;top:-20px;right:-20px;width:100px;height:100px;border-radius:50%;background:radial-gradient(circle,rgba(91,170,181,.22) 0%,transparent 70%);"></div>
-      <div style="font-size:9.5px;font-weight:600;letter-spacing:.13em;text-transform:uppercase;color:var(--teal);margin-bottom:7px;" id="mp-unit"></div>
+      <div style="font-size:9.5px;font-weight:600;letter-spacing:.13em;text-transform:uppercase;color:#1f6b76;margin-bottom:7px;" id="mp-unit"></div>
       <div style="font-size:14px;font-weight:300;color:#FFFCF6;line-height:1.65;" id="mp-text"></div>
     </div>
     <div class="fg"><label class="fl">Your response</label><textarea class="fta" id="mp-resp" placeholder="Write freely..." style="min-height:100px;"></textarea></div>
@@ -1207,23 +1247,29 @@ function toggleLesson(uid, idx) {
 
   saveUnitProgress(uid);
 
-  // Update checklist UI in place
+  // Update chip UI in place
   var lessons = UNIT_LESSONS[uid] || [];
   var doneLessons = lessons.filter(function(l,i){ return D["lesson_"+uid+"_"+i]; }).length;
   var pct = Math.round((doneLessons/lessons.length)*100);
   var body = document.getElementById("ubody-" + uid);
-  if (!body) return;
-  var fill = body.querySelector(".lesson-prog-fill");
-  var pctEl = body.querySelector(".lesson-check-pct");
-  if (fill) fill.style.width = pct + "%";
-  if (pctEl) pctEl.textContent = pct + "% complete";
-  var items = body.querySelectorAll(".lesson-check-item");
-  var item = items[idx];
-  if (!item) return;
-  var box = item.querySelector(".lci-box");
-  var lbl = item.querySelector(".lci-label");
-  if (box) box.classList.toggle("done", !!D[key]);
-  if (lbl) lbl.classList.toggle("done", !!D[key]);
+  if (body) {
+    // Update chip state
+    var chips = body.querySelectorAll(".lchip");
+    if (chips[idx]) chips[idx].classList.toggle("done", !!D[key]);
+    // Update progress bar on card header
+    var barFill = document.querySelector("#uhd-" + uid + " ~ .unit-card-bar .unit-card-bar-fill, #uhd-" + uid + " + .unit-card-bar .unit-card-bar-fill");
+    // Simpler: find the bar inside the card
+    var card = document.getElementById("uhd-" + uid);
+    if (card) {
+      var parentCard = card.parentElement;
+      if (parentCard) {
+        var bar = parentCard.querySelector(".unit-card-bar-fill");
+        if (bar) bar.style.width = pct + "%";
+        var pctEl = parentCard.querySelector(".unit-card-pct");
+        if (pctEl) { pctEl.textContent = pct + "%"; pctEl.style.display = pct > 0 ? "" : "none"; }
+      }
+    }
+  }
   // Refresh dash pill and course pace
   var pill = document.getElementById("dash-pct-pill");
   if (pill) {
@@ -1317,7 +1363,6 @@ function nav(id) {
   if (id === "journal")   renderJournal();
   if (id === "goals")     renderGoals();
   if (id === "gallery")   renderGallery();
-  if (id === "progress")  renderProgress();
 }
 function toggleSb() { document.getElementById("sidebar").classList.toggle("open"); document.getElementById("sbOverlay").classList.toggle("open"); }
 function closeSb()  { document.getElementById("sidebar").classList.remove("open"); document.getElementById("sbOverlay").classList.remove("open"); }
@@ -1341,16 +1386,19 @@ function toast(msg) {
 // ── DARK MODE ─────────────────────────────────────────────────────────────────
 function setDark(on) {
   document.documentElement.setAttribute("data-theme", on ? "dark" : "");
-  document.getElementById("dmIcon").textContent = on ? "🌙" : "☀️";
-  document.getElementById("dmLbl").textContent  = on ? "Dark mode" : "Light mode";
+  var svg = on
+    ? '<svg viewBox="0 0 16 16" fill="none" width="15" height="15"><path d="M14 8.5A6 6 0 118.5 2a4.5 4.5 0 005.5 6.5z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg>'
+    : '<svg viewBox="0 0 16 16" fill="none" width="15" height="15"><circle cx="8" cy="8" r="3" stroke="currentColor" stroke-width="1.5"/><path d="M8 1v1.5M8 13.5V15M1 8h1.5M13.5 8H15M3.05 3.05l1.06 1.06M11.89 11.89l1.06 1.06M3.05 12.95l1.06-1.06M11.89 4.11l1.06-1.06" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>';
+  document.getElementById("dmIcon").innerHTML = svg;
+  document.getElementById("dmLbl").textContent = on ? "Dark mode" : "Light mode";
   localStorage.setItem("pc26_theme", on ? "dark" : "");
 }
 function restoreTheme() {
   if (localStorage.getItem("pc26_theme") === "dark") {
     document.documentElement.setAttribute("data-theme","dark");
     document.getElementById("dmCheck").checked = true;
-    document.getElementById("dmIcon").textContent = "🌙";
-    document.getElementById("dmLbl").textContent  = "Dark mode";
+    document.getElementById("dmIcon").innerHTML = '<svg viewBox="0 0 16 16" fill="none" width="15" height="15"><path d="M14 8.5A6 6 0 118.5 2a4.5 4.5 0 005.5 6.5z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg>';
+    document.getElementById("dmLbl").textContent = "Dark mode";
   }
 }
 
@@ -1469,7 +1517,7 @@ function renderCoursePace() {
     + '<div class="lesson-prog-bar"><div class="lesson-prog-fill" style="width:' + pct + '%"></div></div>'
     + '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;">'
     + '<span style="font-size:11px;color:var(--on-card-muted);">' + doneLessons + ' of ' + lessons.length + ' lessons complete</span>'
-    + (daysStr ? '<span style="font-size:11px;font-weight:600;color:var(--teal);">' + daysStr + '</span>' : '')
+    + (daysStr ? '<span style="font-size:11px;font-weight:600;color:#1f6b76;">' + daysStr + '</span>' : '')
     + '</div>'
     + '<div class="pace-nav">'
     + '<button class="btn btn-p btn-sm" onclick="nav(\'journal\')">Continue \u2192</button>'
@@ -1581,7 +1629,7 @@ function renderDash() {
     d.innerHTML = '<div style="width:7px;height:7px;border-radius:50%;background:var(--teal);flex-shrink:0;margin-top:4px;"></div>'
       + '<div style="flex:1"><div style="font-size:12.5px;font-weight:500;">' + g.title + '</div>'
       + '<div style="font-size:11px;color:var(--on-card-muted);margin-top:1px;">' + g.cat + '</div></div>'
-      + '<div style="font-size:11px;font-weight:600;color:var(--teal);">' + (g.pct ? g.pct + "%" : "\u2014") + '</div>';
+      + '<div style="font-size:11px;font-weight:600;color:#1f6b76;">' + (g.pct ? g.pct + "%" : "\u2014") + '</div>';
     d.onclick = function() { nav("goals"); };
     gl.appendChild(d);
   });
@@ -1656,7 +1704,7 @@ function renderNotes() {
     return true;
   });
   if (!filtered.length) {
-    el.innerHTML = '<div class="notes-empty"><div style="font-size:36px;margin-bottom:10px;">📝</div>' + (notes.length ? "No notes match this filter." : "No notes yet.<br>Tap ✎ anywhere to capture a thought.") + '</div>';
+    el.innerHTML = '<div class="notes-empty"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" style="margin-bottom:12px;opacity:.35;"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8l-6-6z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/><path d="M14 2v6h6M8 13h8M8 17h5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg><div>' + (notes.length ? 'No notes match this filter.' : 'No notes yet.<br>Use + Add note to capture a thought.') + '</div></div>';
     return;
   }
   // Group by month
@@ -1685,6 +1733,7 @@ function renderNotes() {
         + '</div>'
         + '<div class="note-body">' + body + '</div>'
         + '</div>';
+    });
   });
   el.innerHTML = html;
 }
@@ -1696,32 +1745,36 @@ function renderJournal() {
     var uid = String(u.id);
     var bc = (u.id === "gs" || u.id === "fp") ? "u-t" : (u.id % 2 === 0 ? "u-m" : "u-t");
     var badgeLabel = u.id === "gs" ? "GS" : u.id === "fp" ? "FP" : "U" + u.id;
-    var headLabel  = u.id === "gs" ? "Getting Started: " + u.title : u.id === "fp" ? "Final Project: " + u.title : "Unit " + u.id + ": " + u.title;
-    var sectHTML = "";
-    // ── Lesson checklist ──
+    var shortLabel = u.id === "gs" ? "Getting Started" : u.id === "fp" ? "Final Project" : "Unit " + u.id;
+    var headLabel  = shortLabel + ": " + u.title;
+
+    // Lesson progress
     var lessons = UNIT_LESSONS[uid] || [];
+    var doneLessons = lessons.filter(function(l,i){ return D["lesson_"+uid+"_"+i]; }).length;
+    var pct = lessons.length ? Math.round((doneLessons/lessons.length)*100) : 0;
+
+    // ── Lesson chips (compact horizontal pills) ──
+    var chipsHTML = "";
     if (lessons.length) {
-      var doneLessons = lessons.filter(function(l,i){ return D["lesson_"+uid+"_"+i]; }).length;
-      var pct = Math.round((doneLessons/lessons.length)*100);
-      var checkHTML = '<div class="lesson-check-hd"><span class="lesson-check-title">Lessons</span><span class="lesson-check-pct">' + pct + '% complete</span></div>'
-        + '<div class="lesson-prog-bar"><div class="lesson-prog-fill" style="width:' + pct + '%"></div></div>'
-        + '<div class="lesson-check-list">';
+      chipsHTML = '<div class="lesson-chips">';
       lessons.forEach(function(l, i) {
         var isDone = !!D["lesson_"+uid+"_"+i];
-        checkHTML += '<div class="lesson-check-item" onclick="toggleLesson(\'' + uid + '\',' + i + ')">'
-          + '<div class="lci-box' + (isDone?' done':'') + '"></div>'
-          + '<span class="lci-label' + (isDone?' done':'') + '">' + l + '</span>'
+        chipsHTML += '<div class="lchip' + (isDone ? ' done' : '') + '" onclick="toggleLesson(\'' + uid + '\',' + i + ')">'
+          + '<svg class="lchip-check" viewBox="0 0 10 10" fill="none"><circle cx="5" cy="5" r="4.5" stroke="currentColor" stroke-width="1"/>' + (isDone ? '<path d="M3 5l1.5 1.5L7 3.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>' : '') + '</svg>'
+          + l
           + '</div>';
       });
-      checkHTML += '</div>';
-      sectHTML += '<div class="unit-section">' + checkHTML + '</div>';
+      chipsHTML += '</div>';
     }
+
+    // ── Reflection prompt ──
+    var promptHTML = "";
     var prompts = UNIT_PROMPTS[uid] || [];
     if (prompts.length) {
       var pidx = (parseInt(D["uprompt_idx_" + uid]) || 0) % prompts.length;
       var savedKey = "uprompt_" + uid + "_" + pidx;
       var savedVal = (D[savedKey] || "").replace(/</g,"&lt;").replace(/>/g,"&gt;");
-      sectHTML += '<div class="unit-prompt">'
+      promptHTML = '<div class="unit-prompt" style="margin-bottom:16px;">'
         + '<div class="up-ey" id="upey-' + uid + '">Reflection prompt ' + (pidx+1) + ' of ' + prompts.length + '</div>'
         + '<div class="up-q" id="upq-' + uid + '">' + prompts[pidx] + '</div>'
         + '<textarea class="up-inp" id="upinp-' + uid + '" placeholder="Write freely..." rows="3">' + savedVal + '</textarea>'
@@ -1730,59 +1783,84 @@ function renderJournal() {
         + '<button class="up-save" onclick="saveUnitPrompt(\'' + uid + '\')">Save</button>'
         + '</div></div>';
     }
-    // Sections
+
+    // ── Reflection fields in 2-col grid ──
+    var fieldsHTML = "";
     u.sections.forEach(function(s) {
-      var fHTML = ""; var fi = 0;
+      fieldsHTML += '<div class="us-hd" style="margin-top:12px;">' + s.title + '</div>';
+      fieldsHTML += '<div class="unit-reflect-grid">';
+      var fi = 0;
       while (fi < s.fields.length) {
-        var f = s.fields[fi], nx = s.fields[fi+1];
-        if (nx && f.rows <= 3 && nx.rows <= 3) {
-          fHTML += '<div class="field-row">' + mkF(f) + mkF(nx) + '</div>'; fi += 2;
-        } else {
-          fHTML += '<div class="field-block">' + mkF(f) + '</div>'; fi++;
-        }
+        var f = s.fields[fi];
+        var val = (D[f.id] || "").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
+        fieldsHTML += '<div><label class="f-label">' + f.label + '</label>'
+          + '<textarea class="rf-area" id="' + f.id + '" placeholder="' + f.ph + '" rows="' + f.rows + '" oninput="autoSave(\'' + f.id + '\',this.value)">' + val + '</textarea></div>';
+        fi++;
       }
-      sectHTML += '<div class="unit-section"><div class="us-hd">' + s.title + '</div>' + fHTML + '</div>';
+      fieldsHTML += '</div>';
     });
-    // Assignment slot
+
+    // ── Assignment slot ──
     var photo  = D["photo-" + uid];
     var achose = (D["achose-" + uid] || "").replace(/</g,"&lt;").replace(/>/g,"&gt;");
     var adiff  = (D["adiff-"  + uid] || "").replace(/</g,"&lt;").replace(/>/g,"&gt;");
     var thumbHTML = photo
-      ? '<img src="' + photo + '" style="width:100%;height:90px;object-fit:cover;border-radius:7px;">'
+      ? '<img src="' + photo + '" style="width:100%;height:90px;object-fit:cover;border-radius:7px;">' 
       : '<svg width="22" height="22" viewBox="0 0 22 22" fill="none"><rect x="2" y="3" width="18" height="16" rx="2" stroke="currentColor" stroke-width="1.4"/><circle cx="8" cy="9.5" r="2" stroke="currentColor" stroke-width="1.2"/><path d="M2 16l4.5-3.5 3 3 3.5-4.5 5 5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
-    sectHTML += '<div class="unit-section"><div class="us-hd">Assignment \u00b7 ' + headLabel + '</div>'
+    var assignHTML = '<div class="us-hd" style="margin-top:12px;">Assignment</div>'
       + '<div class="assign-grid">'
-      + '<div class="assign-slot' + (photo ? " filled" : "") + '" id="aslot-' + uid + '" onclick="document.getElementById(\'aup-' + uid + '\').click()">'
-      + thumbHTML
+      + '<div class="assign-slot' + (photo ? " filled" : "") + '" id="aslot-' + uid + '" onclick="document.getElementById(\'aup-' + uid + '\').click()">' + thumbHTML
       + '<span class="assign-lbl">' + (photo ? "Photo added" : "Add photo") + '</span>'
       + '<input type="file" id="aup-' + uid + '" accept="image/*" style="display:none" onchange="handleAPhoto(event,\'' + uid + '\')">'
       + '</div>'
       + '<div>'
       + '<div class="field-block"><label class="f-label">Why I chose this photo.</label><textarea class="rf-area" id="achose-' + uid + '" placeholder="What made this the one?" rows="3" oninput="autoSave(\'achose-' + uid + '\',this.value)">' + achose + '</textarea></div>'
       + '<div class="field-block"><label class="f-label">What I would do differently.</label><textarea class="rf-area" id="adiff-' + uid + '" placeholder="With what you know now..." rows="3" oninput="autoSave(\'adiff-' + uid + '\',this.value)">' + adiff + '</textarea></div>'
-      + '</div></div></div>';
-    var block = document.createElement("div"); block.className = "unit-block";
-    block.innerHTML = '<div class="unit-hd" id="uhd-' + uid + '" onclick="toggleUnit(\'' + uid + '\')">'
-      + '<div class="unit-badge ' + bc + '">' + badgeLabel + '</div>'
-      + '<div class="unit-hd-info"><div class="unit-hd-title">' + headLabel + '</div><div class="unit-hd-sub">' + u.sub + '</div></div>'
-      + '<div class="unit-chev">\u2304</div>'
+      + '</div></div>';
+
+    // ── Build the card ──
+    var card = document.createElement("div");
+    card.className = "unit-card";
+    card.innerHTML =
+      '<div class="unit-card-hd" id="uhd-' + uid + '" onclick="toggleUnit(\'' + uid + '\')">'
+      + '<div class="unit-card-badge ' + bc + '">' + badgeLabel + '</div>'
+      + '<div class="unit-card-info">'
+      + '<div class="unit-card-title">' + headLabel + '</div>'
+      + '<div class="unit-card-sub">' + u.sub + '</div>'
       + '</div>'
-      + '<div class="unit-body" id="ubody-' + uid + '">' + sectHTML + '</div>';
-    acc.appendChild(block);
+      + '<div class="unit-card-meta">'
+      + (pct > 0 ? '<span class="unit-card-pct">' + pct + '%</span>' : '')
+      + '</div>'
+      + '<div class="unit-card-chev">\u2304</div>'
+      + '</div>'
+      + (pct > 0 ? '<div class="unit-card-bar"><div class="unit-card-bar-fill" style="width:' + pct + '%"></div></div>' : '')
+      + '<div class="unit-card-body" id="ubody-' + uid + '">'
+      + chipsHTML
+      + promptHTML
+      + fieldsHTML
+      + assignHTML
+      + '</div>';
+    acc.appendChild(card);
   });
-  // Restore saved field values
-  UNITS.forEach(function(u) {
-    u.sections.forEach(function(s) {
-      s.fields.forEach(function(f) {
-        var el = document.getElementById(f.id);
-        if (el && D[f.id]) el.value = D[f.id];
-      });
+
+  // Build unit nav bar
+  var navEl = document.getElementById("unit-nav");
+  if (navEl) {
+    navEl.innerHTML = "";
+    UNITS.forEach(function(u) {
+      var uid = String(u.id);
+      var label = u.id === "gs" ? "GS" : u.id === "fp" ? "FP" : "U" + u.id;
+      var btn = document.createElement("button");
+      btn.className = "unb"; btn.id = "unb-" + uid;
+      btn.textContent = label;
+      btn.title = u.id === "gs" ? "Getting Started" : u.id === "fp" ? "Final Project" : "Unit " + u.id + ": " + u.title;
+      btn.onclick = (function(id){ return function(){ jumpToUnit(id); }; })(uid);
+      navEl.appendChild(btn);
     });
-  });
-  // Auto-open: find the most recently touched unit, fall back to Getting Started
-  var lastUid = null;
-  var lastTs = 0;
-  // Check lesson timestamps
+  }
+
+  // Auto-open: find most recently touched unit
+  var lastUid = null; var lastTs = 0;
   UNITS.forEach(function(u) {
     var uid = String(u.id);
     var lessons = UNIT_LESSONS[uid] || [];
@@ -1790,30 +1868,47 @@ function renderJournal() {
       var ts = D["lesson_ts_" + uid + "_" + i];
       if (ts && ts > lastTs) { lastTs = ts; lastUid = uid; }
     });
-    // Also check reflection field activity via unit start time
     var unitStart = D["unit_start_" + uid];
     if (unitStart && unitStart > lastTs) { lastTs = unitStart; lastUid = uid; }
   });
-  // Check reflection fields for any saved text
   if (!lastUid) {
     UNITS.forEach(function(u) {
       var uid = String(u.id);
       u.sections.forEach(function(s) {
-        s.fields.forEach(function(f) {
-          if (D[f.id] && !lastUid) lastUid = uid;
-        });
+        s.fields.forEach(function(f) { if (D[f.id] && !lastUid) lastUid = uid; });
       });
     });
   }
-  // Default to Getting Started on first ever open
   var openUid = lastUid || "gs";
   var hd = document.getElementById("uhd-" + openUid);
   if (hd) {
     toggleUnit(openUid);
     setTimeout(function(){ hd.scrollIntoView({behavior:"smooth", block:"start"}); }, 80);
   }
+  var curBtn = document.getElementById("unb-" + openUid);
+  if (curBtn) curBtn.classList.add("active");
 }
 
+// ── UNIT JUMP NAV ─────────────────────────────────────────────────────────────
+function jumpToUnit(uid) {
+  // Close all units first
+  UNITS.forEach(function(u) {
+    var b = document.getElementById("ubody-" + String(u.id));
+    var h = document.getElementById("uhd-"   + String(u.id));
+    if (b && b.classList.contains("open")) { b.classList.remove("open"); if(h) h.classList.remove("open"); }
+  });
+  // Update nav pill highlight
+  document.querySelectorAll(".unb").forEach(function(b){ b.classList.remove("active"); });
+  var btn = document.getElementById("unb-" + uid); if (btn) btn.classList.add("active");
+  // Open target unit and scroll to it
+  var hd = document.getElementById("uhd-" + uid);
+  var body = document.getElementById("ubody-" + uid);
+  if (body && hd) {
+    body.classList.add("open");
+    hd.classList.add("open");
+    setTimeout(function(){ hd.scrollIntoView({behavior:"smooth", block:"start"}); }, 50);
+  }
+}
 function mkF(f) {
   var val = (D[f.id] || "").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
   return '<div><label class="f-label">' + f.label + '</label>'
@@ -1881,7 +1976,7 @@ function renderGoals() {
     var cc = g.cat==="Technical skill" ? "var(--teal)" : g.cat==="Personal project" ? "var(--mag)" : g.cat==="Community" ? "#8a7200" : "var(--on-card-muted)";
     var div = document.createElement("div"); div.className = "gc" + (g.done ? " done" : "");
     var footRight = g.done
-      ? '<span style="font-size:12px;color:var(--teal);font-weight:500;">\u2713 Done</span>'
+      ? '<span style="font-size:12px;color:#1f6b76;font-weight:500;">\u2713 Done</span>'
       : '<button class="btn btn-g btn-sm" onclick="doneGoal(' + i + ')">Mark done</button>';
     div.innerHTML = '<div class="gc-cat" style="color:' + cc + ';">' + g.cat + '</div>'
       + '<div class="gc-title">' + g.title + '</div>'
@@ -1904,11 +1999,11 @@ function renderSuggestedGoals(grid) {
   var curUnit = null;
   UNITS.forEach(function(u) { if (String(u.id) === String(curKey)) curUnit = u; });
   var unitLabel = curUnit ? (typeof curUnit.id === "number" ? "Unit " + curUnit.id + ": " + curUnit.title : curUnit.title) : "Getting Started";
-  var phaseLabel = curIdx <= 2 ? "just getting started" : curIdx <= 5 ? "building your fundamentals" : curIdx <= 7 ? "halfway through" : "in the home stretch";
+  var phaseLabel = curIdx <= 2 ? "just getting started" : curIdx <= 4 ? "building your fundamentals" : "in the later units";
   var wrap = document.createElement("div");
   wrap.style.cssText = "grid-column:1/-1;";
   wrap.innerHTML = '<div style="font-size:13px;font-weight:700;color:var(--on-card);margin-bottom:3px;">Goals for where you are now</div>'
-    + '<div style="font-size:12px;color:var(--on-card-muted);margin-bottom:16px;">You\'re ' + phaseLabel + ' \u2014 ' + unitLabel + '. Pick up to 3, or <span style="color:var(--mag);cursor:pointer;font-weight:600;" onclick="openModal(\'modal-goal\')">write your own \u2192</span></div>';
+    + '<div style="font-size:12px;color:var(--on-card-muted);margin-bottom:16px;">Suggested for ' + unitLabel + '. Pick up to 3, or <span style="color:var(--mag);cursor:pointer;font-weight:600;" onclick="openModal(\'modal-goal\')">write your own \u2192</span></div>';
   grid.appendChild(wrap);
 
   SUGGESTED_GOALS.forEach(function(sg, i) {
@@ -2322,14 +2417,15 @@ var TUT_STEPS = [
   {
     target: "[data-v='notes']",
     title: "Quick Notes",
-    body: "Browse all your saved notes, filtered by unit or tag. Use the ✎ button anywhere to capture a thought fast.",
+    body: "All your captured notes live here, grouped by month and filterable by unit or tag.",
     pos: "right"
   },
   {
-    target: "[data-v='progress']",
-    title: "My Progress",
-    body: "See your pace through the course, how long you spent on each unit, and your note activity over time.",
-    pos: "right"
+    target: ".ph-acts .btn-p",
+    title: "+ Add note",
+    body: "Tap this button any time to capture a thought instantly. Choose a unit and tag so you can find it later — the date and time are recorded automatically.",
+    pos: "below",
+    before: function() { nav("notes"); }
   }
 ];
 var _tutIdx = 0;
@@ -2342,6 +2438,15 @@ function startTutorial() {
 
 function showTutStep() {
   var step = TUT_STEPS[_tutIdx];
+  // Run before() hook if present (e.g. navigate to a view), then re-render after DOM settles
+  if (step.before) {
+    step.before();
+    setTimeout(function() { _renderTutStep(step); }, 350);
+    return;
+  }
+  _renderTutStep(step);
+}
+function _renderTutStep(step) {
   var target = document.querySelector(step.target);
   var hl = document.getElementById("tut-highlight");
   var card = document.getElementById("tut-card");
@@ -2366,6 +2471,9 @@ function showTutStep() {
   } else if (pos === "top-left") {
     card.style.left = Math.max(margin, r.left - cardW - margin) + "px";
     card.style.top  = Math.max(margin, r.top - cardH - margin) + "px";
+  } else if (pos === "below") {
+    card.style.left = Math.max(margin, r.left + r.width/2 - cardW/2) + "px";
+    card.style.top  = (r.bottom + margin) + "px";
   }
   // Clamp to viewport
   var vw = window.innerWidth, vh = window.innerHeight;
@@ -2403,6 +2511,70 @@ function endTutorial() {
   localStorage.setItem("pc26_tut_done", "1");
 }
 
+
+// ── QUICK NOTE MODAL ──────────────────────────────────────────────────────────
+function openQuickNote() {
+  // Populate unit select
+  var sel = document.getElementById("modal-note-unit");
+  if (sel && sel.options.length <= 1) {
+    sel.innerHTML = '<option value="general">General</option>';
+    UNITS.forEach(function(u) {
+      var label = typeof u.id === "number" ? "Unit " + u.id + ": " + u.title : u.title;
+      var opt = document.createElement("option"); opt.value = String(u.id); opt.textContent = label;
+      sel.appendChild(opt);
+    });
+  }
+  // Pre-select current unit
+  if (sel) {
+    var curKey = String(currentUnitKey());
+    for (var i = 0; i < sel.options.length; i++) {
+      if (sel.options[i].value === curKey) { sel.selectedIndex = i; break; }
+    }
+  }
+  // Show live datetime
+  var now = new Date();
+  var dtEl = document.getElementById("modal-note-datetime");
+  if (dtEl) {
+    dtEl.textContent = now.toLocaleDateString("en-GB", {weekday:"long", day:"numeric", month:"long", year:"numeric"})
+      + " · " + now.toLocaleTimeString("en-GB", {hour:"2-digit", minute:"2-digit"});
+  }
+  // Store the timestamp for saving
+  window._noteOpenTs = now.getTime();
+  openModal("modal-note");
+  setTimeout(function(){ var t = document.getElementById("modal-note-text"); if(t) t.focus(); }, 100);
+}
+function saveModalNote() {
+  var text = document.getElementById("modal-note-text").value.trim();
+  if (!text) { toast("Write something first."); return; }
+  var uid = document.getElementById("modal-note-unit").value;
+  var tag = document.getElementById("modal-note-tag").value;
+  var unitLabel = "General";
+  UNITS.forEach(function(u) { if (String(u.id) === uid) unitLabel = u.title; });
+  if (!currentUser) return;
+  if (LOCAL_MODE) {
+    var ts = window._noteOpenTs || Date.now();
+    notes.unshift({id:ts, ts:ts, text:text, uid:uid, unitLabel:unitLabel, tag:tag});
+    persist();
+    document.getElementById("modal-note-text").value = "";
+    closeModal("modal-note");
+    renderNotes(); buildRhythm("rhythm-prog");
+    var nc = document.getElementById("dash-nc"); if (nc) nc.textContent = notes.length;
+    toast("Note saved ✓");
+    return;
+  }
+  sb.from("notes").insert({user_id:currentUser.id, text:text, uid:uid, unit_label:unitLabel, tag:tag})
+    .select().single()
+    .then(function(res) {
+      if (res.error) { console.error("[journal] modal note failed:", res.error); toast("Save failed — check your connection."); return; }
+      if (res.data) notes.unshift({id:res.data.id, ts:new Date(res.data.created_at).getTime(), text:text, uid:uid, unitLabel:unitLabel, tag:tag});
+      document.getElementById("modal-note-text").value = "";
+      closeModal("modal-note");
+      renderNotes(); buildRhythm("rhythm-prog");
+      var nc = document.getElementById("dash-nc"); if (nc) nc.textContent = notes.length;
+      showSaveIndicator();
+      toast("Note saved ✓");
+    });
+}
 </script>
 </body>
 </html>
