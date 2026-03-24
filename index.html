@@ -960,12 +960,13 @@ function defaultGoals() {
 
 function loadUserData(callback) {
   var uid = currentUser.id;
-  var pending = 3;
+  var pending = 4;
   function done() { pending--; if (pending === 0 && callback) callback(); }
   // Journal fields (includes lesson progress stored as D keys)
   sb.from("journal_data").select("data").eq("user_id", uid).maybeSingle()
     .then(function(res) {
-      if (res.data && res.data.data) {
+      if (res.error) { console.error("[journal] load journal_data failed:", res.error); }
+      else if (res.data && res.data.data) {
         D = res.data.data;
         // Restore completion from saved D
         Object.keys(COMPLETION).forEach(function(k) {
@@ -976,10 +977,15 @@ function loadUserData(callback) {
     });
   // Goals
   sb.from("goals").select("*").eq("user_id", uid).order("created_at", {ascending:false})
-    .then(function(res) { goals = (res.data && res.data.length) ? res.data : []; done(); });
+    .then(function(res) {
+      if (res.error) console.error("[journal] load goals failed:", res.error);
+      goals = (res.data && res.data.length) ? res.data : [];
+      done();
+    });
   // Notes
   sb.from("notes").select("*").eq("user_id", uid).order("created_at", {ascending:false})
     .then(function(res) {
+      if (res.error) console.error("[journal] load notes failed:", res.error);
       notes = res.data ? res.data.map(function(n) {
         return {id:n.id, ts:new Date(n.created_at).getTime(), text:n.text, uid:n.uid, unitLabel:n.unit_label, tag:n.tag};
       }) : [];
@@ -987,7 +993,11 @@ function loadUserData(callback) {
     });
   // Photos (separate table, merge into D)
   sb.from("photos").select("slot,data").eq("user_id", uid)
-    .then(function(res) { if (res.data) res.data.forEach(function(p){ D[p.slot]=p.data; }); });
+    .then(function(res) {
+      if (res.error) console.error("[journal] load photos failed:", res.error);
+      else if (res.data) res.data.forEach(function(p){ D[p.slot]=p.data; });
+      done();
+    });
 }
 
 function saveUnitProgress(uid) {
@@ -1077,7 +1087,8 @@ function syncCourseCompletionGoals() {
       }
       // Persist to Supabase if we have a real id
       if (!LOCAL_MODE && currentUser && g.id && typeof g.id === "string" && g.id.length > 10) {
-        sb.from("goals").update({pct: overallPct, updated_at: new Date().toISOString()}).eq("id", g.id);
+        sb.from("goals").update({pct: overallPct, updated_at: new Date().toISOString()}).eq("id", g.id)
+          .then(function(res) { if (res.error) console.error("[journal] goal pct update failed:", res.error); });
       }
     }
   });
@@ -1098,8 +1109,15 @@ function persistNow() {
   Object.keys(D).forEach(function(k) {
     if (k.indexOf("photo-") !== 0 && k !== "proud-photo") journalOnly[k] = D[k];
   });
-  sb.from("journal_data").upsert({user_id:uid, data:journalOnly, updated_at:new Date().toISOString()}, {onConflict:"user_id"});
-  showSaveIndicator();
+  sb.from("journal_data").upsert({user_id:uid, data:journalOnly, updated_at:new Date().toISOString()}, {onConflict:"user_id"})
+    .then(function(res) {
+      if (res.error) {
+        console.error("[journal] save failed:", res.error);
+        toast("Save failed — check your connection.");
+      } else {
+        showSaveIndicator();
+      }
+    });
 }
 function showSaveIndicator() {
   var el = document.getElementById("save-indicator");
@@ -1114,7 +1132,10 @@ function savePhoto(slot, dataUrl) {
   if (!currentUser) return;
   D[slot] = dataUrl;
   sb.from("photos").upsert({user_id:currentUser.id, slot:slot, data:dataUrl, updated_at:new Date().toISOString()}, {onConflict:"user_id,slot"})
-    .then(function(){ showSaveIndicator(); });
+    .then(function(res) {
+      if (res.error) console.error("[journal] photo save failed:", res.error);
+      else showSaveIndicator();
+    });
 }
 
 // ── NAV ───────────────────────────────────────────────────────────────────────
@@ -1427,6 +1448,11 @@ function addNote() {
   sb.from("notes").insert({user_id:currentUser.id, text:text, uid:uid, unit_label:unitLabel, tag:tag})
     .select().single()
     .then(function(res) {
+      if (res.error) {
+        console.error("[journal] note save failed:", res.error);
+        toast("Save failed — check your connection.");
+        return;
+      }
       if (res.data) {
         notes.unshift({id:res.data.id, ts:new Date(res.data.created_at).getTime(), text:text, uid:uid, unitLabel:unitLabel, tag:tag});
       }
@@ -1436,12 +1462,13 @@ function addNote() {
       buildRhythm("rhythm-prog");
       var nc = document.getElementById("dash-nc"); if (nc) nc.textContent = notes.length;
       showSaveIndicator();
+      toast("Note saved \u2713");
     });
-  toast("Note saved \u2713");
 }
 
 function deleteNote(id) {
-  if (currentUser) sb.from("notes").delete().eq("id", id);
+  if (currentUser) sb.from("notes").delete().eq("id", id)
+    .then(function(res) { if (res.error) console.error("[journal] deleteNote failed:", res.error); });
   notes = notes.filter(function(n){return n.id !== id;});
   renderNotes();
   buildRhythm("rhythm-dash"); buildRhythm("rhythm-prog");
@@ -1756,6 +1783,11 @@ function saveSuggestedGoals() {
   });
   sb.from("goals").insert(rows).select()
     .then(function(res) {
+      if (res.error) {
+        console.error("[journal] suggested goals save failed:", res.error);
+        toast("Save failed — check your connection.");
+        return;
+      }
       if (res.data) res.data.forEach(function(g) { goals.unshift(g); });
       renderGoals(); renderDash();
       toast(toAdd.length + " goal" + (toAdd.length > 1 ? "s" : "") + " added \u2713");
@@ -1770,7 +1802,8 @@ function addSuggestedGoal(i) {
 function doneGoal(i) {
   var g = goals[i]; g.done = true; g.pct = 100;
   if (currentUser && g.id) {
-    sb.from("goals").update({done:true, pct:100, updated_at:new Date().toISOString()}).eq("id", g.id);
+    sb.from("goals").update({done:true, pct:100, updated_at:new Date().toISOString()}).eq("id", g.id)
+      .then(function(res) { if (res.error) console.error("[journal] doneGoal update failed:", res.error); });
   }
   renderGoals(); renderDash(); toast("Goal complete \uD83C\uDF89");
 }
@@ -1783,12 +1816,17 @@ function addGoal() {
   sb.from("goals").insert({user_id:currentUser.id, title:t, cat:cat, why:why, pct:0, done:false})
     .select().single()
     .then(function(res) {
+      if (res.error) {
+        console.error("[journal] addGoal failed:", res.error);
+        toast("Save failed — check your connection.");
+        return;
+      }
       if (res.data) goals.unshift(res.data);
       renderGoals(); renderDash();
+      closeModal("modal-goal"); toast("Goal added \u2713");
+      document.getElementById("g-title").value = "";
+      document.getElementById("g-why").value   = "";
     });
-  closeModal("modal-goal"); toast("Goal added \u2713");
-  document.getElementById("g-title").value = "";
-  document.getElementById("g-why").value   = "";
 }
 
 // ── GALLERY ───────────────────────────────────────────────────────────────────
