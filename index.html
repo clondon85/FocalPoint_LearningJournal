@@ -146,7 +146,7 @@ body{
 .ch{padding:18px 22px 0;display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:14px;}
 .ct{font-size:13.5px;font-weight:700;color:var(--on-card);}.cs{font-size:11px;color:var(--on-card-muted);margin-top:2px;}
 .cb{padding:8px 22px 22px;flex:1;display:flex;flex-direction:column;}
-#dash-prog{padding:8px 16px 16px;}
+#dash-prog{padding:8px 16px 16px;display:flex;flex-direction:column;flex:1;min-height:0;}
 .pill{font-size:10px;font-weight:700;padding:3px 10px;border-radius:99px;letter-spacing:.05em;text-transform:uppercase;white-space:nowrap;}
 .pill-t{background:rgba(91,170,181,.15);color:#1f6b76;}.pill-m{background:rgba(159,33,126,.12);color:var(--mag);}.pill-y{background:rgba(234,204,40,.2);color:#7a6200;}
 
@@ -297,6 +297,7 @@ body{
 .goals-section-title{font-size:13px;font-weight:700;color:var(--mag);margin-bottom:3px;}
 .goals-section-sub{font-size:12px;color:var(--on-card-muted);margin-bottom:14px;}
 .goal-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:18px;}
+.sug-goal{grid-column:1/-1;}
 .gc{background:var(--card);border-radius:14px;border:1px solid rgba(255,255,255,.42);padding:18px 20px;box-shadow:0 4px 18px rgba(0,0,0,.12);color:var(--on-card);backdrop-filter:none;}
 .gc:hover{box-shadow:0 6px 24px rgba(0,0,0,.18);}
 .gc.done .gc-title{text-decoration:line-through;opacity:.45;}
@@ -410,12 +411,12 @@ body{
 .pace-nav{display:flex;gap:8px;flex-wrap:wrap;}
 
 /* ── SUGGESTED GOALS ─────────────────────────────────────────────────────────── */
-.sug-goal{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:10px;background:rgba(159,33,126,.06);margin-bottom:7px;cursor:pointer;transition:background .15s;border:1.5px solid rgba(159,33,126,.12);}
-.sug-goal:hover{background:rgba(159,33,126,.1);border-color:rgba(159,33,126,.22);}
+.sug-goal{display:flex;align-items:center;gap:10px;padding:12px 16px;border-radius:10px;background:var(--card);box-shadow:0 2px 10px rgba(0,0,0,.1);margin-bottom:0;cursor:pointer;transition:all .15s;border:1.5px solid rgba(255,255,255,.4);color:var(--on-card);}
+.sug-goal:hover{transform:translateY(-1px);box-shadow:0 4px 16px rgba(0,0,0,.14);border-color:rgba(159,33,126,.3);}
 .sug-goal-info{flex:1;}
 .sug-goal-text{font-size:12.5px;font-weight:600;color:var(--on-card);}
 .sug-goal-cat{font-size:10px;color:var(--on-card-muted);margin-top:1px;font-weight:500;}
-.sug-goal.selected{background:rgba(159,33,126,.1);border-color:var(--mag);}
+.sug-goal.selected{background:var(--card);border-color:var(--mag);border-width:2px;}
 .sug-goal.selected .sug-add-icon{color:#fff;background:var(--mag);border-radius:50%;width:22px;height:22px;display:flex;align-items:center;justify-content:center;font-size:14px;}
 
 /* ── BOTTOM NAV ──────────────────────────────────────────────────────────────── */
@@ -490,8 +491,8 @@ body{
 
 
 /* ── UNIT PROGRESS TILE GRID ─────────────────────────────────────────────────── */
-.prog-tiles{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;}
-.ptile{border-radius:10px;aspect-ratio:unset;height:72px;position:relative;cursor:pointer;overflow:hidden;border:2px solid rgba(159,33,126,.15);transition:transform .15s,box-shadow .15s;background:#f5f0f7;}
+.prog-tiles{display:grid;grid-template-columns:repeat(3,1fr);grid-template-rows:repeat(4,1fr);gap:8px;flex:1;min-height:0;}
+.ptile{border-radius:10px;position:relative;cursor:pointer;overflow:hidden;border:1.5px solid rgba(159,33,126,.15);transition:transform .15s,box-shadow .15s;background:#f5f0f7;min-height:56px;}
 .ptile:hover{transform:translateY(-2px);box-shadow:0 6px 18px rgba(0,0,0,.15);}
 .ptile-fill{position:absolute;bottom:0;left:0;right:0;background:linear-gradient(180deg,rgba(91,170,181,.7),rgba(159,33,126,.85));transition:height .8s cubic-bezier(.4,0,.2,1);}
 .ptile-label{position:absolute;inset:0;display:flex;flex-direction:column;align-items:flex-start;justify-content:flex-end;padding:10px 11px 10px 11px;z-index:1;}
@@ -1728,8 +1729,7 @@ function renderDash() {
   var tilesContainer = document.createElement("div");
   tilesContainer.className = "prog-tiles";
   dp.appendChild(tilesContainer);
-  dp.className = ""; // reset to block
-  dp.style.cssText = "display:block;";
+  // dp keeps its #dash-prog CSS (flex column)
   setTimeout(function(){ var bar=overview.querySelector("[data-w]"); if(bar) bar.style.width=bar.dataset.w+"%"; }, 120);
   UNITS.forEach(function(u) {
     var uid = String(u.id);
@@ -2245,7 +2245,7 @@ function renderSuggestedGoals(grid) {
   var unitLabel = curUnit ? (typeof curUnit.id === "number" ? "Unit " + curUnit.id + ": " + curUnit.title : curUnit.title) : "Getting Started";
   var phaseLabel = curIdx <= 2 ? "just getting started" : curIdx <= 4 ? "building your fundamentals" : "in the later units";
   var wrap = document.createElement("div");
-  wrap.style.cssText = "grid-column:1/-1;";
+  wrap.style.cssText = "grid-column:1/-1;background:var(--card);border-radius:16px;border:1px solid rgba(255,255,255,.42);padding:18px 20px 6px;box-shadow:0 4px 18px rgba(0,0,0,.12);margin-bottom:0;";
   wrap.innerHTML = '<div style="font-size:13px;font-weight:700;color:var(--on-card);margin-bottom:3px;">Goals for where you are now</div>'
     + '<div style="font-size:12px;color:var(--on-card-muted);margin-bottom:16px;">Suggested for ' + unitLabel + '. Pick up to 3, or <span style="color:var(--mag);cursor:pointer;font-weight:600;" onclick="openModal(\'modal-goal\')">write your own \u2192</span></div>';
   grid.appendChild(wrap);
