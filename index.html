@@ -222,7 +222,7 @@ body{
 @media(max-width:900px){.unit-grid{grid-template-columns:repeat(2,1fr);}}
 @media(max-width:520px){.unit-grid{grid-template-columns:1fr 1fr;}}
 .ugc{background:var(--card);border-radius:14px;border:1px solid rgba(255,255,255,.42);padding:18px;cursor:pointer;box-shadow:0 4px 18px rgba(0,0,0,.12);color:var(--on-card);transition:transform .15s,box-shadow .15s;position:relative;overflow:hidden;}
-.ugc:hover{transform:translateY(-3px);box-shadow:0 8px 28px rgba(0,0,0,.18);}
+.ugc:hover{box-shadow:0 8px 28px rgba(0,0,0,.22);}
 .ugc-accent{position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--mag),var(--teal));}
 .ugc-badge{font-size:9.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--on-card-muted);margin-bottom:5px;line-height:1;}
 .ugc-title{font-size:16px;font-weight:800;color:var(--on-card);margin-bottom:4px;line-height:1.25;}
@@ -242,6 +242,11 @@ body{
 .um-back:hover{background:rgba(255,255,255,.28);}
 .um-title{font-size:22px;font-weight:800;color:#FFFCF6;flex:1;}
 .um-sub{font-size:12px;color:var(--on-grad-muted);margin-top:2px;}
+.um-footer{position:sticky;bottom:0;left:0;right:0;background:rgba(20,8,30,.85);backdrop-filter:blur(12px);border-top:1px solid rgba(255,255,255,.1);padding:14px 28px;display:flex;align-items:center;justify-content:space-between;z-index:10;margin:0 -28px -60px;}
+.um-footer-btn{background:rgba(255,255,255,.15);border:1.5px solid rgba(255,255,255,.25);border-radius:99px;padding:8px 20px;font-family:'Poppins',sans-serif;font-size:11.5px;font-weight:700;color:#FFFCF6;cursor:pointer;letter-spacing:.04em;text-transform:uppercase;transition:background .15s;}
+.um-footer-btn:hover{background:rgba(255,255,255,.25);}
+.um-footer-btn.primary{background:var(--mag);border-color:var(--mag);}
+.um-footer-btn.primary:hover{filter:brightness(1.1);}
 .um-section{background:var(--card);border-radius:14px;border:1px solid rgba(255,255,255,.42);padding:20px 22px;margin-bottom:16px;box-shadow:0 4px 18px rgba(0,0,0,.12);color:var(--on-card);}
 .um-section-title{font-size:9.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--mag);margin-bottom:8px;padding-bottom:8px;border-bottom:2px solid rgba(159,33,126,.12);display:flex;align-items:center;justify-content:space-between;}
 .um-autosave-hint{font-size:9.5px;color:var(--on-card-muted);font-weight:400;letter-spacing:0;text-transform:none;font-style:italic;}
@@ -335,7 +340,7 @@ body{
 @media(max-width:700px){.gal-grid{grid-template-columns:repeat(2,1fr);}}
 @media(max-width:440px){.gal-grid{grid-template-columns:1fr;}}
 .gal-item{background:var(--card);border-radius:14px;border:1px solid rgba(255,255,255,.42);overflow:hidden;cursor:pointer;box-shadow:0 4px 18px rgba(0,0,0,.12);color:var(--on-card);}
-.gal-item:hover{transform:translateY(-3px);box-shadow:0 10px 30px rgba(0,0,0,.2);}
+.gal-item:hover{box-shadow:0 10px 30px rgba(0,0,0,.22);}
 .gal-thumb{width:100%;aspect-ratio:4/3;background:linear-gradient(135deg,rgba(91,170,181,.2),rgba(159,33,126,.15));display:flex;align-items:center;justify-content:center;overflow:hidden;color:var(--mag);}
 .gal-thumb img{width:100%;height:100%;object-fit:cover;}
 .gal-empty{display:flex;flex-direction:column;align-items:center;gap:6px;color:rgba(159,33,126,.4);}
@@ -496,12 +501,14 @@ body{
 /* ── UNIT PROGRESS TILE GRID ─────────────────────────────────────────────────── */
 .prog-tiles{display:grid;grid-template-columns:repeat(3,1fr);grid-template-rows:repeat(4,1fr);gap:8px;flex:1;min-height:0;}
 .ptile{border-radius:10px;position:relative;cursor:pointer;overflow:hidden;border:1.5px solid rgba(159,33,126,.15);transition:transform .15s,box-shadow .15s;background:#f5f0f7;min-height:56px;}
-.ptile:hover{transform:translateY(-2px);box-shadow:0 6px 18px rgba(0,0,0,.15);}
+.ptile:hover{box-shadow:0 4px 14px rgba(0,0,0,.18);border-color:rgba(159,33,126,.35);}
 .ptile-fill{position:absolute;bottom:0;left:0;right:0;background:linear-gradient(180deg,rgba(91,170,181,.7),rgba(159,33,126,.85));transition:height .8s cubic-bezier(.4,0,.2,1);}
 .ptile-label{position:absolute;inset:0;display:flex;flex-direction:column;align-items:flex-start;justify-content:flex-end;padding:9px 10px;z-index:1;}
 .ptile-badge{font-size:9px;font-weight:800;color:#1a1018;letter-spacing:.04em;text-transform:uppercase;opacity:.7;margin-bottom:1px;line-height:1;}
 .ptile-pct{font-size:9px;font-weight:700;color:#fff;text-shadow:0 1px 3px rgba(0,0,0,.5);letter-spacing:.03em;}
 .ptile.done .ptile-badge{background:var(--yellow);color:#1a1018;}
+
+.aph-add.drag-over{border-color:var(--mag);background:rgba(159,33,126,.12);}
 .ptile.done{border-color:rgba(234,204,40,.6);}
 
 /* Tile text — scales with tile size using container-relative units */
@@ -708,13 +715,14 @@ body{
       </div>
     </div>
     <div id="um-content"></div>
+    <div class="um-footer" id="um-footer"></div>
   </div>
 </div>
 <!-- GOALS -->
 <div class="view" id="view-goals">
   <div class="ph">
     <div><div class="ph-ey">Focal Point Photoclass</div><div class="ph-ti">Your <b>goals.</b></div></div>
-    <div class="ph-acts"><button class="btn btn-p" onclick="openModal('modal-goal')">+ Add goal</button></div>
+    <div class="ph-acts"><button class="btn btn-s" onclick="toggleSuggestedGoals()" style="font-size:11px;">＋ Suggested goals</button><button class="btn btn-p" onclick="openModal('modal-goal')">+ Add goal</button></div>
   </div>
   <div class="start-card">
     <h3>Getting started</h3>
@@ -1441,7 +1449,7 @@ function savePhoto(slot, dataUrl) {
 }
 
 // ── NAV ───────────────────────────────────────────────────────────────────────
-function nav(id) {
+function nav(id, pushState) {
   document.querySelectorAll(".view").forEach(function(v) { v.classList.remove("active"); });
   document.getElementById("view-" + id).classList.add("active");
   document.querySelectorAll(".tni,.dni,.ni,.bni").forEach(function(n) { n.classList.remove("active"); });
@@ -1453,7 +1461,15 @@ function nav(id) {
   if (id === "journal")   renderJournal();
   if (id === "goals")     renderGoals();
   if (id === "gallery")   renderGallery();
+  if (pushState !== false) {
+    try { history.pushState({view: id}, "", "#" + id); } catch(e) {}
+  }
 }
+window.addEventListener("popstate", function(e) {
+  var id = (e.state && e.state.view) || (location.hash.slice(1)) || "dashboard";
+  var valid = ["dashboard","journal","goals","gallery","notes"];
+  nav(valid.indexOf(id) >= 0 ? id : "dashboard", false);
+});
 function toggleSb() { toggleMobDrawer(); }
 function closeSb()  { closeMobDrawer(); }
 function toggleMobDrawer() {
@@ -1944,21 +1960,16 @@ function openUnitModal(uid) {
     content += '</div></div>';
   }
 
-  // Reflection prompt
+  // Reflection prompts — all shown at once
   var prompts = UNIT_PROMPTS[uid] || [];
-  if (prompts.length) {
-    var pidx = (parseInt(D["uprompt_idx_" + uid]) || 0) % prompts.length;
-    var savedKey = "uprompt_" + uid + "_" + pidx;
-    var savedVal = (D[savedKey] || "").replace(/</g,"&lt;").replace(/>/g,"&gt;");
+  prompts.forEach(function(q, pidx) {
+    var savedVal = (D["uprompt_" + uid + "_" + pidx] || "").replace(/</g,"&lt;").replace(/>/g,"&gt;");
     content += '<div class="um-section">'
-      + '<div class="um-section-title" id="upey-' + uid + '">Reflection prompt ' + (pidx+1) + ' of ' + prompts.length + '</div>'
-      + '<div class="up-q" id="upq-' + uid + '" style="font-size:14px;font-weight:500;margin-bottom:12px;">' + prompts[pidx] + '</div>'
-      + '<textarea class="up-inp" id="upinp-' + uid + '" placeholder="Write freely..." rows="4" data-uid="' + uid + '" oninput="autoSavePrompt(this)">' + savedVal + '</textarea>'
-      + '<div class="up-acts" style="margin-top:10px;">'
-      + '<button class="up-next" onclick="nextUnitPrompt(this.dataset.uid)" data-uid="' + uid + '">Next prompt →</button>'
-      + '<button class="up-save" onclick="saveUnitPrompt(this.dataset.uid)" data-uid="' + uid + '">Save</button>'
-      + '</div></div>';
-  }
+      + '<div class="um-section-title">Reflection prompt ' + (pidx+1) + ' of ' + prompts.length + '<span class="um-autosave-hint">saves automatically</span></div>'
+      + '<div style="font-size:14px;font-weight:500;margin-bottom:12px;color:var(--on-card);">' + q + '</div>'
+      + '<textarea class="up-inp" placeholder="Write freely..." rows="4" data-uid="' + uid + '" data-pidx="' + pidx + '" oninput="autoSavePromptIdx(this)">' + savedVal + '</textarea>'
+      + '</div>';
+  });
 
   // Reflection fields
   u.sections.forEach(function(s) {
@@ -1998,6 +2009,19 @@ function openUnitModal(uid) {
   document.getElementById("um-content").innerHTML = content;
   document.getElementById("unit-modal").classList.add("open");
   document.getElementById("unit-modal").scrollTop = 0;
+  // Build footer
+  var unitOrder = ["gs","1","2","3","4","5","6","7","8","9","10","fp"];
+  var curIdx = unitOrder.indexOf(uid);
+  var nextUid = curIdx >= 0 && curIdx < unitOrder.length - 1 ? unitOrder[curIdx + 1] : null;
+  var nextUnitObj = null;
+  if (nextUid) UNITS.forEach(function(x){ if (String(x.id) === nextUid) nextUnitObj = x; });
+  var nextLabel = nextUnitObj ? (nextUid === "fp" ? "Final Project" : "Unit " + nextUnitObj.id + ": " + nextUnitObj.title) : null;
+  var footer = document.getElementById("um-footer");
+  footer.innerHTML = '<button class="um-footer-btn" onclick="closeUnitModal()">← Back</button>'
+    + '<div style="font-size:11px;color:rgba(255,252,246,.5);font-style:italic;">All changes saved automatically</div>'
+    + (nextLabel
+      ? '<button class="um-footer-btn primary" onclick="closeUnitModal();setTimeout(function(){openUnitModal(\'' + nextUid + '\')},120);">Next: ' + nextLabel + ' →</button>'
+      : '<button class="um-footer-btn primary" onclick="closeUnitModal();">Done ✓</button>');
 }
 
 function closeUnitModal() {
@@ -2224,9 +2248,16 @@ function refreshAssignPhotos(uid) {
   });
   if (photos.length < 8) {
     var lbl = document.createElement("label");
-    lbl.style.cssText = "width:80px;height:80px;border-radius:8px;border:2px dashed rgba(159,33,126,.3);display:inline-flex;align-items:center;justify-content:center;cursor:pointer;flex-direction:column;gap:4px;color:rgba(159,33,126,.5);font-size:10px;font-weight:600;vertical-align:top;";
+    lbl.style.cssText = "width:80px;height:80px;border-radius:8px;border:2px dashed rgba(159,33,126,.3);display:inline-flex;align-items:center;justify-content:center;cursor:pointer;flex-direction:column;gap:4px;color:rgba(159,33,126,.5);font-size:10px;font-weight:600;vertical-align:top;transition:border-color .15s,background .15s;";
     lbl.innerHTML = '<svg width="18" height="18" viewBox="0 0 20 20" fill="none"><path d="M10 4v12M4 10h12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Add'
       + '<input type="file" accept="image/*" multiple style="display:none" onchange="handleAPhotoMulti(event,\'' + uid + '\')">';
+    lbl.addEventListener("dragover", function(e){ e.preventDefault(); lbl.classList.add("drag-over"); });
+    lbl.addEventListener("dragleave", function(){ lbl.classList.remove("drag-over"); });
+    lbl.addEventListener("drop", function(e){
+      e.preventDefault(); lbl.classList.remove("drag-over");
+      var files = Array.from(e.dataTransfer.files).filter(function(f){ return f.type.startsWith("image/"); });
+      if (files.length) { handleAPhotoMulti({target:{files:files}}, uid); }
+    });
     c.appendChild(lbl);
   }
 }
@@ -2626,7 +2657,15 @@ if (LOCAL_MODE) {
   // Update sidebar
   var emailEl = document.getElementById("sb-email"); if (emailEl) emailEl.textContent = "local test mode";
   var avEl = document.getElementById("sb-av"); if (avEl) avEl.textContent = "T";
-  renderDash();
+  // Set initial hash without pushing
+  var _initView = location.hash.slice(1);
+  var _validViews = ["dashboard","journal","goals","gallery","notes"];
+  if (_initView && _validViews.indexOf(_initView) >= 0) {
+    nav(_initView, false);
+  } else {
+    renderDash();
+    try { history.replaceState({view:"dashboard"}, "", "#dashboard"); } catch(e) {}
+  }
   checkFirstLogin();
 } else {
   // Production: use Supabase auth
@@ -2653,7 +2692,14 @@ if (LOCAL_MODE) {
           var displayName = D["display_name"] || session.user.user_metadata.name || session.user.email.split("@")[0];
           nameEl.textContent = displayName;
         }
-        renderDash();
+        var _iv = location.hash.slice(1);
+        var _vv = ["dashboard","journal","goals","gallery","notes"];
+        if (_iv && _vv.indexOf(_iv) >= 0) {
+          nav(_iv, false);
+        } else {
+          renderDash();
+          try { history.replaceState({view:"dashboard"}, "", "#dashboard"); } catch(e) {}
+        }
         checkFirstLogin();
       });
     } else {
@@ -2732,6 +2778,18 @@ function autoSavePrompt(el) {
   D["uprompt_" + uid + "_" + pidx] = el.value;
   persist();
   showSaveIndicator();
+}
+
+function toggleSuggestedGoals() {
+  var el = document.getElementById("goals-suggestions");
+  if (!el) return;
+  if (el.style.display === "none" || !el.style.display) {
+    el.style.display = "block";
+    el.innerHTML = "";
+    renderSuggestedGoals(el);
+  } else {
+    el.style.display = "none";
+  }
 }
 // ── QUICK NOTE MODAL ──────────────────────────────────────────────────────────
 function openQuickNote() {
