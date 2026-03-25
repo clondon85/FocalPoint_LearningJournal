@@ -224,9 +224,9 @@ body{
 .ugc{background:var(--card);border-radius:14px;border:1px solid rgba(255,255,255,.42);padding:18px;cursor:pointer;box-shadow:0 4px 18px rgba(0,0,0,.12);color:var(--on-card);transition:transform .15s,box-shadow .15s;position:relative;overflow:hidden;}
 .ugc:hover{transform:translateY(-3px);box-shadow:0 8px 28px rgba(0,0,0,.18);}
 .ugc-accent{position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--mag),var(--teal));}
-.ugc-badge{width:32px;height:32px;border-radius:99px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;margin-bottom:10px;}
-.ugc-title{font-size:13px;font-weight:700;color:var(--on-card);margin-bottom:3px;line-height:1.3;}
-.ugc-sub{font-size:10.5px;color:var(--on-card-muted);line-height:1.4;margin-bottom:10px;}
+.ugc-badge{font-size:9.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--on-card-muted);margin-bottom:5px;line-height:1;}
+.ugc-title{font-size:16px;font-weight:800;color:var(--on-card);margin-bottom:4px;line-height:1.25;}
+.ugc-sub{font-size:11px;color:var(--on-card-muted);line-height:1.4;margin-bottom:10px;}
 .ugc-prog{height:4px;background:rgba(159,33,126,.1);border-radius:99px;overflow:hidden;}
 .ugc-prog-fill{height:100%;background:linear-gradient(90deg,var(--mag),var(--teal));border-radius:99px;transition:width .4s ease;}
 .ugc-pct{font-size:10px;font-weight:700;color:var(--mag);margin-top:5px;}
@@ -681,7 +681,7 @@ body{
 </div>
 <!-- JOURNAL -->
 <div class="view" id="view-journal">
-  <div class="ph"><div><div class="ph-ey">Private — only you can see this</div><div class="ph-ti">Unit <b>reflections.</b></div></div></div>
+  <div class="ph"><div><div class="ph-ey">Private — only you can see this</div><div class="ph-ti">Unit <b>reflections.</b></div><div style="font-size:13px;color:var(--on-grad-muted);margin-top:6px;font-weight:400;">Click a unit to open your reflection. Your progress is tracked automatically as you complete lessons.</div></div></div>
   <div class="unit-grid" id="unit-grid"></div>
 </div>
 <!-- UNIT REFLECTION MODAL -->
@@ -717,7 +717,7 @@ body{
 </div>
 <!-- GALLERY -->
 <div class="view" id="view-gallery">
-  <div class="ph"><div><div class="ph-ey">One per section · click to open reflections</div><div class="ph-ti">Assignment <b>gallery.</b></div></div></div>
+  <div class="ph"><div><div class="ph-ey">Click any photo to view your reflection</div><div class="ph-ti">Assignment <b>gallery.</b></div></div></div>
   <div class="gal-grid" id="gal-grid"></div>
 </div>
 </main>
@@ -765,17 +765,25 @@ body{
 </div>
 <!-- MODAL: Gallery Lightbox -->
 <div class="mo" id="modal-gallery-lb">
-  <div class="md" style="max-width:680px;padding:0;overflow:hidden;border-radius:18px;">
+  <div class="md" style="max-width:720px;padding:0;overflow:hidden;border-radius:18px;">
     <button class="md-close" onclick="closeModal('modal-gallery-lb')" aria-label="Close" style="position:absolute;top:14px;right:14px;z-index:10;">×</button>
-    <div id="glb-img-wrap" style="width:100%;background:#111;max-height:400px;overflow:hidden;display:flex;align-items:center;justify-content:center;">
-      <img id="glb-img" src="" alt="" style="width:100%;max-height:400px;object-fit:contain;display:block;">
-      <div id="glb-no-photo" style="display:none;padding:60px 20px;text-align:center;color:rgba(255,255,255,.4);font-size:13px;">No photo uploaded yet</div>
+    <!-- carousel -->
+    <div id="glb-carousel" style="position:relative;width:100%;background:#111;user-select:none;">
+      <div id="glb-img-wrap" style="width:100%;max-height:420px;overflow:hidden;display:flex;align-items:center;justify-content:center;">
+        <img id="glb-img" src="" alt="" style="width:100%;max-height:420px;object-fit:contain;display:block;">
+        <div id="glb-no-photo" style="display:none;padding:60px 20px;text-align:center;color:rgba(255,255,255,.4);font-size:13px;">No photos uploaded yet</div>
+      </div>
+      <!-- nav arrows -->
+      <button id="glb-prev" onclick="glbNav(-1)" style="display:none;position:absolute;left:10px;top:50%;transform:translateY(-50%);background:rgba(0,0,0,.55);border:none;border-radius:99px;width:36px;height:36px;color:#fff;font-size:18px;cursor:pointer;z-index:5;line-height:1;">‹</button>
+      <button id="glb-next" onclick="glbNav(1)" style="display:none;position:absolute;right:10px;top:50%;transform:translateY(-50%);background:rgba(0,0,0,.55);border:none;border-radius:99px;width:36px;height:36px;color:#fff;font-size:18px;cursor:pointer;z-index:5;line-height:1;">›</button>
+      <!-- dots + counter -->
+      <div id="glb-indicator" style="display:none;position:absolute;bottom:10px;left:0;right:0;display:flex;align-items:center;justify-content:center;gap:6px;"></div>
     </div>
-    <div style="padding:22px 24px;">
+    <div style="padding:20px 24px;">
       <div style="font-size:9.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--mag);margin-bottom:4px;" id="glb-unit"></div>
       <div style="font-size:17px;font-weight:800;color:var(--on-card);margin-bottom:4px;" id="glb-title"></div>
-      <div style="font-size:12px;color:var(--on-card-muted);margin-bottom:16px;" id="glb-prompt"></div>
-      <div id="glb-reflections" style="display:grid;grid-template-columns:1fr 1fr;gap:12px;"></div>
+      <div style="font-size:12px;color:var(--on-card-muted);margin-bottom:14px;" id="glb-prompt"></div>
+      <div id="glb-reflections"></div>
     </div>
   </div>
 </div>
@@ -832,20 +840,20 @@ body{
 <script>
 // ── DATA ──────────────────────────────────────────────────────────────────────
 var UNITS = [
-  {id:"gs",title:"Getting Started",sub:"Before we start — goals, gear, and mindset",sections:[
-    {title:"Setting Up",fields:[
-      {id:"gs_why",label:"Why I am learning photography.",ph:"What brought you here? What do you want from this course?",rows:3},
-      {id:"gs_know",label:"I already know...",ph:"Skills and instincts you are coming in with.",rows:3},
-      {id:"gs_interest",label:"I am interested in...",ph:"What draws you to photography? Genres, subjects, styles?",rows:4}
+  {id:"gs",title:"Getting Started",sub:"Before we start — experience, goals, and mindset",sections:[
+    {title:"My Background",fields:[
+      {id:"gs_why",label:"Why I am here.",ph:"What brought you to this course? What do you want from it?",rows:3},
+      {id:"gs_experience",label:"My experience with photography so far.",ph:"How long have you been shooting? What have you tried? What felt natural?",rows:3},
+      {id:"gs_interest",label:"I am most drawn to...",ph:"What genres, subjects, or styles pull you in? Street, portrait, landscape, abstract?",rows:3}
     ]},
-    {title:"Gear",fields:[
-      {id:"gs_camera",label:"My camera.",ph:"What are you shooting with?",rows:2},
-      {id:"gs_lenses",label:"My lenses and accessories.",ph:"What glass are you working with?",rows:3}
+    {title:"Goals and Mindset",fields:[
+      {id:"gs_know",label:"What I already feel confident about.",ph:"Skills, instincts, or habits you are bringing in with you.",rows:3},
+      {id:"gs_challenge",label:"What I find most challenging.",ph:"Technical struggles, creative blocks, habits you want to break.",rows:3},
+      {id:"gs_success",label:"What success looks like for me.",ph:"Be specific. What do you want to be able to do or say by the end of this course?",rows:4}
     ]},
-    {title:"Inspiration and Feedback",fields:[
-      {id:"gs_inspire",label:"Who or what inspires me.",ph:"Photographers, films, places, other artists...",rows:3},
-      {id:"gs_feedback",label:"How comfortable am I with feedback?",ph:"Honest self-assessment — giving and receiving.",rows:3},
-      {id:"gs_success",label:"What does success look like for me in this course?",ph:"Be specific. What do you want to be able to do or say by the end?",rows:4}
+    {title:"Inspiration",fields:[
+      {id:"gs_inspire",label:"Who or what inspires me.",ph:"Photographers, films, painters, places, other artists...",rows:3},
+      {id:"gs_feedback",label:"How comfortable am I with feedback?",ph:"Honest self-assessment — giving and receiving critique.",rows:3}
     ]}
   ]},
   {id:1,title:"Introduction & The Gear",sub:"Cameras, lenses, focal length, and digital workflow",sections:[
@@ -1886,10 +1894,9 @@ function renderJournal() {
     card.className = "ugc";
     card.innerHTML =
       '<div class="ugc-accent"></div>'
-      + '<div class="ugc-badge ' + bc + '">' + badgeLabel + '</div>'
-      + '<div class="ugc-title">' + headLabel + '</div>'
-      + '<div class="ugc-sub">' + u.title + '</div>'
-      + '<div class="ugc-prog"><div class="ugc-prog-fill" style="width:' + pct + '%"></div></div>'
+      + '<div class="ugc-title">' + u.title + '</div>'
+      + '<div class="ugc-badge">' + headLabel + '</div>'
+      + '<div class="ugc-prog" style="margin-top:10px;"><div class="ugc-prog-fill" style="width:' + pct + '%"></div></div>'
       + (pct > 0 ? '<div class="ugc-pct">' + pct + '% complete</div>' : '<div class="ugc-pct" style="color:var(--on-card-muted);font-weight:500;">Not started</div>');
     card.onclick = (function(id){ return function(){ openUnitModal(id); }; })(uid);
     grid.appendChild(card);
@@ -1935,7 +1942,7 @@ function openUnitModal(uid) {
     content += '<div class="um-section">'
       + '<div class="um-section-title" id="upey-' + uid + '">Reflection prompt ' + (pidx+1) + ' of ' + prompts.length + '</div>'
       + '<div class="up-q" id="upq-' + uid + '" style="font-size:14px;font-weight:500;margin-bottom:12px;">' + prompts[pidx] + '</div>'
-      + '<textarea class="up-inp" id="upinp-' + uid + '" placeholder="Write freely..." rows="4">' + savedVal + '</textarea>'
+      + '<textarea class="up-inp" id="upinp-' + uid + '" placeholder="Write freely..." rows="4" data-uid="' + uid + '" oninput="autoSavePrompt(this)">' + savedVal + '</textarea>'
       + '<div class="up-acts" style="margin-top:10px;">'
       + '<button class="up-next" onclick="nextUnitPrompt(this.dataset.uid)" data-uid="' + uid + '">Next prompt →</button>'
       + '<button class="up-save" onclick="saveUnitPrompt(this.dataset.uid)" data-uid="' + uid + '">Save</button>'
@@ -1954,24 +1961,28 @@ function openUnitModal(uid) {
     content += '</div></div>';
   });
 
-  // Assignment
-  var photo  = D["photo-" + uid];
+  // Assignment — multi-photo
+  var photos = D["photos-" + uid] || [];
+  if (!photos.length && D["photo-" + uid]) { photos = [D["photo-" + uid]]; D["photos-" + uid] = photos; }
   var achose = (D["achose-" + uid] || "").replace(/</g,"&lt;").replace(/>/g,"&gt;");
-  var adiff  = (D["adiff-"  + uid] || "").replace(/</g,"&lt;").replace(/>/g,"&gt;");
-  var thumbHTML = photo
-    ? '<img src="' + photo + '" style="width:100%;height:90px;object-fit:cover;border-radius:7px;">'
-    : '<svg width="22" height="22" viewBox="0 0 22 22" fill="none"><rect x="2" y="3" width="18" height="16" rx="2" stroke="currentColor" stroke-width="1.4"/><circle cx="8" cy="9.5" r="2" stroke="currentColor" stroke-width="1.2"/><path d="M2 16l4.5-3.5 3 3 3.5-4.5 5 5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
-  content += '<div class="um-section"><div class="um-section-title">Assignment<span class="um-autosave-hint">saves automatically</span></div>'
-    + '<div class="assign-grid">'
-    + '<div class="assign-slot' + (photo ? " filled" : "") + '" id="aslot-' + uid + '" onclick="document.getElementById(\'aup-' + uid + '\').click()">'
-    + thumbHTML
-    + '<span class="assign-lbl">' + (photo ? "Photo added" : "Add photo") + '</span>'
-    + '<input type="file" id="aup-' + uid + '" accept="image/*" style="display:none" onchange="handleAPhoto(event,\'' + uid + '\')">'
-    + '</div>'
-    + '<div>'
-    + '<div class="field-block"><label class="f-label">Why I chose this photo.</label><textarea class="rf-area" id="achose-' + uid + '" data-key="achose-' + uid + '" placeholder="What made this the one?" rows="3" oninput="autoSave(this.dataset.key,this.value)">' + achose + '</textarea></div>'
-    + '<div class="field-block"><label class="f-label">What I would do differently.</label><textarea class="rf-area" id="adiff-' + uid + '" data-key="adiff-' + uid + '" placeholder="With what you know now..." rows="3" oninput="autoSave(this.dataset.key,this.value)">' + adiff + '</textarea></div>'
-    + '</div></div></div>';
+  var thumbsHTML = "";
+  photos.forEach(function(src, idx) {
+    thumbsHTML += '<div style="position:relative;display:inline-block;margin:0 6px 6px 0;vertical-align:top;">'
+      + '<img src="' + src + '" style="width:80px;height:80px;object-fit:cover;border-radius:8px;display:block;">'
+      + '<button onclick="removeUnitPhoto(\'' + uid + '\',' + idx + ')" style="position:absolute;top:-6px;right:-6px;background:#1a1018;color:#fff;border:none;border-radius:99px;width:18px;height:18px;font-size:11px;cursor:pointer;display:flex;align-items:center;justify-content:center;">×</button>'
+      + '</div>';
+  });
+  if (photos.length < 8) {
+    thumbsHTML += '<label style="width:80px;height:80px;border-radius:8px;border:2px dashed rgba(159,33,126,.3);display:inline-flex;align-items:center;justify-content:center;cursor:pointer;flex-direction:column;gap:4px;color:rgba(159,33,126,.5);font-size:10px;font-weight:600;vertical-align:top;">'
+      + '<svg width="18" height="18" viewBox="0 0 20 20" fill="none"><path d="M10 4v12M4 10h12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Add'
+      + '<input type="file" accept="image/*" multiple style="display:none" onchange="handleAPhotoMulti(event,\'' + uid + '\')">'
+      + '</label>';
+  }
+  content += '<div class="um-section"><div class="um-section-title">Assignment photos<span class="um-autosave-hint">saves automatically</span></div>'
+    + '<div id="aphotos-' + uid + '" style="margin-bottom:14px;line-height:0;">' + thumbsHTML + '</div>'
+    + '<div class="field-block"><label class="f-label">My reflection on this assignment.</label>'
+    + '<textarea class="rf-area" id="achose-' + uid + '" data-key="achose-' + uid + '" placeholder="What choices did you make? What are you proud of? What would you do differently?" rows="5" oninput="autoSave(this.dataset.key,this.value)">' + achose + '</textarea></div>'
+    + '</div>';
 
   document.getElementById("um-content").innerHTML = content;
   document.getElementById("unit-modal").classList.add("open");
@@ -2079,50 +2090,122 @@ function handleAPhoto(e, uid) {
 
 
 // ── GALLERY LIGHTBOX ──────────────────────────────────────────────────────────
+var _glbPhotos = [];
+var _glbIdx = 0;
 function openGalleryLightbox(uid, unitLabel, u) {
-  var photo  = D["photo-" + uid];
+  var photos = D["photos-" + uid] || (D["photo-" + uid] ? [D["photo-" + uid]] : []);
   var achose = D["achose-" + uid] || "";
-  var adiff  = D["adiff-"  + uid] || "";
-  var imgEl  = document.getElementById("glb-img");
-  var noPhotoEl = document.getElementById("glb-no-photo");
-  var imgWrap = document.getElementById("glb-img-wrap");
-  if (photo) {
-    imgEl.src = photo;
-    imgEl.style.display = "block";
-    noPhotoEl.style.display = "none";
-  } else {
-    imgEl.src = "";
-    imgEl.style.display = "none";
-    noPhotoEl.style.display = "block";
-    imgWrap.style.background = "#1a0818";
-  }
+  _glbPhotos = photos;
+  _glbIdx = 0;
   document.getElementById("glb-unit").textContent = unitLabel;
   document.getElementById("glb-title").textContent = u.title;
   document.getElementById("glb-prompt").textContent = u.prompt;
+  // Reflection
   var refl = document.getElementById("glb-reflections");
-  refl.innerHTML = "";
-  if (achose || adiff) {
-    if (achose) {
-      var d1 = document.createElement("div");
-      d1.innerHTML = "<div style='font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--on-card-muted);margin-bottom:5px;'>Why I chose this</div>"
-        + "<div style='font-size:12.5px;color:var(--on-card);line-height:1.55;'>" + achose.replace(/</g,"&lt;").replace(/\n/g,"<br>") + "</div>";
-      refl.appendChild(d1);
-    }
-    if (adiff) {
-      var d2 = document.createElement("div");
-      d2.innerHTML = "<div style='font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--on-card-muted);margin-bottom:5px;'>What I'd do differently</div>"
-        + "<div style='font-size:12.5px;color:var(--on-card);line-height:1.55;'>" + adiff.replace(/</g,"&lt;").replace(/\n/g,"<br>") + "</div>";
-      refl.appendChild(d2);
-    }
-  } else if (!photo) {
-    refl.innerHTML = "<div style='grid-column:1/-1;font-size:12px;color:var(--on-card-muted);font-style:italic;'>No reflection written yet.</div>";
-  }
-  if (!achose && !adiff && photo) {
-    refl.style.display = "none";
+  if (achose) {
+    refl.innerHTML = "<div style='font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--on-card-muted);margin-bottom:6px;'>My reflection</div>"
+      + "<div style='font-size:12.5px;color:var(--on-card);line-height:1.6;'>" + achose.replace(/</g,"&lt;").replace(/\n/g,"<br>") + "</div>";
   } else {
-    refl.style.display = "grid";
+    refl.innerHTML = "<div style='font-size:12px;color:var(--on-card-muted);font-style:italic;'>No reflection written yet.</div>";
   }
+  glbShow(0);
   openModal("modal-gallery-lb");
+}
+function glbShow(idx) {
+  var photos = _glbPhotos;
+  var imgEl = document.getElementById("glb-img");
+  var noPhotoEl = document.getElementById("glb-no-photo");
+  var prevBtn = document.getElementById("glb-prev");
+  var nextBtn = document.getElementById("glb-next");
+  var indicator = document.getElementById("glb-indicator");
+  _glbIdx = idx;
+  if (!photos.length) {
+    imgEl.style.display = "none";
+    noPhotoEl.style.display = "block";
+    prevBtn.style.display = "none";
+    nextBtn.style.display = "none";
+    indicator.style.display = "none";
+    return;
+  }
+  imgEl.src = photos[idx];
+  imgEl.style.display = "block";
+  noPhotoEl.style.display = "none";
+  // Arrows
+  prevBtn.style.display = photos.length > 1 ? "flex" : "none";
+  nextBtn.style.display = photos.length > 1 ? "flex" : "none";
+  prevBtn.style.alignItems = "center";
+  prevBtn.style.justifyContent = "center";
+  nextBtn.style.alignItems = "center";
+  nextBtn.style.justifyContent = "center";
+  // Indicator dots + counter
+  if (photos.length > 1) {
+    indicator.style.display = "flex";
+    var dotsHTML = "";
+    photos.forEach(function(_, i) {
+      dotsHTML += "<div style='width:" + (i===idx?"20px":"7px") + ";height:7px;border-radius:99px;background:" + (i===idx?"#fff":"rgba(255,255,255,.4)") + ";transition:width .2s;'></div>";
+    });
+    dotsHTML += "<div style='position:absolute;right:12px;bottom:0;font-size:10px;font-weight:700;color:rgba(255,255,255,.7);'>" + (idx+1) + " / " + photos.length + "</div>";
+    indicator.innerHTML = dotsHTML;
+    indicator.style.position = "absolute";
+    indicator.style.bottom = "10px";
+  } else {
+    indicator.style.display = "none";
+  }
+}
+function glbNav(dir) {
+  if (!_glbPhotos.length) return;
+  var n = (_glbIdx + dir + _glbPhotos.length) % _glbPhotos.length;
+  glbShow(n);
+}
+
+// ── MULTI PHOTO UPLOAD ────────────────────────────────────────────────────────
+function handleAPhotoMulti(e, uid) {
+  var files = Array.from(e.target.files); if (!files.length) return;
+  var existing = D["photos-" + uid] || [];
+  if (existing.length >= 8) { toast("Maximum 8 photos per unit."); return; }
+  var toAdd = files.slice(0, 8 - existing.length);
+  var done = 0;
+  toAdd.forEach(function(f) {
+    var r = new FileReader();
+    r.onload = function(ev) {
+      compressPhoto(ev.target.result, 900, 0.80, function(compressed) {
+        var arr = D["photos-" + uid] || [];
+        arr.push(compressed);
+        D["photos-" + uid] = arr;
+        D["photo-" + uid] = arr[0]; // keep gallery compat
+        persist();
+        done++;
+        if (done === toAdd.length) { refreshAssignPhotos(uid); toast("Photo" + (done > 1 ? "s" : "") + " added \u2713"); }
+      });
+    };
+    r.readAsDataURL(f);
+  });
+}
+function removeUnitPhoto(uid, idx) {
+  var arr = D["photos-" + uid] || [];
+  arr.splice(idx, 1);
+  D["photos-" + uid] = arr;
+  D["photo-" + uid] = arr[0] || null;
+  persist(); refreshAssignPhotos(uid);
+}
+function refreshAssignPhotos(uid) {
+  var c = document.getElementById("aphotos-" + uid); if (!c) return;
+  var photos = D["photos-" + uid] || [];
+  c.innerHTML = "";
+  photos.forEach(function(src, idx) {
+    var w = document.createElement("div");
+    w.style.cssText = "position:relative;display:inline-block;margin:0 6px 6px 0;vertical-align:top;";
+    w.innerHTML = '<img src="' + src + '" style="width:80px;height:80px;object-fit:cover;border-radius:8px;display:block;">'
+      + '<button onclick="removeUnitPhoto(\'' + uid + '\',' + idx + ')" style="position:absolute;top:-6px;right:-6px;background:#1a1018;color:#fff;border:none;border-radius:99px;width:18px;height:18px;font-size:11px;cursor:pointer;display:flex;align-items:center;justify-content:center;">×</button>';
+    c.appendChild(w);
+  });
+  if (photos.length < 8) {
+    var lbl = document.createElement("label");
+    lbl.style.cssText = "width:80px;height:80px;border-radius:8px;border:2px dashed rgba(159,33,126,.3);display:inline-flex;align-items:center;justify-content:center;cursor:pointer;flex-direction:column;gap:4px;color:rgba(159,33,126,.5);font-size:10px;font-weight:600;vertical-align:top;";
+    lbl.innerHTML = '<svg width="18" height="18" viewBox="0 0 20 20" fill="none"><path d="M10 4v12M4 10h12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Add'
+      + '<input type="file" accept="image/*" multiple style="display:none" onchange="handleAPhotoMulti(event,\'' + uid + '\')">';
+    c.appendChild(lbl);
+  }
 }
 // ── GOALS ─────────────────────────────────────────────────────────────────────
 function renderGoals() {
@@ -2288,21 +2371,49 @@ function renderGallery() {
   var grid = document.getElementById("gal-grid"); grid.innerHTML = "";
   var emptySVG = '<svg width="24" height="24" viewBox="0 0 24 24" fill="none"><rect x="2" y="4" width="20" height="16" rx="2.5" stroke="currentColor" stroke-width="1.4"/><circle cx="8.5" cy="10" r="2" stroke="currentColor" stroke-width="1.2"/><path d="M2 17l5-4 3.5 3.5 4-5L22 17" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
   GALLERY.forEach(function(u) {
-    var uid   = String(u.id);
-    var photo = D["photo-" + uid];
-    var thumbInner = photo
-      ? '<img src="' + photo + '" alt="' + u.title + '">'
-      : '<div class="gal-empty">' + emptySVG + '<span style="font-size:10px;">No photo yet</span></div>';
+    var uid = String(u.id);
+    var photos = D["photos-" + uid] || (D["photo-" + uid] ? [D["photo-" + uid]] : []);
     var unitLabel = typeof u.id === "number" ? "Unit " + u.id : u.id === "gs" ? "Getting Started" : "Final Project";
     var div = document.createElement("div"); div.className = "gal-item";
-    div.innerHTML = '<div class="gal-thumb">' + thumbInner + '</div>'
+    // Build split thumbnail
+    var thumbInner = "";
+    if (!photos.length) {
+      thumbInner = '<div class="gal-empty">' + emptySVG + '<span style="font-size:10px;">No photo yet</span></div>';
+    } else if (photos.length === 1) {
+      thumbInner = '<img src="' + photos[0] + '" alt="' + u.title + '" style="width:100%;height:100%;object-fit:cover;">';
+    } else if (photos.length === 2) {
+      thumbInner = '<div style="display:grid;grid-template-columns:1fr 1fr;gap:2px;width:100%;height:100%;">'
+        + '<img src="' + photos[0] + '" style="width:100%;height:100%;object-fit:cover;">'
+        + '<img src="' + photos[1] + '" style="width:100%;height:100%;object-fit:cover;">'
+        + '</div>';
+    } else if (photos.length === 3) {
+      thumbInner = '<div style="display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;gap:2px;width:100%;height:100%;">'
+        + '<img src="' + photos[0] + '" style="width:100%;height:100%;object-fit:cover;grid-row:1/3;">'
+        + '<img src="' + photos[1] + '" style="width:100%;height:100%;object-fit:cover;">'
+        + '<img src="' + photos[2] + '" style="width:100%;height:100%;object-fit:cover;">'
+        + '</div>';
+    } else {
+      thumbInner = '<div style="display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;gap:2px;width:100%;height:100%;">'
+        + '<img src="' + photos[0] + '" style="width:100%;height:100%;object-fit:cover;">'
+        + '<img src="' + photos[1] + '" style="width:100%;height:100%;object-fit:cover;">'
+        + '<img src="' + photos[2] + '" style="width:100%;height:100%;object-fit:cover;">'
+        + '<div style="position:relative;overflow:hidden;">'
+        + (photos[3] ? '<img src="' + photos[3] + '" style="width:100%;height:100%;object-fit:cover;filter:brightness(.4);">' : '<div style="width:100%;height:100%;background:#333;"></div>')
+        + '<div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:800;color:#fff;">+' + (photos.length - 3) + '</div>'
+        + '</div></div>';
+    }
+    // Photo count badge (only if photos exist)
+    var badge = photos.length > 1
+      ? '<div style="position:absolute;top:8px;right:8px;background:rgba(0,0,0,.6);color:#fff;font-size:9.5px;font-weight:700;border-radius:99px;padding:2px 8px;letter-spacing:.03em;">' + photos.length + ' photos</div>'
+      : '';
+    div.innerHTML = '<div class="gal-thumb" style="position:relative;">' + thumbInner + badge + '</div>'
       + '<div class="gal-info">'
       + '<div class="gal-unit">' + unitLabel + '</div>'
       + '<div class="gal-title">' + u.title + '</div>'
       + '<div class="gal-prompt">' + u.prompt + '</div>'
       + '</div>';
-    (function(id, unitLabel, u) {
-      div.onclick = function() { openGalleryLightbox(id, unitLabel, u); };
+    (function(id, ul, uu) {
+      div.onclick = function() { openGalleryLightbox(id, ul, uu); };
     })(uid, unitLabel, u);
     grid.appendChild(div);
   });
@@ -2581,6 +2692,18 @@ function checkFirstLogin() {
       if (inp) inp.focus();
     }, 200);
   }
+}
+
+// ── AUTOSAVE PROMPT (debounced) ───────────────────────────────────────────────
+var _promptSaveTimer = null;
+function autoSavePrompt(el) {
+  var uid = el.dataset.uid;
+  if (!uid) return;
+  var prompts = UNIT_PROMPTS[uid] || [""];
+  var pidx = (parseInt(D["uprompt_idx_" + uid]) || 0) % prompts.length;
+  D["uprompt_" + uid + "_" + pidx] = el.value;
+  persist();
+  showSaveIndicator();
 }
 // ── QUICK NOTE MODAL ──────────────────────────────────────────────────────────
 function openQuickNote() {
