@@ -2041,7 +2041,7 @@ function openUnitModal(uid) {
   footer.innerHTML = '<button class="um-footer-btn" onclick="closeUnitModal()">← Back</button>'
     + '<div class="um-footer-center">All changes saved automatically</div>'
     + (nextLabel
-      ? '<button class="um-footer-btn" onclick="closeUnitModal();setTimeout(function(){openUnitModal(\'' + nextUid + '\')},120);">Next: ' + nextLabel + ' →</button>'
+      ? '<button class="um-footer-btn" onclick="openUnitModal(\'' + nextUid + '\');">Next: ' + nextLabel + ' →</button>'
       : '<button class="um-footer-btn" onclick="closeUnitModal();">Done ✓</button>');
 }
 
