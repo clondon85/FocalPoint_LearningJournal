@@ -325,6 +325,9 @@ body{
 .note-body{font-size:13px;line-height:1.6;color:var(--on-card);}
 .note-del{margin-left:auto;background:none;border:none;color:var(--on-card-muted);cursor:pointer;font-size:16px;padding:0 3px;opacity:0;transition:opacity .15s;line-height:1;}
 .note-card:hover .note-del{opacity:1;}.note-del:hover{color:var(--mag);}
+
+/* Notes page filter selects */
+.notes-filter-sel{font-size:12px;padding:7px 28px 7px 11px;border-radius:99px;background:var(--card);color:var(--on-card);border:1.5px solid var(--input-border);}
 .notes-empty{text-align:center;padding:48px 20px;color:var(--on-grad-muted);font-size:13px;line-height:1.7;}
 
 /* ── GALLERY ─────────────────────────────────────────────────────────────────── */
@@ -495,11 +498,20 @@ body{
 .ptile{border-radius:10px;position:relative;cursor:pointer;overflow:hidden;border:1.5px solid rgba(159,33,126,.15);transition:transform .15s,box-shadow .15s;background:#f5f0f7;min-height:56px;}
 .ptile:hover{transform:translateY(-2px);box-shadow:0 6px 18px rgba(0,0,0,.15);}
 .ptile-fill{position:absolute;bottom:0;left:0;right:0;background:linear-gradient(180deg,rgba(91,170,181,.7),rgba(159,33,126,.85));transition:height .8s cubic-bezier(.4,0,.2,1);}
-.ptile-label{position:absolute;inset:0;display:flex;flex-direction:column;align-items:flex-start;justify-content:flex-end;padding:10px 11px 10px 11px;z-index:1;}
+.ptile-label{position:absolute;inset:0;display:flex;flex-direction:column;align-items:flex-start;justify-content:flex-end;padding:9px 10px;z-index:1;}
 .ptile-badge{font-size:9px;font-weight:800;color:#1a1018;letter-spacing:.04em;text-transform:uppercase;opacity:.7;margin-bottom:1px;line-height:1;}
 .ptile-pct{font-size:9px;font-weight:700;color:#fff;text-shadow:0 1px 3px rgba(0,0,0,.5);letter-spacing:.03em;}
 .ptile.done .ptile-badge{background:var(--yellow);color:#1a1018;}
 .ptile.done{border-color:rgba(234,204,40,.6);}
+
+/* Tile text — scales with tile size using container-relative units */
+.ptile-badge-text{font-size:clamp(7px,0.7vw,10px);font-weight:800;letter-spacing:.07em;text-transform:uppercase;margin-bottom:3px;line-height:1;color:rgba(26,16,24,.5);}
+.ptile-name-text{font-size:clamp(11px,1.1vw,15px);font-weight:800;line-height:1.2;color:#1a1018;text-wrap:balance;overflow-wrap:break-word;}
+.ptile-pct-text{font-size:clamp(8px,0.75vw,11px);font-weight:700;margin-top:3px;}
+.ptile.done .ptile-name-text{color:#1a1018;}
+[data-theme="dark"] .ptile{background:rgba(255,255,255,.06);border-color:rgba(255,255,255,.1);}
+[data-theme="dark"] .ptile-name-text{color:var(--on-card);}
+[data-theme="dark"] .ptile-badge-text{color:var(--on-card-muted);}
 .ptile-name{font-size:10px;font-weight:700;color:#1a1018;line-height:1.2;max-width:100%;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;}
 .ptile-fill ~ .ptile-label .ptile-name,.ptile-fill ~ .ptile-label .ptile-badge{color:#fff;}
 .ptile-done-mark{position:absolute;top:5px;right:6px;color:var(--yellow);font-size:10px;font-weight:800;z-index:2;}
@@ -661,10 +673,10 @@ body{
     <div><div class="ph-ey">Capture as you go</div><div class="ph-ti">Quick <b>notes.</b></div></div>
     <div class="ph-acts">
       <button class="btn btn-p btn-sm" onclick="openQuickNote()">+ Add note</button>
-      <select class="fse" id="notes-filter-unit" style="font-size:12px;padding:7px 28px 7px 11px;border-radius:99px;background:#fff;color:#1a1018;border:1.5px solid rgba(159,33,126,.2);" onchange="renderNotes()">
+      <select class="fse notes-filter-sel" id="notes-filter-unit" onchange="renderNotes()">
         <option value="all">All units</option>
       </select>
-      <select class="fse" id="notes-filter-tag" style="font-size:12px;padding:7px 28px 7px 11px;border-radius:99px;background:#fff;color:#1a1018;border:1.5px solid rgba(159,33,126,.2);" onchange="renderNotes()">
+      <select class="fse notes-filter-sel" id="notes-filter-tag" onchange="renderNotes()">
         <option value="all">All tags</option>
         <option value="observation">Observation</option>
         <option value="question">Question</option>
@@ -1741,14 +1753,19 @@ function renderDash() {
     tile.onclick = function(){ nav("journal"); openUnitModal(uid); };
     var shortTitle = u.id === "gs" ? "Getting Started" : u.id === "fp" ? "Final Project" : u.title;
     var filled = pct > 50;
-    var tc = filled ? 'color:#fff;text-shadow:0 1px 4px rgba(0,0,0,.5);' : 'color:#1a1018;';
-    var bc = filled ? 'color:rgba(255,255,255,.75);' : 'color:rgba(26,16,24,.45);';
+    // Full label: "Unit 1: Introduction & The Gear" or just "Getting Started" / "Final Project"
+    var fullTitle = u.id === "gs" ? "Getting Started"
+      : u.id === "fp" ? "Final Project"
+      : "Unit " + u.id + ": " + u.title;
+    // Percentage in top-right corner (only if in progress, not 0 or 100)
+    var pctCorner = (pct > 0 && pct < 100)
+      ? '<div style="position:absolute;top:8px;right:10px;font-size:clamp(8px,0.75vw,11px);font-weight:800;color:' + (filled ? 'rgba(255,255,255,.95)' : 'var(--mag)') + ';z-index:2;text-shadow:' + (filled ? '0 1px 3px rgba(0,0,0,.4)' : 'none') + ';">' + pct + '%</div>'
+      : '';
     tile.innerHTML = '<div class="ptile-fill" data-h="' + pct + '" style="height:0%"></div>'
-      + (pct === 100 ? '<div style="position:absolute;top:5px;right:7px;color:var(--yellow);font-size:10px;font-weight:800;z-index:2;text-shadow:0 1px 3px rgba(0,0,0,.3);">✓</div>' : '')
+      + (pct === 100 ? '<div style="position:absolute;top:8px;right:10px;color:var(--yellow);font-size:12px;font-weight:800;z-index:2;text-shadow:0 1px 3px rgba(0,0,0,.3);">✓</div>' : '')
+      + pctCorner
       + '<div class="ptile-label">'
-      + '<div style="font-size:8px;font-weight:800;letter-spacing:.07em;text-transform:uppercase;margin-bottom:2px;line-height:1;' + bc + '">' + badge + '</div>'
-      + '<div style="font-size:9.5px;font-weight:700;line-height:1.2;' + tc + '">' + shortTitle + '</div>'
-      + (pct > 0 && pct < 100 ? '<div style="font-size:8.5px;font-weight:700;margin-top:2px;' + (filled ? 'color:rgba(255,255,255,.9);' : 'color:var(--mag);') + '">' + pct + '%</div>' : '')
+      + '<div class="ptile-name-text" style="' + (filled ? 'color:#fff;text-shadow:0 1px 4px rgba(0,0,0,.5);' : '') + '">' + fullTitle + '</div>'
       + '</div>';
     tilesContainer.appendChild(tile);
   });
