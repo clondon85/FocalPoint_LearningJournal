@@ -242,11 +242,20 @@ body{
 .um-back:hover{background:rgba(255,255,255,.28);}
 .um-title{font-size:22px;font-weight:800;color:#FFFCF6;flex:1;}
 .um-sub{font-size:12px;color:var(--on-grad-muted);margin-top:2px;}
-.um-footer{position:sticky;bottom:0;left:0;right:0;background:rgba(20,8,30,.85);backdrop-filter:blur(12px);border-top:1px solid rgba(255,255,255,.1);padding:14px 28px;display:flex;align-items:center;justify-content:space-between;z-index:10;margin:0 -28px -60px;}
-.um-footer-btn{background:rgba(255,255,255,.15);border:1.5px solid rgba(255,255,255,.25);border-radius:99px;padding:8px 20px;font-family:'Poppins',sans-serif;font-size:11.5px;font-weight:700;color:#FFFCF6;cursor:pointer;letter-spacing:.04em;text-transform:uppercase;transition:background .15s;}
-.um-footer-btn:hover{background:rgba(255,255,255,.25);}
+.prompt-tabs{display:flex;gap:6px;margin-bottom:16px;flex-wrap:wrap;}
+.prompt-tab{background:none;border:1.5px solid rgba(159,33,126,.25);border-radius:99px;padding:5px 14px;font-family:'Poppins',sans-serif;font-size:11px;font-weight:600;color:var(--on-card-muted);cursor:pointer;transition:all .15s;}
+.prompt-tab:hover{border-color:var(--mag);color:var(--on-card);}
+.prompt-tab.active{background:var(--mag);border-color:var(--mag);color:#fff;}
+.prompt-tab.has-answer{border-color:var(--teal);color:var(--teal);}
+.prompt-tab.has-answer.active{background:var(--teal);border-color:var(--teal);color:#fff;}
+.prompt-pane{display:none;}.prompt-pane.active{display:block;}
+
+.um-footer{display:flex;align-items:center;justify-content:space-between;margin-top:40px;margin-bottom:8px;}
+.um-footer-btn{background:rgba(255,255,255,.18);border:1.5px solid rgba(255,255,255,.3);border-radius:99px;padding:7px 16px;font-family:'Poppins',sans-serif;font-size:11.5px;font-weight:700;color:#FFFCF6;cursor:pointer;letter-spacing:.04em;text-transform:uppercase;transition:background .15s;}
+.um-footer-btn:hover{background:rgba(255,255,255,.28);}
 .um-footer-btn.primary{background:var(--mag);border-color:var(--mag);}
 .um-footer-btn.primary:hover{filter:brightness(1.1);}
+.um-footer-center{font-size:11px;color:rgba(255,252,246,.45);font-style:italic;}
 .um-section{background:var(--card);border-radius:14px;border:1px solid rgba(255,255,255,.42);padding:20px 22px;margin-bottom:16px;box-shadow:0 4px 18px rgba(0,0,0,.12);color:var(--on-card);}
 .um-section-title{font-size:9.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--mag);margin-bottom:8px;padding-bottom:8px;border-bottom:2px solid rgba(159,33,126,.12);display:flex;align-items:center;justify-content:space-between;}
 .um-autosave-hint{font-size:9.5px;color:var(--on-card-muted);font-weight:400;letter-spacing:0;text-transform:none;font-style:italic;}
@@ -1960,16 +1969,28 @@ function openUnitModal(uid) {
     content += '</div></div>';
   }
 
-  // Reflection prompts — all shown at once
+  // Reflection prompts — tabbed in one card
   var prompts = UNIT_PROMPTS[uid] || [];
-  prompts.forEach(function(q, pidx) {
-    var savedVal = (D["uprompt_" + uid + "_" + pidx] || "").replace(/</g,"&lt;").replace(/>/g,"&gt;");
+  if (prompts.length) {
     content += '<div class="um-section">'
-      + '<div class="um-section-title">Reflection prompt ' + (pidx+1) + ' of ' + prompts.length + '<span class="um-autosave-hint">saves automatically</span></div>'
-      + '<div style="font-size:14px;font-weight:500;margin-bottom:12px;color:var(--on-card);">' + q + '</div>'
-      + '<textarea class="up-inp" placeholder="Write freely..." rows="4" data-uid="' + uid + '" data-pidx="' + pidx + '" oninput="autoSavePromptIdx(this)">' + savedVal + '</textarea>'
-      + '</div>';
-  });
+      + '<div class="um-section-title">Reflection prompts<span class="um-autosave-hint">saves automatically</span></div>'
+      + '<div class="prompt-tabs">';
+    prompts.forEach(function(q, pidx) {
+      var hasAnswer = !!(D["uprompt_" + uid + "_" + pidx] || "").trim();
+      content += '<button class="prompt-tab' + (pidx === 0 ? ' active' : '') + (hasAnswer ? ' has-answer' : '') + '" '
+        + 'onclick="switchPromptTab(\'' + uid + '\',' + pidx + ',' + prompts.length + ')" '
+        + 'id="ptab-' + uid + '-' + pidx + '">Prompt ' + (pidx+1) + '</button>';
+    });
+    content += '</div>';
+    prompts.forEach(function(q, pidx) {
+      var savedVal = (D["uprompt_" + uid + "_" + pidx] || "").replace(/</g,"&lt;").replace(/>/g,"&gt;");
+      content += '<div class="prompt-pane' + (pidx === 0 ? ' active' : '') + '" id="ppane-' + uid + '-' + pidx + '">'
+        + '<div style="font-size:14px;font-weight:500;margin-bottom:12px;color:var(--on-card);">' + q + '</div>'
+        + '<textarea class="up-inp" placeholder="Write freely..." rows="5" data-uid="' + uid + '" data-pidx="' + pidx + '" oninput="autoSavePromptIdx(this)">' + savedVal + '</textarea>'
+        + '</div>';
+    });
+    content += '</div>';
+  }
 
   // Reflection fields
   u.sections.forEach(function(s) {
@@ -2018,10 +2039,10 @@ function openUnitModal(uid) {
   var nextLabel = nextUnitObj ? (nextUid === "fp" ? "Final Project" : "Unit " + nextUnitObj.id + ": " + nextUnitObj.title) : null;
   var footer = document.getElementById("um-footer");
   footer.innerHTML = '<button class="um-footer-btn" onclick="closeUnitModal()">← Back</button>'
-    + '<div style="font-size:11px;color:rgba(255,252,246,.5);font-style:italic;">All changes saved automatically</div>'
+    + '<div class="um-footer-center">All changes saved automatically</div>'
     + (nextLabel
-      ? '<button class="um-footer-btn primary" onclick="closeUnitModal();setTimeout(function(){openUnitModal(\'' + nextUid + '\')},120);">Next: ' + nextLabel + ' →</button>'
-      : '<button class="um-footer-btn primary" onclick="closeUnitModal();">Done ✓</button>');
+      ? '<button class="um-footer-btn" onclick="closeUnitModal();setTimeout(function(){openUnitModal(\'' + nextUid + '\')},120);">Next: ' + nextLabel + ' →</button>'
+      : '<button class="um-footer-btn" onclick="closeUnitModal();">Done ✓</button>');
 }
 
 function closeUnitModal() {
@@ -2773,11 +2794,24 @@ var _promptSaveTimer = null;
 function autoSavePrompt(el) {
   var uid = el.dataset.uid;
   if (!uid) return;
-  var prompts = UNIT_PROMPTS[uid] || [""];
-  var pidx = (parseInt(D["uprompt_idx_" + uid]) || 0) % prompts.length;
+  var pidx = parseInt(el.dataset.pidx) || 0;
   D["uprompt_" + uid + "_" + pidx] = el.value;
   persist();
   showSaveIndicator();
+}
+function autoSavePromptIdx(el) {
+  autoSavePrompt(el);
+  var uid = el.dataset.uid; var pidx = parseInt(el.dataset.pidx);
+  var tab = document.getElementById("ptab-" + uid + "-" + pidx);
+  if (tab) { if (el.value.trim()) tab.classList.add("has-answer"); else tab.classList.remove("has-answer"); }
+}
+function switchPromptTab(uid, idx, total) {
+  for (var i = 0; i < total; i++) {
+    var tab = document.getElementById("ptab-" + uid + "-" + i);
+    var pane = document.getElementById("ppane-" + uid + "-" + i);
+    if (tab) tab.classList.toggle("active", i === idx);
+    if (pane) pane.classList.toggle("active", i === idx);
+  }
 }
 
 function toggleSuggestedGoals() {
