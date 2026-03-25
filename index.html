@@ -58,6 +58,7 @@ body{
 .topbar-nav{display:flex;align-items:center;gap:2px;flex:1;padding:0 16px;}
 .tni{display:flex;align-items:center;gap:7px;padding:7px 13px;border-radius:8px;color:rgba(255,252,246,.62);font-size:12.5px;font-weight:600;cursor:pointer;transition:all .15s;white-space:nowrap;border:none;background:none;font-family:'Poppins',sans-serif;}
 .tni:hover{color:#FFFCF6;background:rgba(255,255,255,.08);}
+.tni:focus{outline:none;background:none;}
 .tni.active{color:#FFFCF6;background:rgba(255,255,255,.12);}
 .tni svg{width:14px;height:14px;flex-shrink:0;opacity:.8;}
 .tni.active svg{opacity:1;}
@@ -242,7 +243,8 @@ body{
 .um-title{font-size:22px;font-weight:800;color:#FFFCF6;flex:1;}
 .um-sub{font-size:12px;color:var(--on-grad-muted);margin-top:2px;}
 .um-section{background:var(--card);border-radius:14px;border:1px solid rgba(255,255,255,.42);padding:20px 22px;margin-bottom:16px;box-shadow:0 4px 18px rgba(0,0,0,.12);color:var(--on-card);}
-.um-section-title{font-size:9.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--mag);margin-bottom:12px;padding-bottom:8px;border-bottom:2px solid rgba(159,33,126,.12);}
+.um-section-title{font-size:9.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--mag);margin-bottom:8px;padding-bottom:8px;border-bottom:2px solid rgba(159,33,126,.12);display:flex;align-items:center;justify-content:space-between;}
+.um-autosave-hint{font-size:9.5px;color:var(--on-card-muted);font-weight:400;letter-spacing:0;text-transform:none;font-style:italic;}
 @media(max-width:600px){.um-inner{padding:16px 14px 60px;}.um-title{font-size:17px;}}
 /* ── UNIT ACCORDION ──────────────────────────────────────────────────────────── */
 .unit-block{background:var(--card);border-radius:14px;border:1px solid rgba(255,255,255,.42);margin-bottom:10px;overflow:hidden;box-shadow:0 4px 18px rgba(0,0,0,.12);color:var(--on-card);}
@@ -364,7 +366,7 @@ body{
 .login-p{font-size:13px;color:rgba(26,16,24,.55);margin-bottom:20px;line-height:1.55;}
 
 /* ── SAVE INDICATOR ──────────────────────────────────────────────────────────── */
-.save-indicator{position:fixed;top:14px;right:18px;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#1a1018;opacity:0;transition:opacity .3s;z-index:500;background:rgba(255,255,255,.96);border:none;padding:5px 14px;border-radius:99px;box-shadow:0 4px 16px rgba(0,0,0,.18);}
+.save-indicator{position:fixed;top:68px;right:18px;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#1a1018;opacity:0;transition:opacity .3s;z-index:500;background:rgba(255,255,255,.96);border:none;padding:5px 14px;border-radius:99px;box-shadow:0 4px 16px rgba(0,0,0,.18);}
 .save-indicator.show{opacity:1;}
 
 /* ── TOAST ───────────────────────────────────────────────────────────────────── */
@@ -575,7 +577,7 @@ body{
     <!-- dark mode toggle in topbar -->
     <div style="display:flex;align-items:center;gap:7px;">
       <span id="dmLbl" style="font-size:11px;color:rgba(255,252,246,.5);display:none;" class="dm-lbl-topbar">Light</span><span id="dmIcon" style="display:flex;align-items:center;width:14px;height:14px;color:rgba(255,252,246,.65);"><svg viewBox="0 0 16 16" fill="none" width="14" height="14"><circle cx="8" cy="8" r="3" stroke="currentColor" stroke-width="1.5"/><path d="M8 1v1.5M8 13.5V15M1 8h1.5M13.5 8H15M3.05 3.05l1.06 1.06M11.89 11.89l1.06 1.06M3.05 12.95l1.06-1.06M11.89 4.11l1.06-1.06" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg></span>
-      <label class="dm-sw" style="margin:0;"><input type="checkbox" id="dmCheck" onchange="setDark(this.checked)"><div class="dm-track"></div><div class="dm-thumb"></div></label>
+      <label class="dm-sw" style="margin:0;" for="dmCheck"><input type="checkbox" id="dmCheck" onclick="setDark(this.checked)"><div class="dm-track"></div><div class="dm-thumb"></div></label>
     </div>
     <button class="mob-menu-btn" id="mobMenuBtn" onclick="toggleMobDrawer()">
       <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M3 5h14M3 10h14M3 15h14" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
@@ -758,6 +760,22 @@ body{
     </div>
     <div class="md-acts">
       <button class="btn btn-p" onclick="closeModal('modal-welcome');nav('journal');">Go to my reflections →</button>
+    </div>
+  </div>
+</div>
+<!-- MODAL: Gallery Lightbox -->
+<div class="mo" id="modal-gallery-lb">
+  <div class="md" style="max-width:680px;padding:0;overflow:hidden;border-radius:18px;">
+    <button class="md-close" onclick="closeModal('modal-gallery-lb')" aria-label="Close" style="position:absolute;top:14px;right:14px;z-index:10;">×</button>
+    <div id="glb-img-wrap" style="width:100%;background:#111;max-height:400px;overflow:hidden;display:flex;align-items:center;justify-content:center;">
+      <img id="glb-img" src="" alt="" style="width:100%;max-height:400px;object-fit:contain;display:block;">
+      <div id="glb-no-photo" style="display:none;padding:60px 20px;text-align:center;color:rgba(255,255,255,.4);font-size:13px;">No photo uploaded yet</div>
+    </div>
+    <div style="padding:22px 24px;">
+      <div style="font-size:9.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--mag);margin-bottom:4px;" id="glb-unit"></div>
+      <div style="font-size:17px;font-weight:800;color:var(--on-card);margin-bottom:4px;" id="glb-title"></div>
+      <div style="font-size:12px;color:var(--on-card-muted);margin-bottom:16px;" id="glb-prompt"></div>
+      <div id="glb-reflections" style="display:grid;grid-template-columns:1fr 1fr;gap:12px;"></div>
     </div>
   </div>
 </div>
@@ -1396,7 +1414,7 @@ function showSaveIndicator() {
   clearTimeout(el._t);
   el._t = setTimeout(function(){ el.classList.remove("show"); }, 2000);
 }
-function autoSave(k, v) { D[k] = v; persist(); }
+function autoSave(k, v) { D[k] = v; persist(); showSaveIndicator(); }
 
 function savePhoto(slot, dataUrl) {
   if (!currentUser) return;
@@ -1412,8 +1430,9 @@ function savePhoto(slot, dataUrl) {
 function nav(id) {
   document.querySelectorAll(".view").forEach(function(v) { v.classList.remove("active"); });
   document.getElementById("view-" + id).classList.add("active");
-  document.querySelectorAll(".ni,.bni").forEach(function(n) { n.classList.remove("active"); });
+  document.querySelectorAll(".tni,.dni,.ni,.bni").forEach(function(n) { n.classList.remove("active"); });
   document.querySelectorAll("[data-v='" + id + "']").forEach(function(n) { n.classList.add("active"); });
+  if (document.activeElement) document.activeElement.blur();
   closeSb();
   if (id === "dashboard") renderDash();
   if (id === "notes")     { populateNoteUnitSel(); renderNotes(); }
@@ -1833,7 +1852,7 @@ function renderNotes() {
     grp.notes.forEach(function(n) {
       var d  = new Date(n.ts || n.id);
       var ds = d.toLocaleDateString("en-GB",{day:"numeric",month:"short"}) + " · " + d.toLocaleTimeString("en-GB",{hour:"2-digit",minute:"2-digit"});
-      var body = n.text.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/\n/g,"<br>");
+      var body = n.text.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/\\n/g,"<br>");
       html += '<div class="note-card">'
         + '<div class="note-meta">'
         + '<span class="note-unit-lbl">' + (n.unitLabel || "General") + '</span>'
@@ -1925,7 +1944,7 @@ function openUnitModal(uid) {
 
   // Reflection fields
   u.sections.forEach(function(s) {
-    content += '<div class="um-section"><div class="um-section-title">' + s.title + '</div>';
+    content += '<div class="um-section"><div class="um-section-title">' + s.title + '<span class="um-autosave-hint">saves automatically</span></div>';
     content += '<div class="unit-reflect-grid">';
     s.fields.forEach(function(f) {
       var val = (D[f.id] || "").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
@@ -1942,7 +1961,7 @@ function openUnitModal(uid) {
   var thumbHTML = photo
     ? '<img src="' + photo + '" style="width:100%;height:90px;object-fit:cover;border-radius:7px;">'
     : '<svg width="22" height="22" viewBox="0 0 22 22" fill="none"><rect x="2" y="3" width="18" height="16" rx="2" stroke="currentColor" stroke-width="1.4"/><circle cx="8" cy="9.5" r="2" stroke="currentColor" stroke-width="1.2"/><path d="M2 16l4.5-3.5 3 3 3.5-4.5 5 5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
-  content += '<div class="um-section"><div class="um-section-title">Assignment</div>'
+  content += '<div class="um-section"><div class="um-section-title">Assignment<span class="um-autosave-hint">saves automatically</span></div>'
     + '<div class="assign-grid">'
     + '<div class="assign-slot' + (photo ? " filled" : "") + '" id="aslot-' + uid + '" onclick="document.getElementById(\'aup-' + uid + '\').click()">'
     + thumbHTML
@@ -2027,21 +2046,84 @@ function nextUnitPrompt(uid) {
   if (eyEl) eyEl.textContent = "Reflection prompt " + (next+1) + " of " + prompts.length;
 }
 
+function compressPhoto(dataUrl, maxW, quality, cb) {
+  var img = new Image();
+  img.onload = function() {
+    var w = img.width, h = img.height;
+    if (w > maxW) { h = Math.round(h * maxW / w); w = maxW; }
+    var canvas = document.createElement("canvas");
+    canvas.width = w; canvas.height = h;
+    canvas.getContext("2d").drawImage(img, 0, 0, w, h);
+    cb(canvas.toDataURL("image/jpeg", quality));
+  };
+  img.src = dataUrl;
+}
 function handleAPhoto(e, uid) {
   var f = e.target.files[0]; if (!f) return;
   var r = new FileReader();
   r.onload = function(ev) {
-    savePhoto("photo-" + uid, ev.target.result);
-    var slot = document.getElementById("aslot-" + uid);
-    slot.classList.add("filled");
-    slot.innerHTML = '<img src="' + ev.target.result + '" style="width:100%;height:90px;object-fit:cover;border-radius:7px;">'
-      + '<span class="assign-lbl">Photo added</span>'
-      + '<input type="file" id="aup-' + uid + '" accept="image/*" style="display:none" onchange="handleAPhoto(event,\'' + uid + '\')">';
-    toast("Photo added \u2713");
+    compressPhoto(ev.target.result, 800, 0.78, function(compressed) {
+      savePhoto("photo-" + uid, compressed);
+      var slot = document.getElementById("aslot-" + uid);
+      if (slot) {
+        slot.classList.add("filled");
+        slot.innerHTML = '<img src="' + compressed + '" style="width:100%;height:90px;object-fit:cover;border-radius:7px;">'
+          + '<span class="assign-lbl">Photo added</span>'
+          + '<input type="file" id="aup-' + uid + '" accept="image/*" style="display:none" onchange="handleAPhoto(event,\'' + uid + '\')">';
+      }
+      toast("Photo added \u2713");
+    });
   };
   r.readAsDataURL(f);
 }
 
+
+// ── GALLERY LIGHTBOX ──────────────────────────────────────────────────────────
+function openGalleryLightbox(uid, unitLabel, u) {
+  var photo  = D["photo-" + uid];
+  var achose = D["achose-" + uid] || "";
+  var adiff  = D["adiff-"  + uid] || "";
+  var imgEl  = document.getElementById("glb-img");
+  var noPhotoEl = document.getElementById("glb-no-photo");
+  var imgWrap = document.getElementById("glb-img-wrap");
+  if (photo) {
+    imgEl.src = photo;
+    imgEl.style.display = "block";
+    noPhotoEl.style.display = "none";
+  } else {
+    imgEl.src = "";
+    imgEl.style.display = "none";
+    noPhotoEl.style.display = "block";
+    imgWrap.style.background = "#1a0818";
+  }
+  document.getElementById("glb-unit").textContent = unitLabel;
+  document.getElementById("glb-title").textContent = u.title;
+  document.getElementById("glb-prompt").textContent = u.prompt;
+  var refl = document.getElementById("glb-reflections");
+  refl.innerHTML = "";
+  if (achose || adiff) {
+    if (achose) {
+      var d1 = document.createElement("div");
+      d1.innerHTML = "<div style='font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--on-card-muted);margin-bottom:5px;'>Why I chose this</div>"
+        + "<div style='font-size:12.5px;color:var(--on-card);line-height:1.55;'>" + achose.replace(/</g,"&lt;").replace(/\n/g,"<br>") + "</div>";
+      refl.appendChild(d1);
+    }
+    if (adiff) {
+      var d2 = document.createElement("div");
+      d2.innerHTML = "<div style='font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--on-card-muted);margin-bottom:5px;'>What I'd do differently</div>"
+        + "<div style='font-size:12.5px;color:var(--on-card);line-height:1.55;'>" + adiff.replace(/</g,"&lt;").replace(/\n/g,"<br>") + "</div>";
+      refl.appendChild(d2);
+    }
+  } else if (!photo) {
+    refl.innerHTML = "<div style='grid-column:1/-1;font-size:12px;color:var(--on-card-muted);font-style:italic;'>No reflection written yet.</div>";
+  }
+  if (!achose && !adiff && photo) {
+    refl.style.display = "none";
+  } else {
+    refl.style.display = "grid";
+  }
+  openModal("modal-gallery-lb");
+}
 // ── GOALS ─────────────────────────────────────────────────────────────────────
 function renderGoals() {
   var ids = ["g-learn","g-confident","g-progress","g-changed","g-next"];
@@ -2219,17 +2301,9 @@ function renderGallery() {
       + '<div class="gal-title">' + u.title + '</div>'
       + '<div class="gal-prompt">' + u.prompt + '</div>'
       + '</div>';
-    (function(id) {
-      div.onclick = function() {
-        nav("journal");
-        setTimeout(function() {
-          var body = document.getElementById("ubody-" + id);
-          var hd   = document.getElementById("uhd-"   + id);
-          openUnitModal(id);
-          
-        }, 320);
-      };
-    })(uid);
+    (function(id, unitLabel, u) {
+      div.onclick = function() { openGalleryLightbox(id, unitLabel, u); };
+    })(uid, unitLabel, u);
     grid.appendChild(div);
   });
 }
@@ -2318,12 +2392,14 @@ function handleProudPhoto(e) {
   var f = e.target.files[0]; if (!f) return;
   var r = new FileReader();
   r.onload = function(ev) {
-    savePhoto("proud-photo", ev.target.result);
-    var slot = document.getElementById("proud-slot"); slot.classList.add("filled");
-    slot.innerHTML = '<img src="' + ev.target.result + '" style="width:100%;height:90px;object-fit:cover;border-radius:7px;">'
-      + '<span class="assign-lbl">Photo added</span>'
-      + '<input type="file" id="proud-upload" accept="image/*" style="display:none" onchange="handleProudPhoto(event)">';
-    toast("Photo saved \u2713");
+    compressPhoto(ev.target.result, 800, 0.78, function(compressed) {
+      savePhoto("proud-photo", compressed);
+      var slot = document.getElementById("proud-slot"); slot.classList.add("filled");
+      slot.innerHTML = '<img src="' + compressed + '" style="width:100%;height:90px;object-fit:cover;border-radius:7px;">'
+        + '<span class="assign-lbl">Photo added</span>'
+        + '<input type="file" id="proud-upload" accept="image/*" style="display:none" onchange="handleProudPhoto(event)">';
+      toast("Photo saved \u2713");
+    });
   };
   r.readAsDataURL(f);
 }
