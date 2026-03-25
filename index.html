@@ -1286,43 +1286,44 @@ function defaultGoals() {
 
 function loadUserData(callback) {
   var uid = currentUser.id;
-  var pending = 4;
-  function done() { pending--; if (pending === 0 && callback) callback(); }
-  // Journal fields (includes lesson progress stored as D keys)
+  // Load journal_data first — it's the most important, render as soon as it's ready
   sb.from("journal_data").select("data").eq("user_id", uid).maybeSingle()
     .then(function(res) {
       if (res.error) { console.error("[journal] load journal_data failed:", res.error); }
       else if (res.data && res.data.data) {
         D = res.data.data;
-        // Restore completion from saved D
         Object.keys(COMPLETION).forEach(function(k) {
           if (D["unit_pct_" + k] !== undefined) COMPLETION[k] = D["unit_pct_" + k];
         });
       }
-      done();
-    });
-  // Goals
-  sb.from("goals").select("*").eq("user_id", uid).order("created_at", {ascending:false})
-    .then(function(res) {
-      if (res.error) console.error("[journal] load goals failed:", res.error);
-      goals = (res.data && res.data.length) ? res.data : [];
-      done();
-    });
-  // Notes
-  sb.from("notes").select("*").eq("user_id", uid).order("created_at", {ascending:false})
-    .then(function(res) {
-      if (res.error) console.error("[journal] load notes failed:", res.error);
-      notes = res.data ? res.data.map(function(n) {
-        return {id:n.id, ts:new Date(n.created_at).getTime(), text:n.text, uid:n.uid, unitLabel:n.unit_label, tag:n.tag};
-      }) : [];
-      done();
-    });
-  // Photos (separate table, merge into D)
-  sb.from("photos").select("slot,data").eq("user_id", uid)
-    .then(function(res) {
-      if (res.error) console.error("[journal] load photos failed:", res.error);
-      else if (res.data) res.data.forEach(function(p){ D[p.slot]=p.data; });
-      done();
+      // Render immediately after core data loads — don't wait for photos/notes/goals
+      if (callback) callback();
+
+      // Load remaining data in background, re-render when ready
+      var pending = 3;
+      function bgDone() {
+        pending--;
+        if (pending === 0) { renderDash(); }
+      }
+
+      sb.from("goals").select("*").eq("user_id", uid).order("created_at", {ascending:false})
+        .then(function(res) {
+          if (!res.error) goals = (res.data && res.data.length) ? res.data : [];
+          bgDone();
+        });
+      sb.from("notes").select("*").eq("user_id", uid).order("created_at", {ascending:false})
+        .then(function(res) {
+          if (!res.error) notes = res.data ? res.data.map(function(n) {
+            return {id:n.id, ts:new Date(n.created_at).getTime(), text:n.text, uid:n.uid, unitLabel:n.unit_label, tag:n.tag};
+          }) : [];
+          bgDone();
+        });
+      // Photos: only fetch slot names without data first, then lazy-load data
+      sb.from("photos").select("slot,data").eq("user_id", uid)
+        .then(function(res) {
+          if (!res.error && res.data) res.data.forEach(function(p){ D[p.slot]=p.data; });
+          bgDone();
+        });
     });
 }
 
@@ -2624,8 +2625,11 @@ if (LOCAL_MODE) {
 } else {
   // Production: use Supabase auth
 
+  var _sessionHandled = false;
   function handleSession(session) {
     if (session && session.user) {
+      if (_sessionHandled && currentUser && currentUser.id === session.user.id) return;
+      _sessionHandled = true;
       currentUser = session.user;
       var emailEl = document.getElementById("sb-email");
       if (emailEl) emailEl.textContent = session.user.email;
