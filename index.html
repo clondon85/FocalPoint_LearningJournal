@@ -1299,12 +1299,9 @@ function loadUserData(callback) {
       // Render immediately after core data loads — don't wait for photos/notes/goals
       if (callback) callback();
 
-      // Load remaining data in background, re-render when ready
-      var pending = 3;
-      function bgDone() {
-        pending--;
-        if (pending === 0) { renderDash(); }
-      }
+      // Load goals and notes in background, re-render when done
+      var pending = 2;
+      function bgDone() { pending--; if (pending === 0) { renderDash(); } }
 
       sb.from("goals").select("*").eq("user_id", uid).order("created_at", {ascending:false})
         .then(function(res) {
@@ -1318,12 +1315,7 @@ function loadUserData(callback) {
           }) : [];
           bgDone();
         });
-      // Photos: only fetch slot names without data first, then lazy-load data
-      sb.from("photos").select("slot,data").eq("user_id", uid)
-        .then(function(res) {
-          if (!res.error && res.data) res.data.forEach(function(p){ D[p.slot]=p.data; });
-          bgDone();
-        });
+      // Photos loaded lazily on first gallery/unit-modal open
     });
 }
 
@@ -1922,6 +1914,7 @@ function renderJournal() {
 }
 
 function openUnitModal(uid) {
+  if (!_photosLoaded) { loadPhotos(function(){ openUnitModal(uid); }); return; }
   var u = null;
   UNITS.forEach(function(x){ if (String(x.id) === uid) u = x; });
   if (!u) return;
@@ -2176,6 +2169,18 @@ function glbNav(dir) {
   glbShow(n);
 }
 
+
+var _photosLoaded = false;
+function loadPhotos(cb) {
+  if (_photosLoaded) { if (cb) cb(); return; }
+  if (!currentUser) { if (cb) cb(); return; }
+  sb.from("photos").select("slot,data").eq("user_id", currentUser.id)
+    .then(function(res) {
+      if (!res.error && res.data) res.data.forEach(function(p){ D[p.slot]=p.data; });
+      _photosLoaded = true;
+      if (cb) cb();
+    });
+}
 // ── MULTI PHOTO UPLOAD ────────────────────────────────────────────────────────
 function handleAPhotoMulti(e, uid) {
   var files = Array.from(e.target.files); if (!files.length) return;
@@ -2386,6 +2391,7 @@ function addGoal() {
 
 // ── GALLERY ───────────────────────────────────────────────────────────────────
 function renderGallery() {
+  if (!_photosLoaded) { loadPhotos(function(){ renderGallery(); }); return; }
   var grid = document.getElementById("gal-grid"); grid.innerHTML = "";
   var emptySVG = '<svg width="24" height="24" viewBox="0 0 24 24" fill="none"><rect x="2" y="4" width="20" height="16" rx="2.5" stroke="currentColor" stroke-width="1.4"/><circle cx="8.5" cy="10" r="2" stroke="currentColor" stroke-width="1.2"/><path d="M2 17l5-4 3.5 3.5 4-5L22 17" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
   GALLERY.forEach(function(u) {
@@ -2628,7 +2634,8 @@ if (LOCAL_MODE) {
   var _sessionHandled = false;
   function handleSession(session) {
     if (session && session.user) {
-      if (_sessionHandled && currentUser && currentUser.id === session.user.id) return;
+      // Only load data once — ignore all subsequent auth events for same user
+      if (_sessionHandled) return;
       _sessionHandled = true;
       currentUser = session.user;
       var emailEl = document.getElementById("sb-email");
