@@ -2,10 +2,13 @@
 <html lang="en" data-theme="">
 <head>
 <meta charset="UTF-8">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://gqteaokqruftfrfbsbmk.supabase.co">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>Focal Point Photoclass — Learning Journal</title>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400&display=swap" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.3/dist/umd/supabase.min.js"></script>
 <style>
 /* ── TOKENS ─────────────────────────────────────────────────────────────────── */
 :root{
@@ -732,7 +735,7 @@ body{
 <div class="view" id="view-goals">
   <div class="ph">
     <div><div class="ph-ey">Focal Point Photoclass</div><div class="ph-ti">Your <b>goals.</b></div></div>
-    <div class="ph-acts"><button class="btn btn-s" onclick="toggleSuggestedGoals()" style="font-size:11px;">＋ Suggested goals</button><button class="btn btn-p" onclick="openModal('modal-goal')">+ Add goal</button></div>
+    <div class="ph-acts"><button class="um-back" onclick="toggleSuggestedGoals()">＋ Suggested goals</button><button class="btn btn-p" onclick="openModal('modal-goal')">+ Add goal</button></div>
   </div>
   <div class="start-card">
     <h3>Getting started</h3>
@@ -744,6 +747,7 @@ body{
   </div>
   <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;"><div style="font-size:13px;font-weight:700;color:#FFFCF6;letter-spacing:.02em;">My goals</div></div>
   <div class="goal-grid" id="goal-grid"></div>
+  <div id="goals-suggestions" style="display:none;margin-top:16px;"></div>
 
 </div>
 <!-- GALLERY -->
