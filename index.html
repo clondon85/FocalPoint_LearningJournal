@@ -108,7 +108,6 @@ body{
 .mob-menu-btn:hover{color:#FFFCF6;}
 
 
-
 /* ── MAIN ────────────────────────────────────────────────────────────────────── */
 .main{margin-left:0;padding:82px 44px 36px;min-height:100vh;max-width:1200px;margin:0 auto;padding-top:82px;}
 @media(max-width:600px){.main{padding:74px 16px 36px;}}
@@ -192,7 +191,6 @@ body{
 .prog-track{height:7px;background:rgba(159,33,126,.15);border-radius:99px;overflow:hidden;}
 .prog-fill{height:100%;background:linear-gradient(90deg,var(--mag),var(--teal));border-radius:99px;width:0%;transition:width .9s cubic-bezier(.4,0,.2,1);}
 
-
 /* ── UNIT CARDS (new compact design) ────────────────────────────────────────── */
 .unit-card{background:var(--card);border-radius:14px;border:1px solid rgba(255,255,255,.42);margin-bottom:10px;overflow:hidden;box-shadow:0 4px 18px rgba(0,0,0,.12);color:var(--on-card);}
 .unit-card-hd{display:flex;align-items:center;gap:12px;padding:14px 18px;cursor:pointer;user-select:none;transition:background .15s;}
@@ -234,8 +232,8 @@ body{
 .ugc-prog-fill{height:100%;background:linear-gradient(90deg,var(--mag),var(--teal));border-radius:99px;transition:width .4s ease;}
 .ugc-pct{font-size:10px;font-weight:700;color:var(--mag);margin-top:5px;}
 
-.um .rf-area{background:#fff!important;color:#1a1018!important;border-color:rgba(159,33,126,.2)!important;}
-.um .rf-area::placeholder{color:rgba(26,16,24,.4)!important;}
+.um .rf-area,.journal-panel .rf-area{background:#fff!important;color:#1a1018!important;border-color:rgba(159,33,126,.2)!important;}
+.um .rf-area::placeholder,.journal-panel .rf-area::placeholder{color:rgba(26,16,24,.4)!important;}
 /* ── UNIT MODAL (full-screen reflection view) ────────────────────────────────── */
 .um{display:none;position:fixed;inset:0;z-index:900;background:var(--grad);background-attachment:fixed;overflow-y:auto;}
 .um.open{display:block;animation:fadeUp .22s ease both;}
@@ -508,8 +506,6 @@ body{
 
 
 
-
-
 /* ── UNIT PROGRESS TILE GRID ─────────────────────────────────────────────────── */
 .prog-tiles{display:grid;grid-template-columns:repeat(3,1fr);grid-template-rows:repeat(4,1fr);gap:8px;flex:1;min-height:0;}
 .ptile{border-radius:10px;position:relative;cursor:pointer;overflow:hidden;border:1.5px solid rgba(159,33,126,.15);transition:transform .15s,box-shadow .15s;background:#f5f0f7;min-height:56px;}
@@ -534,6 +530,29 @@ body{
 .ptile-name{font-size:10px;font-weight:700;color:#1a1018;line-height:1.2;max-width:100%;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;}
 .ptile-fill ~ .ptile-label .ptile-name,.ptile-fill ~ .ptile-label .ptile-badge{color:#fff;}
 .ptile-done-mark{position:absolute;top:5px;right:6px;color:var(--yellow);font-size:10px;font-weight:800;z-index:2;}
+
+/* ── REFLECTIONS SIDEBAR LAYOUT ──────────────────────────────────────────────── */
+.journal-layout{display:flex;align-items:flex-start;min-height:calc(100vh - 58px);}
+
+.journal-sidebar{width:260px;flex-shrink:0;position:sticky;top:58px;max-height:calc(100vh - 58px);overflow-y:auto;border-right:1px solid rgba(255,255,255,.1);padding:0;background:rgba(0,0,0,.15);align-self:flex-start;}
+#jsb-list{padding-top:8px;}
+.jsb-unit{display:flex;flex-direction:column;gap:2px;padding:7px 16px;cursor:pointer;border-left:3px solid transparent;transition:background .15s,border-color .15s;flex:1;justify-content:center;}
+.jsb-unit:hover{background:rgba(255,255,255,.06);}
+.jsb-unit.active{background:rgba(255,255,255,.1);border-left-color:var(--mag);}
+.jsb-unit-name{font-size:11.5px;font-weight:600;color:rgba(255,252,246,.8);line-height:1.2;}
+.jsb-unit.active .jsb-unit-name{color:#FFFCF6;}
+.jsb-unit-pct{font-size:9.5px;color:rgba(255,252,246,.38);font-weight:500;}
+.jsb-unit.active .jsb-unit-pct{color:rgba(255,252,246,.6);}
+.jsb-prog{height:3px;background:rgba(255,255,255,.1);border-radius:99px;overflow:hidden;margin-top:5px;}
+.jsb-prog-fill{height:100%;background:linear-gradient(90deg,var(--mag),var(--teal));border-radius:99px;}
+.journal-panel{flex:1;padding:8px 40px 80px 32px;}
+.journal-panel-empty{display:flex;flex-direction:column;align-items:center;justify-content:center;height:60vh;color:rgba(255,252,246,.3);gap:12px;text-align:center;}
+@media(max-width:700px){
+  .journal-layout{flex-direction:column;}
+  .journal-sidebar{width:100%;position:static;max-height:200px;border-right:none;border-bottom:1px solid rgba(255,255,255,.1);}
+  .journal-panel{padding:20px 16px 80px;}
+}
+
 /* ── UNIT NAV BAR ────────────────────────────────────────────────────────────── */
 .unit-nav{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:20px;}
 .unb{background:rgba(255,255,255,.18);border:1.5px solid rgba(255,255,255,.25);border-radius:99px;padding:5px 13px;font-family:'Poppins',sans-serif;font-size:11px;font-weight:700;color:#FFFCF6;cursor:pointer;transition:all .15s;white-space:nowrap;letter-spacing:.03em;}
@@ -649,7 +668,6 @@ body{
     <div><div class="ph-ey">Focal Point Photoclass</div><div class="ph-ti">Good to see you, <b id="dash-name">there</b>.<br>Where are you with your photography?</div></div>
     <div class="ph-acts">
       <button class="btn btn-g" onclick="downloadPDF()">↓ Download PDF</button>
-      <button class="btn btn-p" onclick="openModal('modal-prompt')">Today's prompt</button>
     </div>
   </div>
   <div class="stats">
@@ -657,17 +675,6 @@ body{
     <div class="sc" onclick="nav('gallery')"><div class="sl">Assignments</div><div class="sv" id="dash-ac">0 <em>done</em></div><div class="sd">12 total</div></div>
     <div class="sc" onclick="nav('notes')"><div class="sl">Notes captured</div><div class="sv" id="dash-nc">0</div><div class="sd up" id="dash-nd">Start capturing</div></div>
     <div class="sc" onclick="nav('goals')"><div class="sl">Goals</div><div class="sv" id="dash-gc">0 <em>active</em></div><div class="sd" id="dash-gd">0 achieved</div></div>
-  </div>
-  <div class="pc">
-    <div class="pc-ey" id="pc-unit">Reflection prompt</div>
-    <div class="pc-q" id="pc-q">Loading...</div>
-    <textarea class="pc-inp" id="pc-inp" placeholder="Write freely — this is only for you..."></textarea>
-    <div class="pc-acts" id="pc-acts"><button class="pc-skip" onclick="skipPrompt()">Skip for now</button><button class="pc-save" onclick="savePrompt()">Save reflection</button></div>
-    <div class="pc-done" id="pc-done">
-      <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6" fill="#5BAAB5"/><path d="M4 7l2 2 4-4" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      Saved. Keep shooting.
-      <button class="pc-skip" style="margin-left:auto;" onclick="nextDashPrompt()">Next prompt →</button>
-    </div>
   </div>
   <div class="g32">
     <div class="card" style="height:100%;">
@@ -713,8 +720,19 @@ body{
 </div>
 <!-- JOURNAL -->
 <div class="view" id="view-journal">
-  <div class="ph"><div><div class="ph-ey">Private — only you can see this</div><div class="ph-ti">Unit <b>reflections.</b></div><div style="font-size:13px;color:var(--on-grad-muted);margin-top:6px;font-weight:400;">Click a unit to open your reflection. Your progress is tracked automatically as you complete lessons.</div></div></div>
-  <div class="unit-grid" id="unit-grid"></div>
+  <div class="journal-title" id="journal-title" style="display:none;padding:16px 0 20px 32px;"></div>
+  <div class="journal-layout">
+    <div class="journal-sidebar" id="journal-sidebar">
+      <div id="jsb-list"></div>
+    </div>
+    <div class="journal-panel" id="journal-panel">
+      <div class="journal-panel-empty" id="journal-panel-empty">
+        <svg width="48" height="48" viewBox="0 0 48 48" fill="none"><rect x="6" y="8" width="36" height="32" rx="4" stroke="currentColor" stroke-width="2"/><path d="M14 18h20M14 24h20M14 30h12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+        <div style="font-size:14px;font-weight:600;">Select a unit from the sidebar to open your reflections.</div>
+      </div>
+      <div id="unit-panel-content" style="display:none;"></div>
+    </div>
+  </div>
 </div>
 <!-- UNIT REFLECTION MODAL -->
 <div class="um" id="unit-modal">
@@ -756,7 +774,6 @@ body{
   <div class="gal-grid" id="gal-grid"></div>
 </div>
 </main>
-
 
 <!-- MODAL: Set Name (first login) -->
 <div class="mo" id="modal-setname">
@@ -848,7 +865,7 @@ body{
 <div class="mo" id="modal-goal">
   <div class="md">
     <button class="md-close" onclick="closeModal('modal-goal')" aria-label="Close">×</button>
-    <h2>Add a goal</h2><div class="msub">What do you want to work towards in Photoclass?</div>
+    <h2>Add a goal</h2><div class="msub">What do you want to work toward in Photoclass?</div>
     <div class="fg"><label class="fl">Goal</label><input class="fi" id="g-title" placeholder="e.g. Master manual focus for portraits"></div>
     <div class="fg"><label class="fl">Category</label>
       <select class="fse" id="g-cat"><option>Technical skill</option><option>Creative development</option><option>Personal project</option><option>Community</option><option>Equipment</option></select>
@@ -902,7 +919,7 @@ var UNITS = [
       {id:"u1_raw_jpeg",label:"Raw vs JPEG — my approach.",ph:"Which are you shooting and why? What are the tradeoffs for your workflow?",rows:3}
     ]},
     {title:"Digital Workflow",fields:[
-      {id:"u1_workflow",label:"My workflow.",ph:"How do you manage files, back up, edit, organise?",rows:3},
+      {id:"u1_workflow",label:"My workflow.",ph:"How do you manage files, back up, edit, organize?",rows:3},
       {id:"u1_workflow_ref",label:"Reflections.",ph:"What could be better? What are you going to change or improve?",rows:3}
     ]}
   ]},
@@ -918,7 +935,7 @@ var UNITS = [
       {id:"u2_ref",label:"Reflections.",ph:"What clicked this unit? What still feels uncertain?",rows:4}
     ]}
   ]},
-  {id:3,title:"The Art of Photography",sub:"Light, composition, and colour theory",sections:[
+  {id:3,title:"The Art of Photography",sub:"Light, composition, and color theory",sections:[
     {title:"Light",fields:[
       {id:"u3_natural",label:"Natural light — what I have learned.",ph:"How does time of day, weather, and direction of light change your images?",rows:3},
       {id:"u3_artificial",label:"Artificial and creative light.",ph:"How are you thinking about artificial light? What have you tried?",rows:3}
@@ -927,9 +944,9 @@ var UNITS = [
       {id:"u3_comp",label:"Which compositional guidelines resonated the most.",ph:"Rule of thirds? Leading lines? Negative space? Something else entirely?",rows:3},
       {id:"u3_comp_ref",label:"Reflections.",ph:"How has thinking about composition changed how you look through the viewfinder?",rows:3}
     ]},
-    {title:"Colour Theory",fields:[
-      {id:"u3_colour",label:"How I am using colour intentionally.",ph:"Complementary colours, mood, white balance, colour grading direction...",rows:3},
-      {id:"u3_colour_ref",label:"Reflections.",ph:"What colour relationships keep showing up in your work?",rows:3}
+    {title:"Color Theory",fields:[
+      {id:"u3_color",label:"How I am using color intentionally.",ph:"Complementary colors, mood, white balance, color grading direction...",rows:3},
+      {id:"u3_color_ref",label:"Reflections.",ph:"What color relationships keep showing up in your work?",rows:3}
     ]}
   ]},
   {id:4,title:"Post Processing",sub:"Workflow, editing, and developing a consistent style",sections:[
@@ -966,7 +983,7 @@ var UNITS = [
       {id:"u6_mf",label:"Manual focus — when and why.",ph:"When do you reach for manual focus? What subjects demand it?",rows:3}
     ]},
     {title:"Metering and Flash",fields:[
-      {id:"u6_metering",label:"Metering modes — my approach.",ph:"Matrix, centre-weighted, spot — which do you use and when?",rows:3},
+      {id:"u6_metering",label:"Metering modes — my approach.",ph:"Matrix, center-weighted, spot — which do you use and when?",rows:3},
       {id:"u6_flash",label:"Flash and accessories.",ph:"What lighting tools do you have or want? How are you using them?",rows:3},
       {id:"u6_ref",label:"Reflections.",ph:"What intention habit are you building from this unit?",rows:4}
     ]}
@@ -986,14 +1003,14 @@ var UNITS = [
       {id:"u7_feedback_needed",label:"What feedback would help me right now.",ph:"Idea development, style, technical approach — what do you most need input on?",rows:3}
     ]}
   ]},
-  {id:8,title:"The Art of Photography, Part 2",sub:"Revisiting light, composition, and colour at a deeper level",sections:[
+  {id:8,title:"The Art of Photography, Part 2",sub:"Revisiting light, composition, and color at a deeper level",sections:[
     {title:"Light, Part 2",fields:[
       {id:"u8_light",label:"How my understanding of light has evolved.",ph:"What do you see now that you did not see in Unit 3?",rows:4},
       {id:"u8_light_ref",label:"Reflections.",ph:"",rows:3}
     ]},
-    {title:"Composition and Colour, Part 2",fields:[
+    {title:"Composition and Color, Part 2",fields:[
       {id:"u8_comp",label:"Combining compositional techniques.",ph:"What happens when you layer multiple tools at once?",rows:4},
-      {id:"u8_colour",label:"Colour direction in my work.",ph:"What colour palettes or relationships are you consciously building toward?",rows:3},
+      {id:"u8_color",label:"Color direction in my work.",ph:"What color palettes or relationships are you consciously building toward?",rows:3},
       {id:"u8_revisit",label:"The previous image I revisited.",ph:"Which image did you go back to? What did you improve or change?",rows:4},
       {id:"u8_ref",label:"Reflections.",ph:"",rows:3}
     ]}
@@ -1041,7 +1058,7 @@ var GALLERY = [
   {id:"gs",title:"Getting Started",prompt:"Share a photo you are proud of — taken before the course began."},
   {id:1,title:"Introduction & The Gear",prompt:"Create a short photo story (3 to 5 images). Take note of how camera choice or focal length shapes the final image."},
   {id:2,title:"Photography Basics",prompt:"Photograph scenes using manual or semi-manual mode. Observe how aperture and shutter speed affect depth of field, motion, and exposure."},
-  {id:3,title:"The Art of Photography",prompt:"Two photos — one in harsh light, one in flat diffused light — each with an intentional compositional guideline and colour scheme applied."},
+  {id:3,title:"The Art of Photography",prompt:"Two photos — one in harsh light, one in flat diffused light — each with an intentional compositional guideline and color scheme applied."},
   {id:4,title:"Post Processing",prompt:"Two images, fully processed. Post both with before and after versions."},
   {id:5,title:"The Decision Process",prompt:"A photo essay documenting a single day — culled to no more than 10 images including one establishing shot, one context shot, one environmental shot, and one hero image."},
   {id:6,title:"Camera Skills Further",prompt:"One image made with clear intention before picking up the camera. What did you decide you wanted, and did you find it?"},
@@ -1096,7 +1113,7 @@ var UNIT_PROMPTS = {
   ],
   "8": [
     "How has your understanding of light changed since Unit 3? What do you see now that you did not see then?",
-    "What colour palette keeps showing up in your work? Is it intentional?",
+    "What color palette keeps showing up in your work? Is it intentional?",
     "What did revisiting a previous image teach you that making a new one would not have?"
   ],
   "9": [
@@ -1450,7 +1467,7 @@ function showSaveIndicator() {
   clearTimeout(el._t);
   el._t = setTimeout(function(){ el.classList.remove("show"); }, 2000);
 }
-function autoSave(k, v) { D[k] = v; persist(); showSaveIndicator(); }
+function autoSave(k, v) { D[k] = v; persist(); showSaveIndicator(); if (_activeJournalUid) refreshSidebarUnit(_activeJournalUid); }
 
 function savePhoto(slot, dataUrl) {
   if (!currentUser) return;
@@ -1472,7 +1489,10 @@ function nav(id, pushState) {
   closeSb();
   if (id === "dashboard") renderDash();
   if (id === "notes")     { populateNoteUnitSel(); renderNotes(); }
-  if (id === "journal")   renderJournal();
+  if (id === "journal") {
+    if (!_activeJournalUid) _activeJournalUid = String(currentUnitKey());
+    renderJournal();
+  }
   if (id === "goals")     renderGoals();
   if (id === "gallery")   renderGallery();
   if (pushState !== false) {
@@ -1672,12 +1692,6 @@ function renderDashPrompt() {
   var unit = null;
   UNITS.forEach(function(u) { if (String(u.id) === String(p.uid)) unit = u; });
   var unitLabel = unit ? (typeof unit.id === "number" ? "Unit " + unit.id + ": " + unit.title : unit.title) : "Getting Started";
-  document.getElementById("pc-unit").textContent = "Reflection prompt \u00b7 " + unitLabel;
-  document.getElementById("pc-q").textContent = p.text;
-  document.getElementById("pc-inp").value = "";
-  document.getElementById("pc-inp").style.display = "";
-  document.getElementById("pc-acts").style.display = "";
-  document.getElementById("pc-done").style.display = "none";
   var mu = document.getElementById("mp-unit"), mt = document.getElementById("mp-text");
   if (mu) mu.textContent = unitLabel;
   if (mt) mt.textContent = p.text;
@@ -1688,6 +1702,9 @@ function savePrompt() {
   if (!v) { toast("Write something first."); return; }
   var p = getDashPrompt();
   D["prompt-" + p.uid + "-" + Date.now()] = v;
+  // Also save to unit reflection key so it appears in the reflections panel
+  var existing = (D["uprompt_" + p.uid + "_" + p.idx] || "").trim();
+  D["uprompt_" + p.uid + "_" + p.idx] = existing ? existing + "\n\n" + v : v;
   D["prompt_idx_" + p.uid] = (p.idx + 1) % p.total;
   persist();
   document.getElementById("pc-inp").style.display = "none";
@@ -1706,6 +1723,8 @@ function saveModalPrompt() {
   if (!v) { toast("Write something first."); return; }
   var p = getDashPrompt();
   D["prompt-" + p.uid + "-" + Date.now()] = v;
+  var existingM = (D["uprompt_" + p.uid + "_" + p.idx] || "").trim();
+  D["uprompt_" + p.uid + "_" + p.idx] = existingM ? existingM + "\n\n" + v : v;
   D["prompt_idx_" + p.uid] = (p.idx + 1) % p.total;
   persist(); closeModal("modal-prompt");
   document.getElementById("mp-resp").value = "";
@@ -1715,7 +1734,6 @@ function saveModalPrompt() {
 // ── DASHBOARD ─────────────────────────────────────────────────────────────────
 function renderDash() {
   renderCoursePace();
-  renderDashPrompt();
   // Display name from stored profile or email prefix
   var nameEl = document.getElementById("dash-name");
   if (nameEl && currentUser) {
@@ -1916,45 +1934,116 @@ function renderNotes() {
 }
 
 // ── JOURNAL ───────────────────────────────────────────────────────────────────
-function renderJournal() {
-  var grid = document.getElementById("unit-grid");
-  if (!grid) return;
-  grid.innerHTML = "";
+var _activeJournalUid = null;
 
+function renderJournal(keepActiveUid) {
+  var list = document.getElementById("jsb-list");
+  if (!list) return;
+  list.innerHTML = "";
   UNITS.forEach(function(u) {
     var uid = String(u.id);
-    var bc = (u.id === "gs" || u.id === "fp") ? "u-t" : (u.id % 2 === 0 ? "u-m" : "u-t");
-    var badgeLabel = u.id === "gs" ? "GS" : u.id === "fp" ? "FP" : "U" + u.id;
-    var headLabel  = u.id === "gs" ? "Getting Started" : u.id === "fp" ? "Final Project" : "Unit " + u.id;
-    var lessons = UNIT_LESSONS[uid] || [];
-    var doneLessons = lessons.filter(function(l,i){ return D["lesson_"+uid+"_"+i]; }).length;
-    var pct = lessons.length ? Math.round((doneLessons/lessons.length)*100) : 0;
-
-    var card = document.createElement("div");
-    card.className = "ugc";
-    card.innerHTML =
-      '<div class="ugc-accent"></div>'
-      + '<div class="ugc-title">' + u.title + '</div>'
-      + '<div class="ugc-badge">' + headLabel + '</div>'
-      + '<div class="ugc-prog" style="margin-top:10px;"><div class="ugc-prog-fill" style="width:' + pct + '%"></div></div>'
-      + (pct > 0 ? '<div class="ugc-pct">' + pct + '% complete</div>' : '<div class="ugc-pct" style="color:var(--on-card-muted);font-weight:500;">Not started</div>');
-    card.onclick = (function(id){ return function(){ openUnitModal(id); }; })(uid);
-    grid.appendChild(card);
+    var label = u.id === "gs" ? "Getting Started" : u.id === "fp" ? "Final Project" : "Unit " + u.id + ": " + u.title;
+    // Journal completion: count filled reflection fields + prompts
+    var u_obj = null; UNITS.forEach(function(x){ if(String(x.id)===uid) u_obj=x; });
+    var totalFields = 0, filledFields = 0;
+    if (u_obj) {
+      u_obj.sections.forEach(function(s){ s.fields.forEach(function(f){ totalFields++; if((D[f.id]||'').trim()) filledFields++; }); });
+    }
+    var prompts = UNIT_PROMPTS[uid] || [];
+    prompts.forEach(function(q,i){ totalFields++; if((D['uprompt_'+uid+'_'+i]||'').trim()) filledFields++; });
+    // Also count assignment reflection
+    totalFields++; if((D['achose-'+uid]||'').trim()) filledFields++;
+    var pct = totalFields > 0 ? Math.round((filledFields/totalFields)*100) : 0;
+    var row = document.createElement("div");
+    row.className = "jsb-unit" + (uid === _activeJournalUid ? " active" : "");
+    row.id = "jsb-" + uid;
+    row.innerHTML = '<div class="jsb-unit-name">' + label + '</div>'
+      + '<div class="jsb-unit-pct">' + (pct > 0 ? pct + "% reflected" : "Not started") + '</div>'
+      + '<div class="jsb-prog"><div class="jsb-prog-fill" style="width:' + pct + '%;"></div></div>';
+    row.onclick = (function(id){ return function(){ openUnitPanel(id); }; })(uid);
+    list.appendChild(row);
   });
+  // Re-open active unit if one was open
+  if (_activeJournalUid && keepActiveUid !== false) {
+    openUnitPanel(_activeJournalUid, true);
+  }
 }
 
-function openUnitModal(uid) {
-  if (!_photosLoaded) { loadPhotos(function(){ openUnitModal(uid); }); return; }
+
+function refreshSidebarUnit(uid) {
+  var row = document.getElementById("jsb-" + uid);
+  if (!row) return;
+  var u_obj = null; UNITS.forEach(function(x){ if(String(x.id)===uid) u_obj=x; });
+  var totalFields = 0, filledFields = 0;
+  if (u_obj) {
+    u_obj.sections.forEach(function(s){ s.fields.forEach(function(f){ totalFields++; if((D[f.id]||'').trim()) filledFields++; }); });
+  }
+  var prompts = UNIT_PROMPTS[uid] || [];
+  prompts.forEach(function(q,i){ totalFields++; if((D['uprompt_'+uid+'_'+i]||'').trim()) filledFields++; });
+  totalFields++; if((D['achose-'+uid]||'').trim()) filledFields++;
+  var pct = totalFields > 0 ? Math.round((filledFields/totalFields)*100) : 0;
+  var pctEl = row.querySelector(".jsb-unit-pct");
+  var barEl = row.querySelector(".jsb-prog-fill");
+  if (pctEl) pctEl.textContent = pct > 0 ? pct + "% reflected" : "Not started";
+  if (barEl) barEl.style.width = pct + "%";
+}
+function openUnitPanel(uid, silent) {
+  _activeJournalUid = uid;
+  // Update sidebar active state
+  document.querySelectorAll(".jsb-unit").forEach(function(el){ el.classList.remove("active"); });
+  var row = document.getElementById("jsb-" + uid);
+  if (row) { row.classList.add("active"); if (!silent) row.scrollIntoView({block:"nearest"}); }
+  // Build content immediately — don't block on photos
   var u = null;
   UNITS.forEach(function(x){ if (String(x.id) === uid) u = x; });
   if (!u) return;
+  var panelContent = buildUnitContent(uid, u);
+  var panel = document.getElementById("unit-panel-content");
+  var empty = document.getElementById("journal-panel-empty");
+  if (empty) empty.style.display = "none";
+  panel.style.display = "block";
+  var headLabel = u.id === "gs" ? u.title : u.id === "fp" ? "Final Project: " + u.title : "Unit " + u.id + ": " + u.title;
+  var journalTitle = document.getElementById("journal-title");
+  if (journalTitle) {
+    journalTitle.style.display = "block";
+    journalTitle.innerHTML = '<div style="font-size:20px;font-weight:800;color:#FFFCF6;margin-bottom:3px;">' + headLabel + '</div>'
+      + '<div style="font-size:12px;color:var(--on-grad-muted);">' + u.sub + '</div>';
+  }
+  panel.innerHTML = panelContent;
+  // Scroll page to top
+  window.scrollTo(0, 0);
+  // Load photos in background and refresh photo strips if needed
+  if (!_photosLoaded) {
+    loadPhotos(function(){
+      var photoEl = document.getElementById("aphotos-" + uid);
+      if (photoEl) refreshAssignPhotos(uid);
+    });
+  }
+  // Build panel nav footer
+  var unitOrder = ["gs","1","2","3","4","5","6","7","8","9","10","fp"];
+  var curIdx = unitOrder.indexOf(uid);
+  var prevUid = curIdx > 0 ? unitOrder[curIdx - 1] : null;
+  var nextUid = curIdx >= 0 && curIdx < unitOrder.length - 1 ? unitOrder[curIdx + 1] : null;
+  var nextUnitObj = null;
+  if (nextUid) UNITS.forEach(function(x){ if (String(x.id) === nextUid) nextUnitObj = x; });
+  var nextLabel = nextUnitObj ? (nextUid === "fp" ? "Final Project" : "Unit " + nextUnitObj.id + ": " + nextUnitObj.title) : null;
+  // Add panel footer nav
+  var footerDiv = document.createElement("div");
+  footerDiv.className = "um-footer";
+  footerDiv.style.marginTop = "40px";
+  footerDiv.innerHTML = (prevUid ? '<button class="um-back" onclick="openUnitPanel(\'' + prevUid + '\')">← Previous</button>' : '<div></div>')
+    + '<div class="um-footer-center">All changes saved automatically</div>'
+    + (nextLabel ? '<button class="um-footer-btn" onclick="openUnitPanel(\'' + nextUid + '\')">Next: ' + nextLabel + ' →</button>'
+                 : '<button class="um-footer-btn" onclick="nav(\'dashboard\')">Back to dashboard ✓</button>');
+  panel.appendChild(footerDiv);
+  // Animate chips
+  setTimeout(function(){
+    panel.querySelectorAll(".lchip-fill").forEach(function(f){ f.style.width = f.dataset.w + "%"; });
+  }, 80);
+}
 
-  var headLabel = u.id === "gs" ? "Getting Started: " + u.title : u.id === "fp" ? "Final Project: " + u.title : "Unit " + u.id + ": " + u.title;
-  document.getElementById("um-title").textContent = headLabel;
-  document.getElementById("um-sub").textContent = u.sub;
-
+function buildUnitContent(uid, u) {
   var content = "";
-
   // Lesson chips
   var lessons = UNIT_LESSONS[uid] || [];
   if (lessons.length) {
@@ -1973,8 +2062,7 @@ function openUnitModal(uid) {
     });
     content += '</div></div>';
   }
-
-  // Reflection prompts — tabbed in one card
+  // Reflection prompts — tabbed
   var prompts = UNIT_PROMPTS[uid] || [];
   if (prompts.length) {
     content += '<div class="um-section">'
@@ -1996,7 +2084,6 @@ function openUnitModal(uid) {
     });
     content += '</div>';
   }
-
   // Reflection fields
   u.sections.forEach(function(s) {
     content += '<div class="um-section"><div class="um-section-title">' + s.title + '<span class="um-autosave-hint">saves automatically</span></div>';
@@ -2008,7 +2095,6 @@ function openUnitModal(uid) {
     });
     content += '</div></div>';
   });
-
   // Assignment — multi-photo
   var photos = D["photos-" + uid] || [];
   if (!photos.length && D["photo-" + uid]) { photos = [D["photo-" + uid]]; D["photos-" + uid] = photos; }
@@ -2031,7 +2117,19 @@ function openUnitModal(uid) {
     + '<div class="field-block"><label class="f-label">My reflection on this assignment.</label>'
     + '<textarea class="rf-area" id="achose-' + uid + '" data-key="achose-' + uid + '" placeholder="What choices did you make? What are you proud of? What would you do differently?" rows="5" oninput="autoSave(this.dataset.key,this.value)">' + achose + '</textarea></div>'
     + '</div>';
+  return content;
+}
+function openUnitModal(uid) {
+  if (!_photosLoaded) { loadPhotos(function(){ openUnitModal(uid); }); return; }
+  var u = null;
+  UNITS.forEach(function(x){ if (String(x.id) === uid) u = x; });
+  if (!u) return;
 
+  var headLabel = u.id === "gs" ? u.title : u.id === "fp" ? "Final Project: " + u.title : "Unit " + u.id + ": " + u.title;
+  document.getElementById("um-title").textContent = headLabel;
+  document.getElementById("um-sub").textContent = u.sub;
+
+  var content = buildUnitContent(uid, u);
   document.getElementById("um-content").innerHTML = content;
   document.getElementById("unit-modal").classList.add("open");
   document.getElementById("unit-modal").scrollTop = 0;
@@ -2060,7 +2158,6 @@ function closeUnitModal() {
   // Refresh grid cards to show updated progress
   renderJournal();
 }
-
 
 function handleChipClick(el) {
   var uid = el.getAttribute("data-uid");
@@ -2154,7 +2251,6 @@ function handleAPhoto(e, uid) {
   r.readAsDataURL(f);
 }
 
-
 // ── GALLERY LIGHTBOX ──────────────────────────────────────────────────────────
 var _glbPhotos = [];
 var _glbIdx = 0;
@@ -2223,7 +2319,6 @@ function glbNav(dir) {
   var n = (_glbIdx + dir + _glbPhotos.length) % _glbPhotos.length;
   glbShow(n);
 }
-
 
 var _photosLoaded = false;
 function loadPhotos(cb) {
@@ -2766,10 +2861,6 @@ sb.auth.getSession().then(function(res) {
 
 
 
-
-
-
-
 // ── DISPLAY NAME / FIRST LOGIN ────────────────────────────────────────────────
 function saveDisplayName() {
   var val = (document.getElementById("setname-input") || {}).value;
@@ -2814,6 +2905,7 @@ function autoSavePromptIdx(el) {
   var uid = el.dataset.uid; var pidx = parseInt(el.dataset.pidx);
   var tab = document.getElementById("ptab-" + uid + "-" + pidx);
   if (tab) { if (el.value.trim()) tab.classList.add("has-answer"); else tab.classList.remove("has-answer"); }
+  if (uid) refreshSidebarUnit(uid);
 }
 function switchPromptTab(uid, idx, total) {
   for (var i = 0; i < total; i++) {
