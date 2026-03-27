@@ -2118,7 +2118,7 @@ function buildUnitContent(uid, u) {
   var assignPromptText = '';
   GALLERY.forEach(function(g){ if (String(g.id) === uid) assignPromptText = g.prompt; });
   content += '<div class="um-section"><div class="um-section-title">Assignment<span class="um-autosave-hint">saves automatically</span></div>'
-    + (assignPromptText ? '<div style="font-size:13px;color:var(--on-card);line-height:1.6;margin-bottom:16px;padding:12px 14px;background:rgba(159,33,126,.06);border-radius:10px;border-left:3px solid var(--mag);">' + assignPromptText + '</div>' : '')
+    + (assignPromptText ? '<div style="font-size:13px;color:var(--on-card);line-height:1.6;margin-bottom:16px;padding:12px 14px;background:rgba(159,33,126,.06);border-radius:10px;">' + assignPromptText + '</div>' : '')
     + '<div id="aphotos-' + uid + '" style="margin-bottom:14px;line-height:0;">' + thumbsHTML + '</div>'
     + '<div class="field-block"><label class="f-label">My reflection on this assignment.</label>'
     + '<textarea class="rf-area" id="achose-' + uid + '" data-key="achose-' + uid + '" placeholder="What choices did you make? What are you proud of? What would you do differently?" rows="5" oninput="autoSave(this.dataset.key,this.value)">' + achose + '</textarea></div>'
