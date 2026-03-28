@@ -460,6 +460,61 @@ body{
 }
 @media(max-width:520px){.main{padding:66px 12px 80px;}.stats{gap:9px;}.sc{padding:14px;}.sv{font-size:22px;}}
 
+/* ── MOBILE POLISH ───────────────────────────────────────────────────────────── */
+/* Login */
+@media(max-width:440px){
+  .login-box{padding:28px 20px;border-radius:16px;}
+}
+/* Progress tiles: boost font sizes since vw-based values go tiny in narrow grids */
+@media(max-width:600px){
+  .ptile-name-text{font-size:12px;}
+  .ptile-badge-text{font-size:8px;}
+  .ptile-pct-text{font-size:8px;}
+}
+/* Unit viewer bar: collapse on small screens */
+@media(max-width:600px){
+  .uv-bar{padding:0 12px;gap:8px;}
+  .uv-back{font-size:10px;padding:5px 10px;}
+  .uv-title{font-size:12px;}
+}
+/* Journal sidebar: horizontal pill strip on mobile */
+@media(max-width:700px){
+  .journal-sidebar{overflow-x:auto;overflow-y:hidden;max-height:52px;padding:8px 12px;display:flex;align-items:center;}
+  #jsb-list{display:flex;flex-direction:row;gap:6px;padding:0;white-space:nowrap;overflow:visible;}
+  .jsb-unit{flex-direction:row;align-items:center;gap:6px;padding:5px 12px;border-radius:99px;border-left:none;border:1.5px solid rgba(159,33,126,.15);flex-shrink:0;white-space:nowrap;justify-content:flex-start;}
+  .jsb-unit.active{border-color:var(--mag);background:rgba(159,33,126,.1);}
+  .jsb-unit-pct{display:none;}
+  .jsb-prog{display:none;}
+  .jsb-unit-name{font-size:11px;}
+}
+/* Tour bubble: constrain width on small screens */
+@media(max-width:440px){
+  #tour-bubble{max-width:calc(100vw - 24px) !important;width:calc(100vw - 24px) !important;left:12px !important;}
+}
+/* Suggested goals modal: full-width on small screens */
+@media(max-width:600px){
+  #modal-sug-goals > div{margin:20px 12px;padding:22px 16px 16px;border-radius:16px;}
+}
+/* Stats: single column only on truly tiny screens */
+@media(max-width:380px){
+  .stats{grid-template-columns:1fr 1fr;}
+  .sv{font-size:20px;}
+  .sc{padding:12px;}
+}
+/* Goals grid on mobile */
+@media(max-width:520px){
+  .ugc{padding:14px;}
+}
+/* Quick notes composer on mobile */
+@media(max-width:520px){
+  .pc{padding:16px;}
+}
+/* Reflections unit header on mobile */
+@media(max-width:520px){
+  .journal-title{padding:12px 0 14px;}
+  .journal-title h2{font-size:18px;}
+}
+
 /* ── PRINT ───────────────────────────────────────────────────────────────────── */
 @media print{
   .sb,.bnav,.topbar-mob,.ph-acts,.save-indicator,.toast,.mo,.pc,.up-acts,.note-del,button,.login-screen{display:none!important;}
@@ -551,7 +606,7 @@ body{
 .journal-panel-empty{display:flex;flex-direction:column;align-items:center;justify-content:center;height:60vh;color:rgba(255,252,246,.3);gap:12px;text-align:center;}
 @media(max-width:700px){
   .journal-layout{flex-direction:column;}
-  .journal-sidebar{width:100%;position:static;max-height:200px;border-right:none;border-bottom:1px solid rgba(255,255,255,.1);}
+  .journal-sidebar{width:100%;position:static;max-height:52px;border-right:none;border-bottom:none;border-radius:12px;}
   .journal-panel{padding:20px 16px 80px;}
 }
 
@@ -643,7 +698,7 @@ a.tni{text-decoration:none;}
     <div class="login-logo"><span>Focal Point</span> <span class="login-logo-teal">Photoclass</span></div>
     <div class="login-sub">My Focal Point</div>
     <div class="login-h">Welcome back.<br><b>Sign in.</b></div>
-    <div class="login-p" id="login-desc">Enter your email and we will send you a magic link — no password needed.</div>
+    <div class="login-p" id="login-desc">Enter your email and we will send you a magic link. No password needed.</div>
     <label class="login-label" for="login-email">Email address</label>
     <input class="login-input" type="email" id="login-email" placeholder="you@example.com" onkeydown="if(event.key==='Enter')submitLogin()">
     <div id="login-password-wrap" style="display:none;">
@@ -651,7 +706,8 @@ a.tni{text-decoration:none;}
       <input class="login-input" type="password" id="login-password" placeholder="Your password" onkeydown="if(event.key==='Enter')submitLogin()">
     </div>
     <button class="login-btn" id="login-btn" onclick="submitLogin()">Send magic link</button>
-    <div style="font-size:10px;color:rgba(255,252,246,.4);margin-top:20px;line-height:1.6;max-width:300px;text-align:center;">Your reflections, photos, and goals are private to you. No one else can see your data.</div>
+    <div style="font-size:10px;color:rgba(26,16,24,.45);margin-top:20px;line-height:1.7;text-align:center;font-weight:700;">Your email is used only to send your login link.</div>
+    <div style="font-size:10px;color:rgba(26,16,24,.45);margin-top:6px;line-height:1.7;text-align:left;">You are not creating an account or joining a mailing list. Your reflections, photos, goals, and email address are private to you.</div>
     <div class="login-msg" id="login-msg"></div>
     <div class="login-divider"><span>or</span></div>
     <div class="login-mode-toggle" id="login-mode-toggle" onclick="toggleLoginMode()">Prefer a password? <b>Sign in with password</b></div>
@@ -936,7 +992,7 @@ a.tni{text-decoration:none;}
 <script>
 // ── DATA ──────────────────────────────────────────────────────────────────────
 var UNITS = [
-  {id:"gs",title:"Getting Started",sub:"Before we start — experience, goals, and mindset",sections:[
+  {id:"gs",title:"Getting Started",sub:"Before we start: experience, goals, and mindset",sections:[
     {title:"My Background",fields:[
       {id:"gs_why",label:"Why I am here.",ph:"What brought you to this course? What do you want from it?",rows:3},
       {id:"gs_experience",label:"My experience with photography so far.",ph:"How long have you been shooting? What have you tried? What felt natural?",rows:3},
@@ -949,7 +1005,7 @@ var UNITS = [
     ]},
     {title:"Inspiration",fields:[
       {id:"gs_inspire",label:"Who or what inspires me.",ph:"Photographers, films, painters, places, other artists...",rows:3},
-      {id:"gs_feedback",label:"How comfortable am I with feedback?",ph:"Honest self-assessment — giving and receiving critique.",rows:3}
+      {id:"gs_feedback",label:"How comfortable am I with feedback?",ph:"Honest self-assessment: giving and receiving critique.",rows:3}
     ]}
   ]},
   {id:1,title:"Introduction & The Gear",sub:"Cameras, lenses, focal length, and digital workflow",sections:[
@@ -959,8 +1015,8 @@ var UNITS = [
     ]},
     {title:"The Gear",fields:[
       {id:"u1_camera",label:"My camera and why I chose it.",ph:"What are you shooting with? What drew you to it?",rows:3},
-      {id:"u1_lenses",label:"My lenses — focal lengths and uses.",ph:"What glass are you working with? What focal lengths do you have?",rows:3},
-      {id:"u1_raw_jpeg",label:"Raw vs JPEG — my approach.",ph:"Which are you shooting and why? What are the tradeoffs for your workflow?",rows:3}
+      {id:"u1_lenses",label:"My lenses: focal lengths and uses.",ph:"What glass are you working with? What focal lengths do you have?",rows:3},
+      {id:"u1_raw_jpeg",label:"Raw vs JPEG: my approach.",ph:"Which are you shooting and why? What are the tradeoffs for your workflow?",rows:3}
     ]},
     {title:"Digital Workflow",fields:[
       {id:"u1_workflow",label:"My workflow.",ph:"How do you manage files, back up, edit, organize?",rows:3},
@@ -981,7 +1037,7 @@ var UNITS = [
   ]},
   {id:3,title:"The Art of Photography",sub:"Light, composition, and color theory",sections:[
     {title:"Light",fields:[
-      {id:"u3_natural",label:"Natural light — what I have learned.",ph:"How does time of day, weather, and direction of light change your images?",rows:3},
+      {id:"u3_natural",label:"Natural light: what I have learned.",ph:"How does time of day, weather, and direction of light change your images?",rows:3},
       {id:"u3_artificial",label:"Artificial and creative light.",ph:"How are you thinking about artificial light? What have you tried?",rows:3}
     ]},
     {title:"Composition",fields:[
@@ -1011,11 +1067,11 @@ var UNITS = [
     {title:"Visual Storytelling",fields:[
       {id:"u5_narrative",label:"How I think about visual narrative.",ph:"What makes a sequence of images tell a story rather than just document?",rows:3},
       {id:"u5_masters",label:"What I took from studying the masters.",ph:"Whose work did you study? What did you notice?",rows:3},
-      {id:"u5_essay",label:"Photo essays — my approach.",ph:"What is the difference between a photo essay and a gallery of images?",rows:3}
+      {id:"u5_essay",label:"Photo essays: my approach.",ph:"What is the difference between a photo essay and a gallery of images?",rows:3}
     ]},
     {title:"Culling and Feedback",fields:[
       {id:"u5_culling",label:"How I cull my work.",ph:"What criteria do you use? How ruthless are you willing to be?",rows:3},
-      {id:"u5_rules",label:"Breaking the rules — intentionally.",ph:"Which rules have you broken on purpose? What was the result?",rows:3},
+      {id:"u5_rules",label:"Breaking the rules: intentionally.",ph:"Which rules have you broken on purpose? What was the result?",rows:3},
       {id:"u5_feedback_give",label:"Giving feedback.",ph:"What makes feedback useful rather than just kind?",rows:3},
       {id:"u5_feedback_get",label:"Receiving feedback.",ph:"How do you process criticism of your work? What helps it land?",rows:3},
       {id:"u5_ref",label:"Reflections.",ph:"What changed in how you make decisions about your images?",rows:4}
@@ -1023,11 +1079,11 @@ var UNITS = [
   ]},
   {id:6,title:"Taking your Camera Skills Further",sub:"Focus systems, autofocus, manual focus, metering, flash",sections:[
     {title:"Focus",fields:[
-      {id:"u6_af",label:"Autofocus — what works for me.",ph:"AF modes, focus points, eye tracking — what have you settled on for different situations?",rows:3},
-      {id:"u6_mf",label:"Manual focus — when and why.",ph:"When do you reach for manual focus? What subjects demand it?",rows:3}
+      {id:"u6_af",label:"Autofocus: what works for me.",ph:"AF modes, focus points, eye tracking. What have you settled on for different situations?",rows:3},
+      {id:"u6_mf",label:"Manual focus: when and why.",ph:"When do you reach for manual focus? What subjects demand it?",rows:3}
     ]},
     {title:"Metering and Flash",fields:[
-      {id:"u6_metering",label:"Metering modes — my approach.",ph:"Matrix, center-weighted, spot — which do you use and when?",rows:3},
+      {id:"u6_metering",label:"Metering modes: my approach.",ph:"Matrix, center-weighted, spot. Which do you use and when?",rows:3},
       {id:"u6_flash",label:"Flash and accessories.",ph:"What lighting tools do you have or want? How are you using them?",rows:3},
       {id:"u6_ref",label:"Reflections.",ph:"What intention habit are you building from this unit?",rows:4}
     ]}
@@ -1039,12 +1095,12 @@ var UNITS = [
       {id:"u7_goals_ref",label:"Reflections.",ph:"",rows:3}
     ]},
     {title:"Brainstorming Your Project",fields:[
-      {id:"u7_ideas",label:"Ideas for my personal project.",ph:"Everything on the table — nothing is too vague or too small.",rows:6}
+      {id:"u7_ideas",label:"Ideas for my personal project.",ph:"Everything on the table. Nothing is too vague or too small.",rows:6}
     ]},
     {title:"Beginning",fields:[
       {id:"u7_first_image",label:"My first image and what it means.",ph:"Describe the first image you made for this project. What made you choose that as a starting point?",rows:4},
       {id:"u7_themes",label:"Thematic ideas I am excited about.",ph:"What thread ties the images you are making together?",rows:3},
-      {id:"u7_feedback_needed",label:"What feedback would help me right now.",ph:"Idea development, style, technical approach — what do you most need input on?",rows:3}
+      {id:"u7_feedback_needed",label:"What feedback would help me right now.",ph:"Idea development, style, technical approach. What do you most need input on?",rows:3}
     ]}
   ]},
   {id:8,title:"The Art of Photography, Part 2",sub:"Revisiting light, composition, and color at a deeper level",sections:[
@@ -1062,7 +1118,7 @@ var UNITS = [
   {id:9,title:"Exploration",sub:"Inspiring yourself, genre exploration, and trying something new",sections:[
     {title:"Inspiration",fields:[
       {id:"u9_inspire",label:"How I inspire myself.",ph:"What habits, sources, or people reignite your creative energy when it stalls?",rows:4},
-      {id:"u9_thread",label:"The thread in my existing work.",ph:"Looking at 5 to 8 images together — what connects them? Subject, tone, light, feeling?",rows:3}
+      {id:"u9_thread",label:"The thread in my existing work.",ph:"Looking at 5 to 8 images together. What connects them? Subject, tone, light, feeling?",rows:3}
     ]},
     {title:"Genre Exploration",fields:[
       {id:"u9_genre",label:"A genre I explored.",ph:"Which genre did you try? What drew you to it?",rows:3},
@@ -1079,7 +1135,7 @@ var UNITS = [
     {title:"Going Further",fields:[
       {id:"u10_challenge",label:"My personal challenge going forward.",ph:"What is the one thing you want to keep working on after this course?",rows:3},
       {id:"u10_share",label:"Confidence in sharing my work.",ph:"How has your relationship with sharing changed? Where do you want to show your work?",rows:3},
-      {id:"u10_next",label:"What I will do next.",ph:"Concrete next steps — projects, communities, courses, goals.",rows:4}
+      {id:"u10_next",label:"What I will do next.",ph:"Concrete next steps: projects, communities, courses, goals.",rows:4}
     ]}
   ]},
   {id:"fp",title:"Final Project",sub:"Your long-term personal project and ongoing practice",sections:[
@@ -1099,25 +1155,25 @@ var UNITS = [
 ];
 
 var GALLERY = [
-  {id:"gs",title:"Getting Started",prompt:"Share a photo you are proud of — taken before the course began."},
+  {id:"gs",title:"Getting Started",prompt:"Share a photo you are proud of, taken before the course began."},
   {id:1,title:"Introduction & The Gear",prompt:"Create a short photo story (3 to 5 images). Take note of how camera choice or focal length shapes the final image."},
   {id:2,title:"Photography Basics",prompt:"Photograph scenes using manual or semi-manual mode. Observe how aperture and shutter speed affect depth of field, motion, and exposure."},
-  {id:3,title:"The Art of Photography",prompt:"Two photos — one in harsh light, one in flat diffused light — each with an intentional compositional guideline and color scheme applied."},
+  {id:3,title:"The Art of Photography",prompt:"Two photos: one in harsh light, one in flat diffused light, each with an intentional compositional guideline and color scheme applied."},
   {id:4,title:"Post Processing",prompt:"Two images, fully processed. Post both with before and after versions."},
-  {id:5,title:"The Decision Process",prompt:"A photo essay documenting a single day — culled to no more than 10 images including one establishing shot, one context shot, one environmental shot, and one hero image."},
+  {id:5,title:"The Decision Process",prompt:"A photo essay documenting a single day, culled to no more than 10 images including one establishing shot, one context shot, one environmental shot, and one hero image."},
   {id:6,title:"Camera Skills Further",prompt:"One image made with clear intention before picking up the camera. What did you decide you wanted, and did you find it?"},
   {id:7,title:"Personal Projects",prompt:"One image connected to your developing long-term project. Include a reflection on your planning stage, thematic ideas, and what feedback you need."},
   {id:8,title:"Art of Photography 2",prompt:"Revisit a previous image, identify a key takeaway or improvement area, then create a new image that builds on that learning."},
   {id:9,title:"Exploration",prompt:"Select 5 to 8 connected past images, experiment with a new genre, then create a final image that combines your existing thread with the new approach."},
   {id:10,title:"Wrapping Up",prompt:"Reflect on your progress, define a personal challenge, and create one image aligned with that challenge."},
-  {id:"fp",title:"Final Project",prompt:"Your final project image — the one that best represents the whole body of work."}
+  {id:"fp",title:"Final Project",prompt:"Your final project image: the one that best represents the whole body of work."}
 ];
 
 // Per-unit rotating prompts — all plain strings, no HTML tags
 var UNIT_PROMPTS = {
   "gs": [
     "What brought you here? What would it mean to you to come out the other side as a photographer?",
-    "What does success look like for you in this course — not in general terms, but specifically?",
+    "What does success look like for you in this course. Not in general terms, but specifically?",
     "What is one habit you want to build during this course?"
   ],
   "1": [
@@ -1127,12 +1183,12 @@ var UNIT_PROMPTS = {
   ],
   "2": [
     "Think of a recent shot where the exposure triangle worked against you. What would you change?",
-    "Aperture, shutter, ISO — which one do you find yourself reaching for first, and why?",
+    "Aperture, shutter, ISO: which one do you find yourself reaching for first, and why?",
     "What does the histogram tell you that your eye does not?"
   ],
   "3": [
     "What quality of light do you find yourself chasing most? What draws you to it?",
-    "Which compositional rule do you find hardest to break intentionally — and why?",
+    "Which compositional rule do you find hardest to break intentionally. Why?",
     "Pick a photo you love from another photographer. What would it look like with completely different light?"
   ],
   "4": [
@@ -1142,12 +1198,12 @@ var UNIT_PROMPTS = {
   ],
   "5": [
     "What makes a sequence of images tell a story rather than just document a moment?",
-    "How do you decide which image is the hero — the one that carries the whole essay?",
+    "How do you decide which image is the hero, the one that carries the whole essay?",
     "What is the hardest part of culling your own work ruthlessly?"
   ],
   "6": [
     "Which focus or metering decision this unit made the biggest difference to an image?",
-    "What intention did you set before your last shoot — and did you find what you were looking for?",
+    "What intention did you set before your last shoot. Did you find what you were looking for?",
     "Do you consider flash a tool you use, or one you avoid? Why?"
   ],
   "7": [
@@ -1166,7 +1222,7 @@ var UNIT_PROMPTS = {
     "When did you last feel genuinely surprised by a photo you made?"
   ],
   "10": [
-    "What is the most important thing this course has taught you — not technically, but about how you see?",
+    "What is the most important thing this course has taught you. Not technically, but about how you see?",
     "What habit do you want to carry forward after this course ends?",
     "How has your confidence in sharing your work changed?"
   ],
@@ -1233,13 +1289,13 @@ function getSuggestedGoals() {
     {title:"Post in the community every week", cat:"Community", why:"Sharing work early removes the fear of sharing it later."},
     {title:"Complete every assignment this unit", cat:"Course completion", why:"Momentum in the first units sets the tone for the whole year."},
     {title:"Identify three photographers whose work inspires me", cat:"Creative development", why:"Knowing what you love helps you find your own voice faster."},
-    {title:"Understand the full exposure triangle by end of Unit 2", cat:"Technical skill", why:"Aperture, shutter, and ISO — once these click, everything opens up."}
+    {title:"Understand the full exposure triangle by end of Unit 2", cat:"Technical skill", why:"Aperture, shutter, and ISO: once these click, everything opens up."}
   ];
 
   // mid-early: 3–5 (building fundamentals)
   var mid_early = [
     {title:"Master one compositional approach and use it intentionally", cat:"Technical skill", why:"Constraints force creativity and deepen understanding."},
-    {title:"Shoot a small photo essay — 5 to 10 images on one theme", cat:"Creative development", why:"A cohesive series teaches you to edit your own eye."},
+    {title:"Shoot a small photo essay: 5 to 10 images on one theme", cat:"Creative development", why:"A cohesive series teaches you to edit your own eye."},
     {title:"Give detailed feedback to at least two other participants", cat:"Community", why:"Teaching forces you to articulate what you actually know."},
     {title:"Revisit my earliest photos and note what has changed", cat:"Course completion", why:"Progress is invisible until you look back."},
     {title:"Experiment with one genre I have never tried", cat:"Creative development", why:"Discomfort is where the learning happens."}
@@ -1258,8 +1314,8 @@ function getSuggestedGoals() {
   var late = [
     {title:"Edit my personal project down to a cohesive final selection", cat:"Personal project", why:"Culling is where the real creative decisions happen."},
     {title:"Submit a complete, edited body of work as my final project", cat:"Course completion", why:"Finishing is the hardest and most important part."},
-    {title:"Share my final project publicly — portfolio, zine, or exhibition", cat:"Creative development", why:"Work that lives only on a hard drive never fully exists."},
-    {title:"Establish a post-course shooting practice to keep momentum", cat:"Creative development", why:"The course ends — the practice should not."},
+    {title:"Share my final project publicly: portfolio, zine, or exhibition", cat:"Creative development", why:"Work that lives only on a hard drive never fully exists."},
+    {title:"Establish a post-course shooting practice to keep momentum", cat:"Creative development", why:"The course ends. The practice should not."},
     {title:"Write a reflection on how my photography has changed this year", cat:"Course completion", why:"Articulating growth makes it real and repeatable."}
   ];
 
@@ -1323,7 +1379,7 @@ function toggleLoginMode() {
   } else {
     wrap.style.display = "none";
     btn.textContent    = "Send magic link";
-    desc.textContent   = "Enter your email and we will send you a magic link — no password needed.";
+    desc.textContent   = "Enter your email and we will send you a magic link. No password needed.";
     toggle.innerHTML   = 'Prefer a password? <b>Sign in with password</b>';
   }
   document.getElementById("login-msg").textContent = "";
@@ -1380,7 +1436,7 @@ var D = {}, goals = [], notes = [];
 function defaultGoals() {
   return [
     {title:"Complete all units",cat:"Personal project",why:"I want to follow through on something for the full year.",pct:40,done:false},
-    {title:"Shoot in manual for one month",cat:"Technical skill",why:"I default to aperture priority — I want to understand every dial.",pct:80,done:false},
+    {title:"Shoot in manual for one month",cat:"Technical skill",why:"I default to aperture priority. I want to understand every dial.",pct:80,done:false},
     {title:"Submit every assignment",cat:"Community",why:"Accountability to the community keeps me motivated.",pct:100,done:true}
   ];
 }
@@ -1518,7 +1574,7 @@ function persistNow() {
         console.error("[journal] save failed:", res.error);
         // Common cause in Edge: localStorage blocked -> auth token not stored -> user null on reload
         var msg = res.error && res.error.message ? res.error.message : "unknown error";
-        toast("Save failed (" + msg + ") — try Chrome or Firefox if issue persists.");
+        toast("Save failed (" + msg + "). Try Chrome or Firefox if the issue persists.");
       } else {
         showSaveIndicator();
       }
@@ -2011,7 +2067,7 @@ function addNote() {
     .then(function(res) {
       if (res.error) {
         console.error("[journal] note save failed:", res.error);
-        toast("Save failed — check your connection.");
+        toast("Save failed. Check your connection.");
         return;
       }
       if (res.data) {
@@ -2623,7 +2679,7 @@ function toggleSuggestedGoal(i) {
     if (icon) icon.textContent = "+";
   } else {
     if (_sugSelected.length >= 3) {
-      toast("Maximum 3 goals — deselect one first.");
+      toast("Maximum 3 goals. Deselect one first.");
       return;
     }
     _sugSelected.push(i);
@@ -2663,7 +2719,7 @@ function saveSuggestedGoals() {
     .then(function(res) {
       if (res.error) {
         console.error("[journal] suggested goals save failed:", res.error);
-        toast("Save failed — check your connection.");
+        toast("Save failed. Check your connection.");
         return;
       }
       if (res.data) res.data.forEach(function(g) { goals.unshift(g); });
@@ -2697,7 +2753,7 @@ function addGoal() {
     .then(function(res) {
       if (res.error) {
         console.error("[journal] addGoal failed:", res.error);
-        toast("Save failed — check your connection.");
+        toast("Save failed. Check your connection.");
         return;
       }
       if (res.data) goals.unshift(res.data);
@@ -2901,7 +2957,7 @@ restoreTheme();
 
 // ── COURSE UNIT GRID & VIEWER ────────────────────────────────────────────────
 var COURSE_UNITS = [
-  {id:'gs', num:'Getting Started',  title:'Getting Started',                     sub:'Before we start — experience, goals, and mindset',     url:'https://clondon85.github.io/GettingStarted/'},
+  {id:'gs', num:'Getting Started',  title:'Getting Started',                     sub:'Before we start: experience, goals, and mindset',     url:'https://clondon85.github.io/GettingStarted/'},
   {id:'1',  num:'Unit 1',           title:'Introduction & The Gear',             sub:'Cameras, lenses, focal length, and digital workflow',        url:'https://clondon85.github.io/Introduction_Gear/'},
   {id:'2',  num:'Unit 2',           title:'Photography Basics',                  sub:'Exposure, aperture, shutter speed, and ISO',                 url:'https://clondon85.github.io/PhotographyBasics/'},
   {id:'3',  num:'Unit 3',           title:'The Art of Photography',              sub:'Light, composition, and color theory',                       url:'https://clondon85.github.io/ArtOfPhotography/'},
@@ -3036,7 +3092,7 @@ window.addEventListener('message', function(event) {
     });
   }, 50);
   // Show confirmation toast
-  toast('✓ Lesson marked complete — dashboard updated');
+  toast('✓ Lesson marked complete. Dashboard updated.');
 });
 
 // ── TOUR ──────────────────────────────────────────────────────────────────────
@@ -3059,7 +3115,7 @@ var TOUR_STEPS = [
     target: 'tnav-journal',
     arrow: 'arrow-top-left',
     title: 'Reflections',
-    desc: 'One page per unit. Write about what you learned, what challenged you, and what you want to work on. Your reflections are private — only you can see them.',
+    desc: 'One page per unit. Write about what you learned, what challenged you, and what you want to work on. Your reflections are private. Only you can see them.',
     pos: 'below'
   },
   {
@@ -3080,14 +3136,14 @@ var TOUR_STEPS = [
     target: 'tnav-notes',
     arrow: 'arrow-top-right',
     title: 'Quick Notes',
-    desc: 'Capture thoughts as they happen — while you are mid-lesson, reviewing photos, or just inspired. Tag them by unit to find them later.',
+    desc: 'Capture thoughts as they happen: while you are mid-lesson, reviewing photos, or just inspired. Tag them by unit to find them later.',
     pos: 'below'
   },
   {
     target: 'tour-stats',
     arrow: 'arrow-top',
     title: 'Your stats',
-    desc: 'A quick snapshot of where you are — sections complete, assignments submitted, notes captured, and active goals.',
+    desc: 'A quick snapshot of where you are: sections complete, assignments submitted, notes captured, and active goals.',
     pos: 'below'
   },
   {
@@ -3539,7 +3595,7 @@ function saveModalNote() {
   sb.from("notes").insert({user_id:currentUser.id, text:text, uid:uid, unit_label:unitLabel, tag:tag})
     .select().single()
     .then(function(res) {
-      if (res.error) { console.error("[journal] modal note failed:", res.error); toast("Save failed — check your connection."); return; }
+      if (res.error) { console.error("[journal] modal note failed:", res.error); toast("Save failed. Check your connection."); return; }
       if (res.data) notes.unshift({id:res.data.id, ts:new Date(res.data.created_at).getTime(), text:text, uid:uid, unitLabel:unitLabel, tag:tag});
       document.getElementById("modal-note-text").value = "";
       closeModal("modal-note");
@@ -3560,7 +3616,7 @@ function saveModalNote() {
 
 <!-- SUGGESTED GOALS MODAL -->
 <div id="modal-sug-goals" style="display:none;position:fixed;inset:0;z-index:900;background:rgba(0,0,0,.55);backdrop-filter:blur(6px);overflow-y:auto;" onclick="if(event.target===this)closeSugModal()">
-  <div style="background:linear-gradient(160deg,#2a0a28 0%,#1a1032 100%);border-radius:20px;max-width:560px;margin:60px auto;padding:28px 28px 20px;position:relative;">
+  <div style="background:linear-gradient(160deg,#2a0a28 0%,#1a1032 100%);border-radius:20px;max-width:560px;width:calc(100% - 24px);margin:40px auto;padding:28px 28px 20px;position:relative;">
     <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">
       <div style="font-size:16px;font-weight:700;color:#FFFCF6;">Suggested goals</div>
       <button onclick="closeSugModal()" style="background:none;border:none;cursor:pointer;font-size:20px;color:rgba(255,252,246,.5);line-height:1;">×</button>
