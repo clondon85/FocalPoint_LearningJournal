@@ -3019,11 +3019,7 @@ var _uvCurrentIdx = 0;
 var _uvUnlocked = [];
 
 function openUnitViewer(u) {
-  _uvUnlocked = COURSE_UNITS.filter(function(cu){
-    var locked=false;
-    SCHEDULE.forEach(function(s){ if(String(s.key)===String(cu.id)&&s.open>new Date()) locked=true; });
-    return !locked;
-  });
+  _uvUnlocked = COURSE_UNITS.filter(function(cu){ return !!cu.url; });
   _uvCurrentIdx = 0;
   for(var i=0;i<_uvUnlocked.length;i++){ if(_uvUnlocked[i].id===u.id){ _uvCurrentIdx=i; break; } }
   _uvLoad(_uvUnlocked[_uvCurrentIdx]);
