@@ -3414,7 +3414,11 @@ function saveDisplayName() {
   D["display_name"] = val;
   persist();
   closeModal("modal-setname");
-  if (isNew) setTimeout(startTutorial, 600);
+  if (isNew) {
+    var tourSeen = false;
+    try { tourSeen = !!localStorage.getItem('pc26_tour'); } catch(e) {}
+    if (!tourSeen && !D['tour_seen']) setTimeout(startTutorial, 600);
+  }
   document.querySelectorAll("#dash-name").forEach(function(el){ el.textContent = val; });
 
   // Show the welcome/orientation modal
@@ -3434,14 +3438,11 @@ function checkFirstLogin() {
       if (inp) setTimeout(function(){ inp.focus(); }, 100);
     }, 300);
   } else {
-    // Returning user: show tour if not yet seen
-    try {
-      if (!localStorage.getItem('pc26_tour') && !D['tour_seen']) {
-        setTimeout(startTutorial, 800);
-      }
-    } catch(e) {
-      if (!D['tour_seen']) setTimeout(startTutorial, 800);
-    }
+    // Returning user: show tour only if never seen
+    var tourSeen = false;
+    try { tourSeen = !!localStorage.getItem('pc26_tour'); } catch(e) {}
+    if (!tourSeen) tourSeen = !!D['tour_seen'];
+    if (!tourSeen) setTimeout(startTutorial, 800);
   }
 }
 
@@ -3573,11 +3574,11 @@ function saveModalNote() {
 <div id="tour-overlay">
   <div id="tour-highlight" style="display:none;"></div>
   <div id="tour-bubble" style="display:none;">
+    <button onclick="endTour()" title="Close tour" style="position:absolute;top:10px;right:10px;background:none;border:none;cursor:pointer;color:var(--on-card-muted);font-size:16px;line-height:1;padding:2px 5px;border-radius:4px;font-family:'Poppins',sans-serif;" onmouseover="this.style.color='var(--on-card)'" onmouseout="this.style.color='var(--on-card-muted)'">×</button>
     <div class="tour-step-label" id="tour-step-label"></div>
     <div class="tour-title" id="tour-title"></div>
     <div class="tour-desc" id="tour-desc"></div>
     <div class="tour-footer">
-      <button class="tour-btn-skip" onclick="endTour()">Skip tour</button>
       <div class="tour-dots" id="tour-dots"></div>
       <button class="tour-btn" id="tour-next-btn" onclick="tourNext()">Next</button>
     </div>
